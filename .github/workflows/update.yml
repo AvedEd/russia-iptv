@@ -1,4 +1,4 @@
-name: Update Russia IPTV V7
+name: Update Russia IPTV V7.1
 
 on:
   workflow_dispatch:
@@ -24,28 +24,16 @@ jobs:
 
     steps:
 
-      # ======================================================
-      # Checkout
-      # ======================================================
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: main
 
-      # ======================================================
-      # Python
-      # ======================================================
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-
-      # ======================================================
-      # FFmpeg
-      # ======================================================
 
       - name: Install FFmpeg
         run: |
@@ -58,17 +46,9 @@ jobs:
           echo "ffprobe:"
           ffprobe -version | head -n 1
 
-      # ======================================================
-      # Build
-      # ======================================================
-
-      - name: Build Russia IPTV V7
+      - name: Build Russia IPTV V7.1
         run: |
           python scripts/build.py
-
-      # ======================================================
-      # Validate report
-      # ======================================================
 
       - name: Validate build
         run: |
@@ -82,24 +62,16 @@ jobs:
 
           echo "All main playlists exist."
 
-      # ======================================================
-      # Show report
-      # ======================================================
-
       - name: Show report
         run: |
           echo "=========================================="
-          echo "RUSSIA IPTV V7 REPORT"
+          echo "RUSSIA IPTV V7.1 REPORT"
           echo "=========================================="
 
           cat output/report.json
 
           echo
           echo "=========================================="
-
-      # ======================================================
-      # Playlist statistics
-      # ======================================================
 
       - name: Show playlist statistics
         run: |
@@ -135,18 +107,10 @@ jobs:
             echo "No regional directory."
           fi
 
-      # ======================================================
-      # Git config
-      # ======================================================
-
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      # ======================================================
-      # Commit
-      # ======================================================
 
       - name: Commit generated files
         run: |
@@ -157,26 +121,17 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Update Russia IPTV V7"
-
-      # ======================================================
-      # Sync remote
-      # ======================================================
+          git commit -m "Update Russia IPTV V7.1"
 
       - name: Sync with remote main
         run: |
           git fetch origin main
-
           git rebase origin/main
-
-      # ======================================================
-      # Push
-      # ======================================================
 
       - name: Push
         run: |
           git push origin HEAD:main
 
           echo "=========================================="
-          echo "V7 PUSH SUCCESS"
+          echo "V7.1 PUSH SUCCESS"
           echo "=========================================="
