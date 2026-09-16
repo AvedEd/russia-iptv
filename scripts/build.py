@@ -8,17 +8,17 @@ from urllib.parse import urlsplit, urlunsplit
 
 
 # ============================================================
-# RUSSIA IPTV V7
+# RUSSIA IPTV V7.1
 #
-# SOURCES
+# SOURCES:
 #   1. iptv-org API
 #   2. iptv-russia
-#   3. iptv-org Russian subdivision playlists
+#   3. iptv-org Russian regional playlists
 #
-# QUALITY
+# QUALITY:
 #   ONLY actual ffprobe >= 1080p
 #
-# OUTPUT
+# OUTPUT:
 #   output/russia.m3u
 #   output/russia-best.m3u
 #   output/russia-backup.m3u
@@ -49,8 +49,6 @@ REGION_OUTPUT_DIR = os.path.join(
 
 MIN_HEIGHT = 1080
 
-# GitHub Actions runner can handle this.
-# Keep moderate because every URL is actually probed.
 WORKERS = 24
 
 FFPROBE_TIMEOUT = 8
@@ -64,7 +62,7 @@ def http_get(url, timeout=30):
     request = urllib.request.Request(
         url,
         headers={
-            "User-Agent": "Russia-IPTV-V7/1.0",
+            "User-Agent": "Russia-IPTV-V7.1/1.0",
             "Accept": "*/*",
         },
     )
@@ -80,14 +78,18 @@ def load_json(filename):
     url = f"{API_BASE}/{filename}"
 
     return json.loads(
-        http_get(url).decode(
-            "utf-8"
-        )
+        http_get(
+            url,
+            timeout=30,
+        ).decode("utf-8")
     )
 
 
-def load_text(url):
-    return http_get(url).decode(
+def load_text(url, timeout=30):
+    return http_get(
+        url,
+        timeout=timeout,
+    ).decode(
         "utf-8",
         errors="replace",
     )
@@ -112,11 +114,6 @@ def m3u_escape(value):
 
 
 def normalize_url(url):
-    """
-    Do not reorder query parameters.
-    Signed URLs can depend on exact ordering.
-    """
-
     url = safe_text(url)
 
     if not url:
@@ -143,7 +140,9 @@ def normalize_url(url):
 
 
 def normalize_name(value):
-    value = safe_text(value).lower()
+    value = safe_text(
+        value
+    ).lower()
 
     value = value.replace(
         "ё",
@@ -256,15 +255,6 @@ def parse_m3u_attributes(text):
 
 
 def parse_m3u(text):
-    """
-    Generic M3U parser.
-
-    Supports:
-      EXTINF
-      EXTVLCOPT:http-referrer
-      EXTVLCOPT:http-user-agent
-    """
-
     entries = []
 
     current = None
@@ -366,9 +356,11 @@ def parse_m3u(text):
         ):
             if current:
                 current["url"] = line
+
                 current[
                     "referrer"
                 ] = pending_referrer
+
                 current[
                     "user_agent"
                 ] = pending_user_agent
@@ -401,15 +393,15 @@ def build_channel_indexes(channels):
             continue
 
         country = safe_text(
-            channel.get(
-                "country"
-            )
+            channel.get("country")
         ).upper()
 
         if country != "RU":
             continue
 
-        by_id[channel_id] = channel
+        by_id[
+            channel_id
+        ] = channel
 
         names = []
 
@@ -465,15 +457,21 @@ def find_channel(
     channels_by_name,
 ):
     tvg_id = safe_text(
-        entry.get("tvg_id")
+        entry.get(
+            "tvg_id"
+        )
     )
 
     if tvg_id in channels_by_id:
         return tvg_id
 
     candidates = [
-        entry.get("tvg_name"),
-        entry.get("title"),
+        entry.get(
+            "tvg_name"
+        ),
+        entry.get(
+            "title"
+        ),
     ]
 
     for value in candidates:
@@ -497,7 +495,7 @@ def find_channel(
 
 
 # ============================================================
-# CANDIDATE OBJECT
+# CANDIDATE
 # ============================================================
 
 def make_candidate(
@@ -514,36 +512,47 @@ def make_candidate(
 ):
     return {
         "channel": channel_id,
+
         "url": normalize_url(
             url
         ),
+
         "source": source,
+
         "sources": [
             source
         ],
+
         "title": safe_text(
             title
         ),
+
         "logo": safe_text(
             logo
         ),
+
         "group": safe_text(
             group
         ),
+
         "referrer": safe_text(
             referrer
         ),
+
         "user_agent": safe_text(
             user_agent
         ),
+
         "regions": list(
             region_codes
             or []
         ),
+
         "region_names": list(
             region_names
             or []
         ),
+
         "declared_quality": detect_quality_label(
             title
         ),
@@ -551,7 +560,7 @@ def make_candidate(
 
 
 # ============================================================
-# SOURCE 1 — IPTV-ORG API
+# IPTV-ORG API
 # ============================================================
 
 def build_api_candidates(
@@ -575,7 +584,9 @@ def build_api_candidates(
             continue
 
         url = normalize_url(
-            stream.get("url")
+            stream.get(
+                "url"
+            )
         )
 
         if not url:
@@ -618,7 +629,7 @@ def build_api_candidates(
 
 
 # ============================================================
-# SOURCE 2 — IPTV-RUSSIA
+# IPTV-RUSSIA
 # ============================================================
 
 def build_russia_candidates(
@@ -627,11 +638,14 @@ def build_russia_candidates(
     channels_by_name,
 ):
     result = []
+
     unmatched = 0
 
     for entry in entries:
         url = normalize_url(
-            entry.get("url")
+            entry.get(
+                "url"
+            )
         )
 
         if not url:
@@ -682,7 +696,7 @@ def build_russia_candidates(
 
 
 # ============================================================
-# RUSSIAN SUBDIVISIONS
+# REGIONS
 # ============================================================
 
 def build_subdivision_list(
@@ -752,6 +766,10 @@ def load_subdivision_playlists(
 
     failed = []
 
+    total = len(
+        subdivisions
+    )
+
     for index, subdivision in enumerate(
         subdivisions,
         start=1,
@@ -769,7 +787,7 @@ def load_subdivision_playlists(
         ]
 
         print(
-            f"  [{index}/{len(subdivisions)}] "
+            f"  [{index}/{total}] "
             f"{name} ({code})"
         )
 
@@ -801,8 +819,6 @@ def load_subdivision_playlists(
         matched = 0
         unmatched = 0
 
-        region_candidates = []
-
         for entry in entries:
             url_value = normalize_url(
                 entry.get(
@@ -826,9 +842,7 @@ def load_subdivision_playlists(
             candidate = make_candidate(
                 channel_id=channel_id,
                 url=url_value,
-                source=(
-                    "iptv-org-region"
-                ),
+                source="iptv-org-region",
                 title=(
                     entry.get(
                         "title"
@@ -857,17 +871,15 @@ def load_subdivision_playlists(
                 ],
             )
 
-            region_candidates.append(
-                candidate
-            )
-
             all_candidates.append(
                 candidate
             )
 
             matched += 1
 
-        stats[code] = {
+        stats[
+            code
+        ] = {
             "name": name,
             "entries": len(
                 entries
@@ -875,6 +887,12 @@ def load_subdivision_playlists(
             "matched": matched,
             "unmatched": unmatched,
         }
+
+        print(
+            f"    entries={len(entries)} "
+            f"matched={matched} "
+            f"unmatched={unmatched}"
+        )
 
     return (
         all_candidates,
@@ -884,7 +902,7 @@ def load_subdivision_playlists(
 
 
 # ============================================================
-# DEDUPLICATION
+# DEDUP
 # ============================================================
 
 def merge_candidates(
@@ -1074,7 +1092,7 @@ def merge_candidates(
 
 
 # ============================================================
-# FFMPEG / FFPROBE
+# FFPROBE
 # ============================================================
 
 def probe_stream(
@@ -1235,12 +1253,10 @@ def probe_stream(
 
 
 # ============================================================
-# QUALITY SCORING
+# SCORING
 # ============================================================
 
-def resolution_score(
-    height
-):
+def resolution_score(height):
     if height >= 2160:
         return 400
 
@@ -1253,9 +1269,7 @@ def resolution_score(
     return 0
 
 
-def codec_score(
-    codec
-):
+def codec_score(codec):
     codec = safe_text(
         codec
     ).lower()
@@ -1282,9 +1296,7 @@ def codec_score(
     return 10
 
 
-def source_score(
-    candidate
-):
+def source_score(candidate):
     sources = set(
         candidate.get(
             "sources",
@@ -1294,8 +1306,6 @@ def source_score(
 
     score = 0
 
-    # Regional source is useful because it can identify
-    # an actual regional feed.
     if (
         "iptv-org-region"
         in sources
@@ -1317,9 +1327,7 @@ def source_score(
     return score
 
 
-def stream_score(
-    candidate
-):
+def stream_score(candidate):
     probe = candidate[
         "probe"
     ]
@@ -1369,9 +1377,7 @@ def stream_score(
     return score
 
 
-def sort_streams(
-    streams
-):
+def sort_streams(streams):
     return sorted(
         streams,
         key=lambda x: (
@@ -1403,9 +1409,7 @@ def sort_streams(
 # SELECTION
 # ============================================================
 
-def group_by_channel(
-    streams
-):
+def group_by_channel(streams):
     result = {}
 
     for stream in streams:
@@ -1421,9 +1425,7 @@ def group_by_channel(
     return result
 
 
-def best_per_channel(
-    streams
-):
+def best_per_channel(streams):
     result = []
 
     for items in group_by_channel(
@@ -1443,9 +1445,7 @@ def best_per_channel(
     )
 
 
-def backups_per_channel(
-    streams
-):
+def backups_per_channel(streams):
     result = []
 
     for items in group_by_channel(
@@ -1464,9 +1464,7 @@ def backups_per_channel(
     )
 
 
-def top_three_per_channel(
-    streams
-):
+def top_three_per_channel(streams):
     result = []
 
     for items in group_by_channel(
@@ -1486,12 +1484,10 @@ def top_three_per_channel(
 
 
 # ============================================================
-# M3U WRITING
+# M3U WRITER
 # ============================================================
 
-def channel_name(
-    channel
-):
+def channel_name(channel):
     return safe_text(
         channel.get(
             "name"
@@ -1549,22 +1545,16 @@ def channel_group(
     return "Россия"
 
 
-def source_label(
-    candidate
-):
-    sources = "+".join(
+def source_label(candidate):
+    return "+".join(
         candidate.get(
             "sources",
             [],
         )
     )
 
-    return sources
 
-
-def region_label(
-    candidate
-):
+def region_label(candidate):
     names = candidate.get(
         "region_names",
         [],
@@ -1581,9 +1571,7 @@ def region_label(
     )
 
 
-def stream_label(
-    candidate
-):
+def stream_label(candidate):
     probe = candidate[
         "probe"
     ]
@@ -1635,10 +1623,15 @@ def write_m3u(
     streams,
     channels_by_id,
 ):
-    os.makedirs(
-        os.path.dirname(path),
-        exist_ok=True,
+    directory = os.path.dirname(
+        path
     )
+
+    if directory:
+        os.makedirs(
+            directory,
+            exist_ok=True,
+        )
 
     with open(
         path,
@@ -1646,11 +1639,13 @@ def write_m3u(
         encoding="utf-8",
         newline="\n",
     ) as f:
+
         f.write(
             "#EXTM3U\n"
         )
 
         for candidate in streams:
+
             channel = (
                 channels_by_id.get(
                     candidate[
@@ -1751,7 +1746,6 @@ def write_m3u(
                 + "\n"
             )
 
-            # VLC compatibility.
             if candidate.get(
                 "referrer"
             ):
@@ -1783,7 +1777,7 @@ def write_m3u(
 
 
 # ============================================================
-# REGION PLAYLISTS
+# REGIONAL PLAYLISTS
 # ============================================================
 
 def write_region_playlists(
@@ -1798,6 +1792,7 @@ def write_region_playlists(
     grouped = {}
 
     for stream in working:
+
         for region in stream.get(
             "regions",
             [],
@@ -1812,11 +1807,11 @@ def write_region_playlists(
     result = {}
 
     for region_code, streams in grouped.items():
+
         streams = sort_streams(
             streams
         )
 
-        # One best stream per channel
         best = best_per_channel(
             streams
         )
@@ -1863,12 +1858,11 @@ def write_region_playlists(
 # STATISTICS
 # ============================================================
 
-def resolution_distribution(
-    streams
-):
+def resolution_distribution(streams):
     result = {}
 
     for stream in streams:
+
         height = str(
             stream[
                 "probe"
@@ -1899,12 +1893,11 @@ def resolution_distribution(
     )
 
 
-def codec_distribution(
-    streams
-):
+def codec_distribution(streams):
     result = {}
 
     for stream in streams:
+
         codec = (
             stream[
                 "probe"
@@ -1935,12 +1928,11 @@ def codec_distribution(
     )
 
 
-def source_distribution(
-    streams
-):
+def source_distribution(streams):
     result = {}
 
     for stream in streams:
+
         for source in stream.get(
             "sources",
             [],
@@ -1958,12 +1950,11 @@ def source_distribution(
     return result
 
 
-def region_distribution(
-    streams
-):
+def region_distribution(streams):
     result = {}
 
     for stream in streams:
+
         for region in stream.get(
             "region_names",
             [],
@@ -2008,21 +1999,26 @@ def main():
     print(
         "=========================================="
     )
+
     print(
-        "Russia IPTV V7"
+        "Russia IPTV V7.1"
     )
+
     print(
         "Minimum actual resolution: 1080p"
     )
+
     print(
-        "Sources: iptv-org + iptv-russia + regions"
+        "Sources:"
+        " iptv-org + iptv-russia + regions"
     )
+
     print(
         "=========================================="
     )
 
     # --------------------------------------------------------
-    # 1. Load API
+    # 1. API
     # --------------------------------------------------------
 
     print(
@@ -2056,11 +2052,11 @@ def main():
     )
 
     # --------------------------------------------------------
-    # 2. API candidates
+    # 2. API streams
     # --------------------------------------------------------
 
     print(
-        "\n[2/9] Building iptv-org API candidates..."
+        "\n[2/9] Building iptv-org candidates..."
     )
 
     api_candidates = (
@@ -2071,7 +2067,7 @@ def main():
     )
 
     print(
-        "iptv-org API candidates:",
+        "iptv-org candidates:",
         len(
             api_candidates
         ),
@@ -2086,7 +2082,8 @@ def main():
     )
 
     russia_text = load_text(
-        IPTV_RUSSIA_M3U
+        IPTV_RUSSIA_M3U,
+        timeout=30,
     )
 
     russia_entries = parse_m3u(
@@ -2122,7 +2119,7 @@ def main():
     )
 
     # --------------------------------------------------------
-    # 4. Russian subdivisions
+    # 4. Regions
     # --------------------------------------------------------
 
     print(
@@ -2160,14 +2157,14 @@ def main():
     )
 
     print(
-        "Regional playlists failed:",
+        "Regional failed:",
         len(
             regional_failed
         ),
     )
 
     # --------------------------------------------------------
-    # 5. Merge all
+    # 5. Merge
     # --------------------------------------------------------
 
     print(
@@ -2238,6 +2235,7 @@ def main():
         for future in as_completed(
             future_map
         ):
+
             candidate = (
                 future_map[
                     future
@@ -2253,6 +2251,7 @@ def main():
             completed += 1
 
             if probe is not None:
+
                 candidate[
                     "probe"
                 ] = probe
@@ -2411,7 +2410,7 @@ def main():
     )
 
     report = {
-        "version": 7,
+        "version": 7.1,
 
         "filter": {
             "minimum_height": MIN_HEIGHT,
@@ -2549,6 +2548,7 @@ def main():
         "w",
         encoding="utf-8",
     ) as f:
+
         json.dump(
             report,
             f,
@@ -2559,9 +2559,11 @@ def main():
     print(
         "\n=========================================="
     )
+
     print(
-        "V7 COMPLETE"
+        "V7.1 COMPLETE"
     )
+
     print(
         "=========================================="
     )
@@ -2644,6 +2646,13 @@ def main():
     )
 
     print(
+        "Regional working:",
+        report[
+            "regional_working_streams"
+        ],
+    )
+
+    print(
         "Resolutions:",
         report[
             "resolution_distribution"
@@ -2655,13 +2664,6 @@ def main():
         report[
             "video_codecs"
         ],
-    )
-
-    print(
-        "Regional playlists:",
-        len(
-            region_report
-        ),
     )
 
     print(
