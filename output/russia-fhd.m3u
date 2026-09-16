@@ -113,8 +113,6 @@ https://stream.smotrim.ru/hls2/russia_hd/playlist_6.m3u8
 https://stream.smotrim.ru/hls2/russia24nl_smotrim/playlist_5.m3u8
 #EXTINF:-1 tvg-id="SanktPeterburg.ru" tvg-name="Sankt-Peterburg" group-title="Россия",Sankt-Peterburg [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/ext_spbtv/playlist_5.m3u8
-#EXTINF:-1 tvg-id="Afontovo.ru" tvg-name="Afontovo" group-title="general",Afontovo [1920x1080 H264] [iptv-org+iptv-russia]
-https://stream.afontovo.ru/hd.m3u8
 #EXTINF:-1 tvg-id="Surgut24.ru" tvg-name="Surgut 24" group-title="Россия",Surgut 24 [1920x1080 H264] [iptv-org]
 https://sitv.ru/vgtrk/stv.m3u8
 #EXTINF:-1 tvg-id="S1.ru" tvg-name="S1" group-title="Россия",S1 [1920x1080 H264] [iptv-org+iptv-russia]
@@ -131,34 +129,20 @@ https://s1.tv-nano.com/Magnat_HD_5119705/video.m3u8
 https://rusbrics.mediacdn.ru/cdn/brics/russian/playlist.m3u8
 #EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
 https://rumble.com/live-hls-dvr/33aw1a/playlist.m3u8
-#EXTINF:-1 tvg-id="RTDocumentary.ru" tvg-name="RT Documentary" group-title="documentary",RT Documentary [1920x1080 H264] [iptv-org]
-https://rt-rtd.rttv.com/live/rtdoc/playlist.m3u8
-#EXTINF:-1 tvg-id="RTDocumentary.ru" tvg-name="RT Documentary" group-title="documentary",RT Documentary [1920x1080 H264] [iptv-org]
-https://rt-rtd.rttv.com/dvr/rtdoc/playlist.m3u8
-#EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
-https://rt-glb.rttv.com/live/rtnews/playlist.m3u8
-#EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
-https://rt-glb.rttv.com/dvr/rtnews/playlist.m3u8
 #EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org]
 https://rt-esp.rttv.com/live/rtesp/playlist.m3u8
-#EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org]
-https://rt-esp.rttv.com/dvr/rtesp/playlist.m3u8
-#EXTINF:-1 tvg-id="RTArabic.ru" tvg-name="RT Arabic" group-title="news",RT Arabic [1920x1080 H264] [iptv-org]
-https://rt-arb.rttv.com/live/rtarab/playlist.m3u8
-#EXTINF:-1 tvg-id="RTArabic.ru" tvg-name="RT Arabic" group-title="news",RT Arabic [1920x1080 H264] [iptv-org]
-https://rt-arb.rttv.com/dvr/rtarab/playlist.m3u8
 #EXTINF:-1 tvg-id="VmesteRF.ru" tvg-name="Vmeste-RF" group-title="Россия",Vmeste-RF [1920x1080 H264] [iptv-org]
 https://qcpdqumitwf.a.trbcdn.net/livemastersrt/pr4mw_lvie-vmesterf-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="AbazaTV.ru" tvg-name="Abaza TV" group-title="general",Abaza TV [1920x1080 H264] [iptv-org]
 https://public.apsny.camera/tv_abaza_tv_to_site/index.m3u8
 #EXTINF:-1 tvg-id="NTS.ru" tvg-name="NTS" group-title="general",NTS [1920x1080 H264] [iptv-org+iptv-russia]
 https://peqk71plnjy.a.trbcdn.net/livemaster/w4kz7pki62_nts_tv/playlist.m3u8
+#EXTINF:-1 tvg-id="ShoppingLive.ru" tvg-name="Shopping Live" group-title="shop",Shopping Live [1920x1080 H264] [iptv-org+iptv-russia]
+https://nonmirya7cc.a.trbcdn.net/livemaster/tzrz5_sazlypl5ot.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://live.smotrim.ru/vgtrk/0/russia24-hd/index.m3u8
 #EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
 https://live.smotrim.ru/vgtrk/0/russia1-hd/index.m3u8
-#EXTINF:-1 tvg-id="Arkhyz24.ru" tvg-name="Arkhyz 24" group-title="Россия",Arkhyz 24 [1920x1080 H264] [iptv-org]
-https://live.mediacdn.ru/sr1/arhis24/playlist.m3u8
 #EXTINF:-1 tvg-id="SmotrimChestnyyDetektiv.ru" tvg-name="Smotrim Chestnyy Detektiv" group-title="series",Smotrim Chestnyy Detektiv [1920x1080 H264] [iptv-org]
 https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-01.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Yuvelirochka.ru" tvg-name="Yuvelirochka" group-title="shop",Yuvelirochka [1920x1080 H264] [iptv-org]
@@ -173,8 +157,6 @@ https://live-saha.cdnvideo.ru/saha/saha/playlist.m3u8
 https://live-rian.cdnvideo.ru/rian/rus-radio/playlist.m3u8
 #EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-evg10.tv360.bitel.com.pe/bitel/rt/playlist.m3u8
-#EXTINF:-1 tvg-id="KongressTV.ru" tvg-name="Kongress TV" group-title="general",Kongress TV [1920x1080 H264] [iptv-org+iptv-russia]
-https://live-3.otcnet.ru/congresstv/index.m3u8
 #EXTINF:-1 tvg-id="VitrinaTV.ru" tvg-name="Vitrina TV" group-title="shop",Vitrina TV [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-11cinema.cdnvideo.ru/11cinema/11cinema/playlist.m3u8
 #EXTINF:-1 tvg-id="OTVPrim.ru" tvg-name="OTV-Prim" group-title="entertainment",OTV-Prim [1920x1080 H264] [iptv-org]
@@ -199,10 +181,8 @@ https://fs.uplink.kz/khl_prime/mono.m3u8?token=onlinetv
 https://dash2.antik.sk/live/test_star_family_atktv/playlist.m3u8
 #EXTINF:-1 tvg-id="StarCinema.ru" tvg-name="Star Cinema" group-title="movies",Star Cinema [1920x1080 H264] [iptv-org+iptv-russia]
 https://dash2.antik.sk/live/test_star_cinema_atktv/playlist.m3u8
-#EXTINF:-1 tvg-id="CityEdenKinoAsia.ru" tvg-name="City Eden KinoAsia" group-title="movies",City Eden KinoAsia [1920x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34393/index.m3u8
-#EXTINF:-1 tvg-id="CityEdenTV.ru" tvg-name="City Eden TV" group-title="general",City Eden TV [1920x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34246/index.m3u8
+#EXTINF:-1 tvg-id="CityEdenKinoAction.ru" tvg-name="City Eden KinoAction" group-title="movies",City Eden KinoAction [1920x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/41333/index.m3u8
 #EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
 https://12channel.bonus-tv.ru/cdn/12channel_blackout/playlist.m3u8
 #EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
@@ -227,8 +207,6 @@ http://tvoetv.space:8080/tvoetv_humor/index.m3u8
 http://tvoetv.space:8080/tvoetv/index.m3u8
 #EXTINF:-1 tvg-id="Channel8.ru" tvg-name="Channel 8" group-title="entertainment",Channel 8 [1920x1080 H264] [iptv-org+iptv-russia]
 http://tshift-1.telecoma.tv/8channel/index.m3u8
-#EXTINF:-1 tvg-id="ShchyolkovskoeTV.ru" tvg-name="Shchyolkovskoe TV" group-title="Россия",Shchyolkovskoe TV [1920x1080 H264] [iptv-org+iptv-russia]
-http://stream0.tv41.ru/live.m3u8
 #EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Россия",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.tvbelgorod.ru:8080/mirbelogorya/index.m3u8
 #EXTINF:-1 tvg-id="Vgostyakhuskazki.ru" tvg-name="V gostyakh u skazki" group-title="kids",V gostyakh u skazki [1920x1080 H264] [iptv-org+iptv-russia]
@@ -439,6 +417,8 @@ http://77.232.131.211/TravelAdventureHD/index.m3u8
 http://77.232.131.211/Sapfir/manifest.m3u8
 #EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
 http://77.232.131.211/Rossiya24/index.m3u8
+#EXTINF:-1 tvg-id="Zvezda.ru" tvg-name="Zvezda" group-title="general",Zvezda [1920x1080 H264] [iptv-org+iptv-russia]
+http://51.158.144.33:2021/zvezda/index.m3u8
 #EXTINF:-1 tvg-id="UDAR.ru" tvg-name="UDAR" group-title="sports",UDAR [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/udar/index.m3u8
 #EXTINF:-1 tvg-id="Mir24.ru" tvg-name="Mir 24" group-title="news",Mir 24 [1920x1080 H264] [iptv-org+iptv-russia]
@@ -459,6 +439,8 @@ http://185.23.80.23:8080/2x2/index.m3u8
 http://178.134.1.158:8081/red/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/KinoTvHD/playlist.m3u8
+#EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org+iptv-russia]
+http://15.204.246.24:8080/RTHD/index.m3u8
 #EXTINF:-1 tvg-id="RussianMusicBox.ru" tvg-name="Russian MusicBox" group-title="music",Russian MusicBox [1350x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/319/index.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
