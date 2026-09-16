@@ -1,0 +1,71 @@
+name: Update IPTV
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Russia playlist
+        run: |
+          mkdir -p output
+          curl -L \
+            https://iptv-org.github.io/iptv/countries/ru.m3u \
+            -o output/russia-source.m3u
+
+      - name: Create HD playlist
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          src = Path("output/russia-source.m3u").read_text(
+              encoding="utf-8",
+              errors="ignore"
+          )
+
+          lines = src.splitlines()
+          result = ["#EXTM3U"]
+          keep = False
+
+          for line in lines:
+              if line.startswith("#EXTINF"):
+                  text = line.lower()
+
+                  # Оставляем HD/FHD/UHD/4K
+                  keep = any(x in text for x in [
+                      "hd", "1080", "2160", "4k", "uhd"
+                  ])
+
+                  if keep:
+                      result.append(line)
+
+              elif keep and line.strip() and not line.startswith("#"):
+                  result.append(line)
+
+          Path("output/russia-hd.m3u").write_text(
+              "\n".join(result) + "\n",
+              encoding="utf-8"
+          )
+          PY
+
+      - name: Commit playlists
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add output/
+
+          git diff --cached --quiet || \
+            git commit -m "Update IPTV playlists"
+
+          git push
