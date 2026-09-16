@@ -1,4 +1,4 @@
-name: Update Russia IPTV V6
+name: Update Russia IPTV V7
 
 on:
   workflow_dispatch:
@@ -44,7 +44,7 @@ jobs:
           python-version: "3.x"
 
       # ======================================================
-      # FFmpeg / ffprobe
+      # FFmpeg
       # ======================================================
 
       - name: Install FFmpeg
@@ -52,62 +52,91 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-          echo "FFmpeg version:"
+          echo "FFmpeg:"
           ffmpeg -version | head -n 1
 
-          echo "ffprobe version:"
+          echo "ffprobe:"
           ffprobe -version | head -n 1
 
       # ======================================================
-      # Build IPTV
+      # Build
       # ======================================================
 
-      - name: Build Russia IPTV V6
+      - name: Build Russia IPTV V7
         run: |
           python scripts/build.py
+
+      # ======================================================
+      # Validate report
+      # ======================================================
+
+      - name: Validate build
+        run: |
+          test -f output/report.json
+          test -f output/russia.m3u
+          test -f output/russia-best.m3u
+          test -f output/russia-backup.m3u
+          test -f output/russia-fhd.m3u
+          test -f output/russia-4k.m3u
+          test -f output/russia-hdr.m3u
+
+          echo "All main playlists exist."
 
       # ======================================================
       # Show report
       # ======================================================
 
-      - name: Show build report
+      - name: Show report
         run: |
-          echo "========================================"
-          echo "Russia IPTV V6 BUILD REPORT"
-          echo "========================================"
+          echo "=========================================="
+          echo "RUSSIA IPTV V7 REPORT"
+          echo "=========================================="
 
-          if [ -f output/report.json ]; then
-            cat output/report.json
-          else
-            echo "ERROR: output/report.json not found"
-            exit 1
-          fi
+          cat output/report.json
 
           echo
-          echo "========================================"
+          echo "=========================================="
 
       # ======================================================
-      # Check generated playlists
+      # Playlist statistics
       # ======================================================
 
-      - name: Check playlists
+      - name: Show playlist statistics
         run: |
-          echo "Generated files:"
-          ls -lh output/
+          echo "MAIN PLAYLISTS"
+          echo "=============="
 
-          echo
-          echo "Playlist line counts:"
-          wc -l output/*.m3u || true
-
-          echo
-          echo "Playlist entry counts:"
           for file in output/*.m3u; do
-            count=$(grep -c '^#EXTINF:' "$file" || true)
-            echo "$(basename "$file"): $count"
+            if [ -f "$file" ]; then
+              count=$(grep -c '^#EXTINF:' "$file" || true)
+              size=$(du -h "$file" | cut -f1)
+
+              echo "$(basename "$file")"
+              echo "  entries: $count"
+              echo "  size:    $size"
+            fi
           done
 
+          echo
+          echo "REGIONAL PLAYLISTS"
+          echo "=================="
+
+          if [ -d output/regions ]; then
+            region_count=$(find output/regions -name '*.m3u' | wc -l)
+
+            echo "Regional playlists: $region_count"
+
+            find output/regions \
+              -maxdepth 1 \
+              -name '*.m3u' \
+              -print \
+              | sort
+          else
+            echo "No regional directory."
+          fi
+
       # ======================================================
-      # Git configuration
+      # Git config
       # ======================================================
 
       - name: Configure Git
@@ -116,31 +145,27 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       # ======================================================
-      # Commit generated files
+      # Commit
       # ======================================================
 
-      - name: Commit generated playlists
+      - name: Commit generated files
         run: |
           git add output/
 
           if git diff --cached --quiet; then
-            echo "No changes in output/"
+            echo "No output changes."
             exit 0
           fi
 
-          git commit -m "Update Russia IPTV V6"
+          git commit -m "Update Russia IPTV V7"
 
       # ======================================================
-      # Sync with remote main
+      # Sync remote
       # ======================================================
 
-      - name: Sync with remote
+      - name: Sync with remote main
         run: |
-          echo "Fetching latest remote main..."
-
           git fetch origin main
-
-          echo "Rebasing local commit onto latest origin/main..."
 
           git rebase origin/main
 
@@ -148,10 +173,10 @@ jobs:
       # Push
       # ======================================================
 
-      - name: Push changes
+      - name: Push
         run: |
-          echo "Pushing updated playlists..."
-
           git push origin HEAD:main
 
-          echo "Push completed successfully."
+          echo "=========================================="
+          echo "V7 PUSH SUCCESS"
+          echo "=========================================="
