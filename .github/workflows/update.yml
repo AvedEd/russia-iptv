@@ -1,4 +1,4 @@
-nname: Update Russia IPTV V6
+name: Update Russia IPTV V6
 
 on:
   workflow_dispatch:
@@ -14,17 +14,25 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: russia-iptv-update
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+
       # ======================================================
       # Checkout
       # ======================================================
 
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
 
       # ======================================================
       # Python
@@ -44,8 +52,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
+          echo "FFmpeg version:"
+          ffmpeg -version | head -n 1
+
+          echo "ffprobe version:"
+          ffprobe -version | head -n 1
+
       # ======================================================
-      # Build
+      # Build IPTV
       # ======================================================
 
       - name: Build Russia IPTV V6
@@ -58,38 +72,86 @@ jobs:
 
       - name: Show build report
         run: |
-          echo "================ REPORT ================"
-          cat output/report.json
+          echo "========================================"
+          echo "Russia IPTV V6 BUILD REPORT"
+          echo "========================================"
+
+          if [ -f output/report.json ]; then
+            cat output/report.json
+          else
+            echo "ERROR: output/report.json not found"
+            exit 1
+          fi
+
+          echo
           echo "========================================"
 
       # ======================================================
-      # Show playlist statistics
+      # Check generated playlists
       # ======================================================
 
-      - name: Show playlist sizes
+      - name: Check playlists
         run: |
-          echo "Playlist files:"
+          echo "Generated files:"
           ls -lh output/
 
           echo
-          echo "Line counts:"
+          echo "Playlist line counts:"
           wc -l output/*.m3u || true
 
+          echo
+          echo "Playlist entry counts:"
+          for file in output/*.m3u; do
+            count=$(grep -c '^#EXTINF:' "$file" || true)
+            echo "$(basename "$file"): $count"
+          done
+
       # ======================================================
-      # Commit
+      # Git configuration
       # ======================================================
 
-      - name: Commit updated playlists
+      - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+      # ======================================================
+      # Commit generated files
+      # ======================================================
+
+      - name: Commit generated playlists
+        run: |
           git add output/
 
           if git diff --cached --quiet; then
-            echo "No changes."
+            echo "No changes in output/"
             exit 0
           fi
 
           git commit -m "Update Russia IPTV V6"
-          git push
+
+      # ======================================================
+      # Sync with remote main
+      # ======================================================
+
+      - name: Sync with remote
+        run: |
+          echo "Fetching latest remote main..."
+
+          git fetch origin main
+
+          echo "Rebasing local commit onto latest origin/main..."
+
+          git rebase origin/main
+
+      # ======================================================
+      # Push
+      # ======================================================
+
+      - name: Push changes
+        run: |
+          echo "Pushing updated playlists..."
+
+          git push origin HEAD:main
+
+          echo "Push completed successfully."
