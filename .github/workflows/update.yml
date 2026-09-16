@@ -2,10 +2,8 @@ name: Update Russia IPTV V7.1
 
 on:
   workflow_dispatch:
-
   schedule:
     - cron: "17 */6 * * *"
-
   push:
     paths:
       - "scripts/build.py"
@@ -13,6 +11,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: russia-iptv-update
@@ -23,7 +23,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -39,11 +38,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-
-          echo "FFmpeg:"
           ffmpeg -version | head -n 1
-
-          echo "ffprobe:"
           ffprobe -version | head -n 1
 
       - name: Build Russia IPTV V7.1
@@ -59,17 +54,25 @@ jobs:
           test -f output/russia-fhd.m3u
           test -f output/russia-4k.m3u
           test -f output/russia-hdr.m3u
-
           echo "All main playlists exist."
+
+      - name: Create short playlist aliases
+        run: |
+          cp output/russia-best.m3u output/best.m3u
+          cp output/russia.m3u output/all.m3u
+          cp output/russia-fhd.m3u output/fhd.m3u
+          cp output/russia-4k.m3u output/4k.m3u
+          cp output/russia-backup.m3u output/backup.m3u
+
+          echo "Short aliases created:"
+          ls -lh output/*.m3u
 
       - name: Show report
         run: |
           echo "=========================================="
           echo "RUSSIA IPTV V7.1 REPORT"
           echo "=========================================="
-
           cat output/report.json
-
           echo
           echo "=========================================="
 
@@ -95,14 +98,8 @@ jobs:
 
           if [ -d output/regions ]; then
             region_count=$(find output/regions -name '*.m3u' | wc -l)
-
             echo "Regional playlists: $region_count"
-
-            find output/regions \
-              -maxdepth 1 \
-              -name '*.m3u' \
-              -print \
-              | sort
+            find output/regions -maxdepth 1 -name '*.m3u' -print | sort
           else
             echo "No regional directory."
           fi
@@ -135,3 +132,5 @@ jobs:
           echo "=========================================="
           echo "V7.1 PUSH SUCCESS"
           echo "=========================================="
+          echo "Short playlist:"
+          echo "https://aveded.github.io/russia-iptv/best.m3u"
