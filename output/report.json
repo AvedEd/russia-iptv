@@ -1,12 +1,37 @@
 {
-  "version": 3,
+  "version": 4,
   "russian_channels": 930,
   "candidate_streams": 1166,
-  "working_streams": 695,
-  "channels_with_working_stream": 374,
-  "selected_streams": 610,
-  "hd_streams": 300,
-  "fhd_streams": 243,
+  "working_streams": 647,
+  "channels_with_working_stream": 359,
+  "selected_streams": 583,
+  "best_streams": 359,
+  "backup_streams": 224,
+  "hd_streams": 284,
+  "fhd_streams": 234,
   "4k_streams": 1,
-  "hdr_streams": 0
+  "hdr_streams": 0,
+  "resolution_distribution": {
+    "576": 294,
+    "1080": 198,
+    "1440": 35,
+    "720": 50,
+    "360": 30,
+    "270": 5,
+    "480": 16,
+    "406": 1,
+    "432": 7,
+    "240": 8,
+    "2160": 1,
+    "404": 1,
+    "288": 1
+  },
+  "video_codecs": {
+    "h264": 619,
+    "mpeg2video": 26,
+    "hevc": 2
+  },
+  "regions": {
+    "Федеральные / неизвестно": 647
+  }
 }
