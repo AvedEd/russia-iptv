@@ -7,36 +7,45 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 # ============================================================
-# CONFIGURATION
+# RUSSIA IPTV AGGREGATOR V4
 # ============================================================
 
 API_BASE = "https://iptv-org.github.io/api"
-
 OUTPUT_DIR = "output"
 
-# Number of simultaneous ffprobe checks.
-# 12 is deliberately conservative for GitHub Actions.
-WORKERS = 12
+# Количество одновременных ffprobe
+WORKERS = 24
 
-# Timeout for one stream probe.
-TIMEOUT_SECONDS = 15
+# Сколько секунд даём одному потоку
+TIMEOUT_SECONDS = 8
 
-# Maximum number of working streams kept for one channel.
+# Максимум потоков одного канала в основном списке
 MAX_STREAMS_PER_CHANNEL = 3
+
+# Сколько потоков оставляем в BEST
+MAX_BEST_PER_CHANNEL = 1
+
+# Сколько потоков оставляем в BACKUP
+MAX_BACKUP_PER_CHANNEL = 2
 
 USER_AGENT = (
     "Mozilla/5.0 "
     "(Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 "
-    "Chrome/120 Safari/537.36"
+    "Chrome/128 Safari/537.36"
 )
 
-
-# ============================================================
-# DIRECTORY
-# ============================================================
-
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+
+# ============================================================
+# GLOBAL DATA
+# ============================================================
+
+channels_by_id = {}
+feeds_by_id = {}
+logos_by_channel = {}
+subdivisions_by_code = {}
 
 
 # ============================================================
@@ -47,47 +56,48 @@ def load_json(name):
     url = f"{API_BASE}/{name}.json"
 
     print()
-    print("Downloading:")
-    print(url)
+    print("=" * 60)
+    print("Downloading:", url)
 
     request = urllib.request.Request(
         url,
         headers={
-            "User-Agent": USER_AGENT
-        }
+            "User-Agent": USER_AGENT,
+            "Accept": "application/json",
+        },
     )
 
     try:
-        with urllib.request.urlopen(
-            request,
-            timeout=60
-        ) as response:
-
+        with urllib.request.urlopen(request, timeout=60) as response:
             data = response.read()
 
-            return json.loads(data)
+        result = json.loads(data)
+
+        print("Loaded:", name, "items:", len(result))
+
+        return result
 
     except Exception as error:
-
-        print(
-            f"ERROR loading {name}.json:",
-            error
-        )
-
+        print("ERROR loading", name, ":", error)
         raise
 
 
 # ============================================================
-# NORMALIZE URL
+# NORMALIZATION
 # ============================================================
 
 def normalize_url(url):
     if not url:
         return ""
 
-    url = url.strip()
+    return str(url).strip()
 
-    return url
+
+def normalize_text(value):
+    if not value:
+        return ""
+
+    return str(value).strip().lower()
 
 
 # ============================================================
@@ -103,38 +113,35 @@ def detect_hdr(video_stream):
         "color_primaries",
         "pix_fmt",
     ):
-
         value = video_stream.get(key)
 
         if value:
-            values.append(
-                str(value).lower()
-            )
+            values.append(str(value).lower())
 
-    side_data = video_stream.get(
-        "side_data_list"
-    )
+    side_data = video_stream.get("side_data_list")
 
     if side_data:
-        values.append(
-            str(side_data).lower()
-        )
+        values.append(str(side_data).lower())
 
     text = " ".join(values)
 
-    markers = [
-        "smpte2084",
-        "arib-std-b67",
-        "bt2020",
-        "pq",
-        "hlg",
-        "dolby",
-    ]
+    # PQ / HDR10
+    if "smpte2084" in text:
+        return True
 
-    return any(
-        marker in text
-        for marker in markers
-    )
+    # HLG
+    if "arib-std-b67" in text:
+        return True
+
+    # Dolby Vision metadata
+    if "dolby vision" in text:
+        return True
+
+    if "dovi" in text:
+        return True
+
+    # Do NOT consider BT.2020 alone as HDR.
+    return False
 
 
 # ============================================================
@@ -142,8 +149,13 @@ def detect_hdr(video_stream):
 # ============================================================
 
 def get_resolution(width, height):
+    try:
+        width = int(width or 0)
+        height = int(height or 0)
+    except Exception:
+        return 0
 
-    if not width or not height:
+    if width <= 0 or height <= 0:
         return 0
 
     if height >= 2160:
@@ -168,15 +180,75 @@ def get_resolution(width, height):
 
 
 # ============================================================
+# QUALITY FROM SOURCE DATA
+# ============================================================
+
+def source_quality_score(stream):
+    quality = normalize_text(stream.get("quality"))
+
+    if "2160" in quality or "4k" in quality:
+        return 400
+
+    if "1440" in quality:
+        return 300
+
+    if "1080" in quality:
+        return 200
+
+    if "720" in quality:
+        return 100
+
+    if "576" in quality:
+        return 50
+
+    return 0
+
+
+# ============================================================
+# REGION
+# ============================================================
+
+def get_region_info(channel_id, feed_id):
+    feed = feeds_by_id.get(feed_id)
+
+    if not feed:
+        return {
+            "region_code": "",
+            "region_name": "",
+        }
+
+    areas = feed.get("broadcast_area") or []
+
+    for area in areas:
+        area = str(area)
+
+        if area.startswith("s/"):
+            code = area[2:]
+
+            subdivision = subdivisions_by_code.get(code)
+
+            if subdivision:
+                return {
+                    "region_code": code,
+                    "region_name": subdivision.get("name", code),
+                }
+
+            return {
+                "region_code": code,
+                "region_name": code,
+            }
+
+    return {
+        "region_code": "",
+        "region_name": "",
+    }
+
+
+# ============================================================
 # FFPROBE
 # ============================================================
 
-def run_ffprobe(
-    url,
-    referrer=None,
-    user_agent=None
-):
-
+def run_ffprobe(url, referrer=None, user_agent=None):
     command = [
         "ffprobe",
 
@@ -190,93 +262,70 @@ def run_ffprobe(
 
         "-show_format",
 
-        "-rw_timeout",
-        str(
-            TIMEOUT_SECONDS * 1_000_000
-        ),
-    ]
+        # Ограничиваем объём анализа
+        "-probesize",
+        "2M",
 
+        "-analyzeduration",
+        "3M",
+
+        "-rw_timeout",
+        str(TIMEOUT_SECONDS * 1_000_000),
+    ]
 
     headers = []
 
-
-    if user_agent:
-
-        headers.append(
-            f"User-Agent: {user_agent}"
+    headers.append(
+        "User-Agent: " + (
+            user_agent
+            if user_agent
+            else USER_AGENT
         )
-
-    else:
-
-        headers.append(
-            f"User-Agent: {USER_AGENT}"
-        )
-
+    )
 
     if referrer:
-
         headers.append(
-            f"Referer: {referrer}"
+            "Referer: " + str(referrer)
         )
 
-
-    if headers:
-
-        command.extend(
-            [
-                "-headers",
-                "\r\n".join(headers)
-                + "\r\n"
-            ]
-        )
-
+    command.extend(
+        [
+            "-headers",
+            "\r\n".join(headers) + "\r\n",
+        ]
+    )
 
     command.extend(
         [
             "-i",
-            url
+            url,
         ]
     )
 
-
     try:
-
         result = subprocess.run(
             command,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            timeout=TIMEOUT_SECONDS + 5
+            timeout=TIMEOUT_SECONDS + 3,
         )
-
 
         if result.returncode != 0:
-
             return None
-
 
         if not result.stdout:
-
             return None
 
-
-        return json.loads(
-            result.stdout
-        )
-
+        return json.loads(result.stdout)
 
     except subprocess.TimeoutExpired:
-
         return None
-
 
     except json.JSONDecodeError:
-
         return None
 
-
     except Exception:
-
         return None
 
 
@@ -285,169 +334,86 @@ def run_ffprobe(
 # ============================================================
 
 def check_stream(stream):
-
-    url = normalize_url(
-        stream.get("url")
-    )
+    url = normalize_url(stream.get("url"))
 
     if not url:
-
         return None
-
-
-    print(
-        "CHECK:",
-        url
-    )
-
 
     data = run_ffprobe(
-
         url,
-
-        stream.get(
-            "referrer"
-        ),
-
-        stream.get(
-            "user_agent"
-        )
+        stream.get("referrer"),
+        stream.get("user_agent"),
     )
 
-
     if not data:
-
-        print(
-            "  DEAD"
-        )
-
         return None
-
 
     video = None
     audio = None
 
+    for item in data.get("streams", []):
+        codec_type = item.get("codec_type")
 
-    for item in data.get(
-        "streams",
-        []
-    ):
-
-        codec_type = item.get(
-            "codec_type"
-        )
-
-
-        if (
-            codec_type == "video"
-            and video is None
-        ):
-
+        if codec_type == "video" and video is None:
             video = item
 
-
-        elif (
-            codec_type == "audio"
-            and audio is None
-        ):
-
+        elif codec_type == "audio" and audio is None:
             audio = item
 
-
-    # A TV stream without video is not
-    # useful for our playlist.
-
     if not video:
-
-        print(
-            "  NO VIDEO"
-        )
-
         return None
 
-
-    width = video.get(
-        "width",
-        0
-    )
-
-    height = video.get(
-        "height",
-        0
-    )
-
+    width = video.get("width", 0)
+    height = video.get("height", 0)
 
     if not width or not height:
-
-        print(
-            "  UNKNOWN RESOLUTION"
-        )
-
         return None
-
 
     resolution = get_resolution(
         width,
-        height
+        height,
     )
 
+    if resolution <= 0:
+        return None
 
     video_codec = (
-        video.get(
-            "codec_name"
-        )
+        video.get("codec_name")
         or ""
     )
 
-
-    audio_codec = ""
-
-    if audio:
-
-        audio_codec = (
-            audio.get(
-                "codec_name"
-            )
-            or ""
-        )
-
-
-    hdr = detect_hdr(
-        video
+    audio_codec = (
+        audio.get("codec_name")
+        if audio
+        else ""
     )
 
+    hdr = detect_hdr(video)
 
-    result = dict(
-        stream
+    channel_id = stream.get("channel")
+    feed_id = stream.get("feed")
+
+    region = get_region_info(
+        channel_id,
+        feed_id,
     )
 
+    result = dict(stream)
 
     result["_online"] = True
 
     result["_width"] = width
-
     result["_height"] = height
 
     result["_resolution"] = resolution
 
-    result["_video_codec"] = (
-        video_codec
-    )
-
-    result["_audio_codec"] = (
-        audio_codec
-    )
+    result["_video_codec"] = video_codec
+    result["_audio_codec"] = audio_codec
 
     result["_hdr"] = hdr
 
-
-    print(
-        "  OK:",
-        f"{width}x{height}",
-        video_codec,
-        "HDR" if hdr else ""
-    )
-
+    result["_region_code"] = region["region_code"]
+    result["_region_name"] = region["region_name"]
 
     return result
 
@@ -457,88 +423,104 @@ def check_stream(stream):
 # ============================================================
 
 def stream_score(stream):
-
     score = 0
 
-
-    # Resolution is the main factor.
-
-    score += (
-        stream.get(
-            "_resolution",
-            0
-        )
-        * 1000
+    resolution = stream.get(
+        "_resolution",
+        0,
     )
 
+    score += resolution * 1000
 
-    # HDR gets a bonus.
+    if stream.get("_hdr"):
+        score += 500
 
-    if stream.get(
-        "_hdr",
-        False
-    ):
-
-        score += 100
-
-
-    # Prefer modern codecs.
-
-    codec = (
-        stream.get(
-            "_video_codec",
-            ""
-        )
-        .lower()
+    codec = normalize_text(
+        stream.get("_video_codec")
     )
-
 
     if codec in (
-        "hevc",
-        "h265"
+        "av1",
     ):
+        score += 80
 
+    elif codec in (
+        "hevc",
+        "h265",
+    ):
+        score += 60
+
+    elif codec in (
+        "h264",
+        "avc1",
+    ):
         score += 30
 
+    audio = normalize_text(
+        stream.get("_audio_codec")
+    )
 
-    elif codec == "av1":
-
-        score += 40
-
-
-    elif codec == "h264":
-
+    if audio in (
+        "aac",
+        "ac3",
+        "eac3",
+    ):
         score += 10
 
+    # Предпочитаем источники без warning label
+    label = normalize_text(
+        stream.get("label")
+    )
+
+    if not label:
+        score += 30
 
     return score
 
 
 # ============================================================
-# CREATE M3U
+# CHANNEL NAME
 # ============================================================
 
-def make_playlist(
-    streams,
-    filename
-):
+def get_channel_name(stream):
+    channel_id = stream.get("channel")
 
-    path = os.path.join(
-        OUTPUT_DIR,
-        filename
+    channel = channels_by_id.get(
+        channel_id,
+        {},
     )
 
+    name = (
+        channel.get("name")
+        or stream.get("title")
+        or channel_id
+        or "Unknown"
+    )
+
+    return str(name)
+
+
+# ============================================================
+# M3U WRITER
+# ============================================================
+
+def make_playlist(streams, filename, playlist_name):
+    path = os.path.join(
+        OUTPUT_DIR,
+        filename,
+    )
 
     with open(
         path,
         "w",
-        encoding="utf-8"
+        encoding="utf-8",
     ) as file:
 
         file.write(
-            "#EXTM3U\n"
+            "#EXTM3U "
+            'x-tvg-url="" '
+            'url-tvg=""\n'
         )
-
 
         for stream in streams:
 
@@ -546,141 +528,136 @@ def make_playlist(
                 "channel"
             )
 
-
             if not channel_id:
-
                 continue
-
 
             channel = channels_by_id.get(
                 channel_id
             )
 
-
             if not channel:
-
                 continue
 
-
-            name = (
-                channel.get(
-                    "name"
-                )
-                or stream.get(
-                    "title"
-                )
-                or channel_id
+            name = get_channel_name(
+                stream
             )
-
 
             logo = logos_by_channel.get(
                 channel_id,
-                ""
+                "",
             )
-
 
             width = stream.get(
                 "_width",
-                0
+                0,
             )
 
             height = stream.get(
                 "_height",
-                0
+                0,
             )
 
+            resolution = stream.get(
+                "_resolution",
+                0,
+            )
 
             codec = stream.get(
                 "_video_codec",
-                ""
+                "",
             )
-
 
             hdr = stream.get(
                 "_hdr",
-                False
+                False,
             )
 
+            region_name = stream.get(
+                "_region_name",
+                "",
+            )
 
-            tags = [
+            group = "Russia"
+
+            categories = channel.get(
+                "categories"
+            ) or []
+
+            if categories:
+                group = (
+                    "Russia / "
+                    + str(categories[0])
+                )
+
+            attributes = [
                 f'tvg-id="{channel_id}"',
                 f'tvg-name="{name}"',
-                'group-title="Russia"',
+                f'group-title="{group}"',
             ]
 
-
             if logo:
-
-                tags.append(
+                attributes.append(
                     f'tvg-logo="{logo}"'
                 )
 
-
-            # Informative label.
-
-            label = (
-                f"{name} "
-                f"[{width}x{height}]"
-            )
-
+            label_parts = [
+                name,
+                f"{width}x{height}",
+            ]
 
             if codec:
-
-                label += (
-                    f" [{codec}]"
+                label_parts.append(
+                    codec.upper()
                 )
-
 
             if hdr:
-
-                label += (
-                    " [HDR]"
+                label_parts.append(
+                    "HDR"
                 )
 
+            if region_name:
+                label_parts.append(
+                    region_name
+                )
+
+            label = " | ".join(
+                label_parts
+            )
 
             file.write(
                 "#EXTINF:-1 "
-                + " ".join(tags)
+                + " ".join(attributes)
                 + ","
                 + label
                 + "\n"
             )
-
-
-            # Stream URL.
 
             file.write(
                 stream["url"]
                 + "\n"
             )
 
-
-    print()
     print(
         "Created:",
         filename,
         "streams:",
-        len(streams)
+        len(streams),
     )
 
 
 # ============================================================
-# LOAD DATA
+# MAIN
 # ============================================================
 
 print()
-print(
-    "========================================"
-)
+print("=" * 70)
+print("RUSSIA IPTV AGGREGATOR V4")
+print("=" * 70)
+print()
 
-print(
-    "RUSSIA IPTV AGGREGATOR v3"
-)
-
-print(
-    "========================================"
-)
-
+# ------------------------------------------------------------
+# Load API
+# ------------------------------------------------------------
 
 channels = load_json(
     "channels"
@@ -694,36 +671,69 @@ logos = load_json(
     "logos"
 )
 
+feeds = load_json(
+    "feeds"
+)
 
-# ============================================================
-# RUSSIAN CHANNELS
-# ============================================================
+subdivisions = load_json(
+    "subdivisions"
+)
+
+
+# ------------------------------------------------------------
+# Russian channels
+# ------------------------------------------------------------
 
 channels_by_id = {
-
     channel["id"]: channel
-
     for channel in channels
-
-    if channel.get(
-        "country"
-    ) == "RU"
+    if channel.get("country") == "RU"
 }
-
 
 print()
 print(
     "Russian channels:",
-    len(channels_by_id)
+    len(channels_by_id),
 )
 
 
-# ============================================================
-# LOGOS
-# ============================================================
+# ------------------------------------------------------------
+# Feeds
+# ------------------------------------------------------------
 
-logos_by_channel = {}
+feeds_by_id = {
+    feed["id"]: feed
+    for feed in feeds
+    if feed.get("id")
+}
 
+
+print(
+    "Feeds:",
+    len(feeds_by_id),
+)
+
+
+# ------------------------------------------------------------
+# Subdivisions
+# ------------------------------------------------------------
+
+subdivisions_by_code = {
+    item["code"]: item
+    for item in subdivisions
+    if item.get("code")
+}
+
+
+print(
+    "Russian subdivisions database:",
+    len(subdivisions_by_code),
+)
+
+
+# ------------------------------------------------------------
+# Logos
+# ------------------------------------------------------------
 
 for logo in logos:
 
@@ -735,40 +745,35 @@ for logo in logos:
         "url"
     )
 
-
     if not channel_id:
-
         continue
-
 
     if not logo_url:
-
         continue
 
-
-    if (
-        not logo.get(
-            "in_use",
-            True
-        )
+    if not logo.get(
+        "in_use",
+        True,
     ):
-
         continue
-
 
     if channel_id not in logos_by_channel:
-
         logos_by_channel[
             channel_id
         ] = logo_url
 
 
-# ============================================================
-# SELECT RUSSIAN STREAMS
-# ============================================================
+print(
+    "Logos:",
+    len(logos_by_channel),
+)
+
+
+# ------------------------------------------------------------
+# Candidate streams
+# ------------------------------------------------------------
 
 candidates = []
-
 
 for stream in streams:
 
@@ -776,82 +781,75 @@ for stream in streams:
         "channel"
     )
 
-
     if not channel_id:
-
         continue
-
 
     if channel_id not in channels_by_id:
-
         continue
-
 
     url = normalize_url(
-        stream.get(
-            "url"
-        )
+        stream.get("url")
     )
 
-
     if not url:
-
         continue
 
+    label = normalize_text(
+        stream.get("label")
+    )
 
-    label = (
-        stream.get(
-            "label"
-        )
-        or ""
-    ).lower()
-
-
-    # Ignore explicitly marked bad streams.
+    title = normalize_text(
+        stream.get("title")
+    )
 
     bad_markers = [
         "blocked",
         "dead",
         "offline",
+        "geo-blocked",
+        "geoblocked",
     ]
 
+    combined = (
+        label
+        + " "
+        + title
+    )
 
     if any(
-        marker in label
+        marker in combined
         for marker in bad_markers
     ):
-
         continue
 
+    # Поддерживаем только реальные web-stream URL
+    if not (
+        url.startswith("http://")
+        or url.startswith("https://")
+    ):
+        continue
 
     candidates.append(
         stream
     )
 
 
-# ============================================================
-# DEDUPLICATE URLS
-# ============================================================
+# ------------------------------------------------------------
+# Deduplicate
+# ------------------------------------------------------------
 
 unique_streams = {}
-
 
 for stream in candidates:
 
     url = normalize_url(
-        stream.get(
-            "url"
-        )
+        stream.get("url")
     )
 
-
     if not url:
-
         continue
 
-
     if url not in unique_streams:
-
         unique_streams[
             url
         ] = stream
@@ -865,15 +863,21 @@ candidates = list(
 print()
 print(
     "Candidate streams:",
-    len(candidates)
+    len(candidates),
 )
 
 
-# ============================================================
-# HEALTH CHECK
-# ============================================================
+# ------------------------------------------------------------
+# Check streams
+# ------------------------------------------------------------
 
 working = []
+
+total = len(
+    candidates
+)
+
+checked = 0
 
 
 print()
@@ -886,61 +890,66 @@ print(
     WORKERS
 )
 
+print(
+    "Timeout:",
+    TIMEOUT_SECONDS,
+    "seconds"
+)
+
+print()
+
 
 with ThreadPoolExecutor(
     max_workers=WORKERS
 ) as executor:
 
-
     future_map = {
-
         executor.submit(
             check_stream,
-            stream
+            stream,
         ): stream
 
         for stream in candidates
-
     }
-
 
     for future in as_completed(
         future_map
     ):
 
+        checked += 1
+
         try:
 
             result = future.result()
 
-
             if result:
-
                 working.append(
                     result
                 )
 
+        except Exception:
+            pass
 
-        except Exception as error:
+        if (
+            checked == 1
+            or checked % 25 == 0
+            or checked == total
+        ):
 
             print(
-                "CHECK ERROR:",
-                error
+                f"Progress: "
+                f"{checked}/{total} "
+                f"({checked * 100 / total:.1f}%) "
+                f"working={len(working)}",
+                flush=True,
             )
 
 
-print()
-print(
-    "Working streams:",
-    len(working)
-)
-
-
-# ============================================================
-# GROUP BY CHANNEL
-# ============================================================
+# ------------------------------------------------------------
+# Group by channel
+# ------------------------------------------------------------
 
 streams_by_channel = {}
-
 
 for stream in working:
 
@@ -948,29 +957,20 @@ for stream in working:
         "channel"
     )
 
-
     if not channel_id:
-
         continue
 
-
-    if channel_id not in streams_by_channel:
-
-        streams_by_channel[
-            channel_id
-        ] = []
-
-
-    streams_by_channel[
-        channel_id
-    ].append(
+    streams_by_channel.setdefault(
+        channel_id,
+        [],
+    ).append(
         stream
     )
 
 
-# ============================================================
-# SORT STREAMS
-# ============================================================
+# ------------------------------------------------------------
+# Sort streams
+# ------------------------------------------------------------
 
 for channel_id, items in (
     streams_by_channel.items()
@@ -978,16 +978,15 @@ for channel_id, items in (
 
     items.sort(
         key=stream_score,
-        reverse=True
+        reverse=True,
     )
 
 
-# ============================================================
-# SELECT BEST + BACKUPS
-# ============================================================
+# ------------------------------------------------------------
+# Select main streams
+# ------------------------------------------------------------
 
 selected = []
-
 
 for channel_id, items in (
     streams_by_channel.items()
@@ -1000,256 +999,383 @@ for channel_id, items in (
     )
 
 
-print()
-print(
-    "Channels with working streams:",
-    len(streams_by_channel)
-)
+# ------------------------------------------------------------
+# BEST
+# ------------------------------------------------------------
 
-print(
-    "Selected streams:",
-    len(selected)
-)
+best = []
 
+for channel_id, items in (
+    streams_by_channel.items()
+):
 
-# ============================================================
-# HD
-# ============================================================
-
-hd = [
-
-    stream
-
-    for stream in working
-
-    if stream.get(
-        "_resolution",
-        0
-    ) >= 720
-
-]
+    if items:
+        best.append(
+            items[0]
+        )
 
 
-# ============================================================
-# FULL HD
-# ============================================================
+# ------------------------------------------------------------
+# BACKUP
+# ------------------------------------------------------------
 
-fhd = [
+backup = []
 
-    stream
+for channel_id, items in (
+    streams_by_channel.items()
+):
 
-    for stream in working
+    if len(items) <= 1:
+        continue
 
-    if stream.get(
-        "_resolution",
-        0
-    ) >= 1080
-
-]
-
-
-# ============================================================
-# 4K / UHD
-# ============================================================
-
-uhd = [
-
-    stream
-
-    for stream in working
-
-    if stream.get(
-        "_resolution",
-        0
-    ) >= 2160
-
-]
-
-
-# ============================================================
-# HDR
-# ============================================================
-
-hdr = [
-
-    stream
-
-    for stream in working
-
-    if stream.get(
-        "_hdr",
-        False
+    backup.extend(
+        items[
+            1:
+            1 + MAX_BACKUP_PER_CHANNEL
+        ]
     )
 
+
+# ------------------------------------------------------------
+# Quality playlists
+# ------------------------------------------------------------
+
+hd = [
+    stream
+    for stream in working
+    if stream.get(
+        "_resolution",
+        0,
+    ) >= 720
+]
+
+fhd = [
+    stream
+    for stream in working
+    if stream.get(
+        "_resolution",
+        0,
+    ) >= 1080
+]
+
+uhd = [
+    stream
+    for stream in working
+    if stream.get(
+        "_resolution",
+        0,
+    ) >= 2160
+]
+
+hdr = [
+    stream
+    for stream in working
+    if stream.get(
+        "_hdr",
+        False,
+    )
 ]
 
 
-# ============================================================
-# CREATE PLAYLISTS
-# ============================================================
+# ------------------------------------------------------------
+# Sort playlists
+# ------------------------------------------------------------
+
+selected.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+best.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+backup.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+hd.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+fhd.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+uhd.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+hdr.sort(
+    key=stream_score,
+    reverse=True,
+)
+
+
+# ------------------------------------------------------------
+# Create playlists
+# ------------------------------------------------------------
 
 make_playlist(
     selected,
-    "russia.m3u"
+    "russia.m3u",
+    "Russia",
 )
-
 
 make_playlist(
     hd,
-    "russia-hd.m3u"
+    "russia-hd.m3u",
+    "Russia HD",
 )
-
 
 make_playlist(
     fhd,
-    "russia-fhd.m3u"
+    "russia-fhd.m3u",
+    "Russia FHD",
 )
-
 
 make_playlist(
     uhd,
-    "russia-4k.m3u"
+    "russia-4k.m3u",
+    "Russia 4K",
 )
-
 
 make_playlist(
     hdr,
-    "russia-hdr.m3u"
+    "russia-hdr.m3u",
+    "Russia HDR",
+)
+
+make_playlist(
+    best,
+    "russia-best.m3u",
+    "Russia BEST",
+)
+
+make_playlist(
+    backup,
+    "russia-backup.m3u",
+    "Russia BACKUP",
 )
 
 
-# ============================================================
-# REPORT
-# ============================================================
+# ------------------------------------------------------------
+# Region statistics
+# ------------------------------------------------------------
+
+regions = {}
+
+for stream in working:
+
+    region = (
+        stream.get(
+            "_region_name"
+        )
+        or "Федеральные / неизвестно"
+    )
+
+    regions[region] = (
+        regions.get(region, 0)
+        + 1
+    )
+
+
+regions_sorted = dict(
+    sorted(
+        regions.items(),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+)
+
+
+# ------------------------------------------------------------
+# Resolution statistics
+# ------------------------------------------------------------
+
+resolution_stats = {}
+
+for stream in working:
+
+    resolution = str(
+        stream.get(
+            "_resolution",
+            0,
+        )
+    )
+
+    resolution_stats[
+        resolution
+    ] = (
+        resolution_stats.get(
+            resolution,
+            0,
+        )
+        + 1
+    )
+
+
+# ------------------------------------------------------------
+# Codec statistics
+# ------------------------------------------------------------
+
+video_codecs = {}
+
+for stream in working:
+
+    codec = (
+        stream.get(
+            "_video_codec"
+        )
+        or "unknown"
+    )
+
+    video_codecs[codec] = (
+        video_codecs.get(
+            codec,
+            0,
+        )
+        + 1
+    )
+
+
+video_codecs = dict(
+    sorted(
+        video_codecs.items(),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+)
+
+
+# ------------------------------------------------------------
+# Report
+# ------------------------------------------------------------
 
 report = {
+    "version": 4,
 
-    "version": 3,
+    "russian_channels":
+        len(channels_by_id),
 
-    "russian_channels": (
-        len(channels_by_id)
-    ),
+    "candidate_streams":
+        len(candidates),
 
-    "candidate_streams": (
-        len(candidates)
-    ),
+    "working_streams":
+        len(working),
 
-    "working_streams": (
-        len(working)
-    ),
+    "channels_with_working_stream":
+        len(streams_by_channel),
 
-    "channels_with_working_stream": (
-        len(streams_by_channel)
-    ),
+    "selected_streams":
+        len(selected),
 
-    "selected_streams": (
-        len(selected)
-    ),
+    "best_streams":
+        len(best),
 
-    "hd_streams": (
-        len(hd)
-    ),
+    "backup_streams":
+        len(backup),
 
-    "fhd_streams": (
-        len(fhd)
-    ),
+    "hd_streams":
+        len(hd),
 
-    "4k_streams": (
-        len(uhd)
-    ),
+    "fhd_streams":
+        len(fhd),
 
-    "hdr_streams": (
-        len(hdr)
-    ),
+    "4k_streams":
+        len(uhd),
 
+    "hdr_streams":
+        len(hdr),
+
+    "resolution_distribution":
+        resolution_stats,
+
+    "video_codecs":
+        video_codecs,
+
+    "regions":
+        regions_sorted,
 }
 
 
 report_path = os.path.join(
     OUTPUT_DIR,
-    "report.json"
+    "report.json",
 )
 
 
 with open(
     report_path,
     "w",
-    encoding="utf-8"
+    encoding="utf-8",
 ) as file:
 
     json.dump(
         report,
         file,
         ensure_ascii=False,
-        indent=2
+        indent=2,
     )
 
 
-# ============================================================
-# FINAL REPORT
-# ============================================================
+# ------------------------------------------------------------
+# Final output
+# ------------------------------------------------------------
 
 print()
-print(
-    "========================================"
-)
+print("=" * 70)
+print("FINAL REPORT")
+print("=" * 70)
 
-print(
-    "FINAL REPORT"
-)
+for key, value in report.items():
 
-print(
-    "========================================"
-)
+    if key in (
+        "resolution_distribution",
+        "video_codecs",
+        "regions",
+    ):
+        continue
 
-print(
-    "Russian channels:",
-    report["russian_channels"]
-)
+    print(
+        f"{key}: {value}"
+    )
 
+print()
+print("Resolution:")
 print(
-    "Candidates:",
-    report["candidate_streams"]
-)
-
-print(
-    "Working:",
-    report["working_streams"]
-)
-
-print(
-    "Channels working:",
-    report[
-        "channels_with_working_stream"
-    ]
-)
-
-print(
-    "Selected:",
-    report["selected_streams"]
-)
-
-print(
-    "HD:",
-    report["hd_streams"]
-)
-
-print(
-    "FHD:",
-    report["fhd_streams"]
-)
-
-print(
-    "4K:",
-    report["4k_streams"]
-)
-
-print(
-    "HDR:",
-    report["hdr_streams"]
+    json.dumps(
+        resolution_stats,
+        ensure_ascii=False,
+    )
 )
 
 print()
+print("Video codecs:")
 print(
-    "BUILD COMPLETE"
+    json.dumps(
+        video_codecs,
+        ensure_ascii=False,
+    )
 )
+
+print()
+print("Top regions:")
+
+for name, count in list(
+    regions_sorted.items()
+)[:20]:
+
+    print(
+        f"  {name}: {count}"
+    )
+
+print()
+print("=" * 70)
+print("BUILD COMPLETE")
+print("=" * 70)
