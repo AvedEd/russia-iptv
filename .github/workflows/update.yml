@@ -64,7 +64,7 @@ jobs:
           cp output/russia-4k.m3u output/4k.m3u
           cp output/russia-backup.m3u output/backup.m3u
 
-          echo "Short aliases created:"
+          echo "Short playlist aliases:"
           ls -lh output/*.m3u
 
       - name: Show report
@@ -78,8 +78,8 @@ jobs:
 
       - name: Show playlist statistics
         run: |
-          echo "MAIN PLAYLISTS"
-          echo "=============="
+          echo "PLAYLISTS"
+          echo "========="
 
           for file in output/*.m3u; do
             if [ -f "$file" ]; then
@@ -91,18 +91,6 @@ jobs:
               echo "  size:    $size"
             fi
           done
-
-          echo
-          echo "REGIONAL PLAYLISTS"
-          echo "=================="
-
-          if [ -d output/regions ]; then
-            region_count=$(find output/regions -name '*.m3u' | wc -l)
-            echo "Regional playlists: $region_count"
-            find output/regions -maxdepth 1 -name '*.m3u' -print | sort
-          else
-            echo "No regional directory."
-          fi
 
       - name: Configure Git
         run: |
@@ -125,12 +113,49 @@ jobs:
           git fetch origin main
           git rebase origin/main
 
-      - name: Push
+      - name: Push generated files
         run: |
           git push origin HEAD:main
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: "./output"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Show Pages URL
+        run: |
           echo "=========================================="
-          echo "V7.1 PUSH SUCCESS"
+          echo "GITHUB PAGES DEPLOYED"
           echo "=========================================="
-          echo "Short playlist:"
-          echo "https://aveded.github.io/russia-iptv/best.m3u"
+          echo "URL:"
+          echo "${{ steps.deployment.outputs.page_url }}"
+          echo
+          echo "PLAYLIST:"
+          echo "${{ steps.deployment.outputs.page_url }}best.m3u"
+          echo "=========================================="
