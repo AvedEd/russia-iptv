@@ -1,4 +1,4 @@
-name: Update Russia IPTV V6
+nname: Update Russia IPTV V6
 
 on:
   workflow_dispatch:
