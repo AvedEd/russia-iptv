@@ -67,10 +67,6 @@ http://hls.mirtv.cdnvideo.ru/mirtv-parampublish/mir24_2500/playlist.m3u8
 http://flussonic.linkintel.ru/otr/index.m3u8
 #EXTINF:-1 tvg-id="NTV.ru" tvg-name="NTV" group-title="general",NTV [1920x1080 H264] [iptv-org+iptv-russia]
 http://flussonic.linkintel.ru/ntv/index.m3u8
-#EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
-http://flussonic.linkintel.ru/kino-tv/index.m3u8
-#EXTINF:-1 tvg-id="AmediaHit.ru" tvg-name="Amedia Hit" group-title="movies",Amedia Hit [1920x1080 H264] [iptv-org+iptv-russia]
-http://flussonic.linkintel.ru/amedia-hit/index.m3u8
 #EXTINF:-1 tvg-id="MoyaPlaneta.ru" tvg-name="Moya Planeta" group-title="outdoor",Moya Planeta [1920x1080 H264] [iptv-org+iptv-russia]
 http://91.226.120.120/chid210/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="TravelPlusAdventure.ru" tvg-name="Travel+Adventure" group-title="travel",Travel+Adventure [1920x1080 H264] [iptv-org+iptv-russia]
