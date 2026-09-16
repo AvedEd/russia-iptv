@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "russian_channels": 930,
+  "candidate_streams": 1166,
+  "working_streams": 695,
+  "channels_with_working_stream": 374,
+  "selected_streams": 610,
+  "hd_streams": 300,
+  "fhd_streams": 243,
+  "4k_streams": 1,
+  "hdr_streams": 0
+}
