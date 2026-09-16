@@ -24,26 +24,26 @@
   "candidate_streams_before_dedup": 1854,
   "unique_candidate_streams": 1170,
   "duplicates_removed": 684,
-  "working_1080p_plus": 231,
-  "channels_with_1080p_plus": 176,
-  "selected_streams": 228,
-  "best_streams": 176,
+  "working_1080p_plus": 232,
+  "channels_with_1080p_plus": 177,
+  "selected_streams": 229,
+  "best_streams": 177,
   "backup_streams": 52,
-  "fhd_streams": 231,
+  "fhd_streams": 232,
   "4k_streams": 1,
   "hdr_streams": 0,
   "resolution_distribution": {
     "2160": 1,
     "1920": 35,
-    "1080": 195
+    "1080": 196
   },
   "video_codecs": {
-    "h264": 231
+    "h264": 232
   },
   "working_streams_by_source": {
-    "iptv-org": 229,
-    "iptv-russia": 168,
-    "iptv-org-region": 14
+    "iptv-org": 230,
+    "iptv-russia": 169,
+    "iptv-org-region": 15
   },
   "regional_working_streams": {
     "Krasnodarskiy kray": 2,
@@ -52,6 +52,7 @@
     "Khanty-Mansiyskiy avtonomnyy okrug": 1,
     "Krasnoyarskiy kray": 1,
     "Moskovskaya oblast'": 1,
+    "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Saha, Respublika": 1,
@@ -102,6 +103,12 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
+    },
+    "ru-nen": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-nen.m3u"
     },
     "ru-sta": {
       "streams": 1,
