@@ -1,4 +1,4 @@
-name: Update Russia IPTV V4
+name: Update Russia IPTV V5
 
 on:
   workflow_dispatch:
@@ -36,23 +36,35 @@ jobs:
         run: |
           ffprobe -version
 
-      - name: Build Russia IPTV V4
+      - name: Build IPTV V5
         run: |
           python scripts/build.py
 
       - name: Show report
         run: |
-          echo "=============================="
-          echo "IPTV BUILD REPORT"
-          echo "=============================="
+          echo "========================================"
+          echo "RUSSIA IPTV V5 REPORT"
+          echo "========================================"
           cat output/report.json
 
-      - name: Show generated files
+      - name: Show playlists
         run: |
-          echo "=============================="
+          echo "========================================"
           echo "GENERATED PLAYLISTS"
-          echo "=============================="
+          echo "========================================"
           ls -lh output/
+
+      - name: Count playlist entries
+        run: |
+          echo "========================================"
+          echo "PLAYLIST COUNTS"
+          echo "========================================"
+
+          for file in output/*.m3u; do
+            echo ""
+            echo "FILE: $file"
+            grep -c '^#EXTINF:' "$file" || true
+          done
 
       - name: Commit playlists
         run: |
@@ -72,7 +84,7 @@ jobs:
           else
 
             git commit \
-              -m "Update Russia IPTV V4"
+              -m "Update Russia IPTV V5 1080p+"
 
             git push
 
