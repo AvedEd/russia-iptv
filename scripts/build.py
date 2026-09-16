@@ -1,347 +1,592 @@
 import json
 import os
+import re
 import subprocess
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from urllib.parse import urlsplit, urlunsplit
 
 
 # ============================================================
-# RUSSIA IPTV AGGREGATOR V5
-# ONLY 1080p+
+# V6 — Russia IPTV 1080p+
+#
+# Sources:
+#   1. iptv-org API
+#   2. substanc1/iptv-russia
+#
+# Final rule:
+#   ONLY streams that ffprobe confirms as >= 1080p.
 # ============================================================
 
 API_BASE = "https://iptv-org.github.io/api"
-OUTPUT_DIR = "output"
+IPTV_RUSSIA_M3U = (
+    "https://raw.githubusercontent.com/"
+    "substanc1/iptv-russia/main/streams/ru.m3u"
+)
 
+MIN_HEIGHT = 1080
 WORKERS = 24
 TIMEOUT_SECONDS = 8
 
-# Минимальное реальное разрешение:
-# 1080p и выше
-MIN_HEIGHT = 1080
-
-# Максимум потоков одного канала
-MAX_STREAMS_PER_CHANNEL = 3
-
-# Резервов после BEST
-MAX_BACKUP_PER_CHANNEL = 2
-
-USER_AGENT = (
-    "Mozilla/5.0 "
-    "(Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 "
-    "Chrome/128 Safari/537.36"
-)
-
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+OUTPUT_DIR = "output"
 
 
 # ============================================================
-# GLOBAL DATA
+# HTTP
 # ============================================================
 
-channels_by_id = {}
-feeds_by_id = {}
-logos_by_channel = {}
-subdivisions_by_code = {}
-
-
-# ============================================================
-# LOAD JSON
-# ============================================================
-
-def load_json(name):
-    url = f"{API_BASE}/{name}.json"
-
-    print()
-    print("=" * 70)
-    print("Downloading:", url)
-
+def http_get(url, timeout=30):
     request = urllib.request.Request(
         url,
         headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "application/json",
+            "User-Agent": "Russia-IPTV-V6/1.0",
+            "Accept": "*/*",
         },
     )
 
-    try:
-        with urllib.request.urlopen(
-            request,
-            timeout=60
-        ) as response:
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        return response.read()
 
-            data = response.read()
 
-        result = json.loads(data)
+def load_json(filename):
+    url = f"{API_BASE}/{filename}"
+    return json.loads(http_get(url).decode("utf-8"))
 
-        print(
-            "Loaded:",
-            name,
-            "items:",
-            len(result),
-        )
 
-        return result
-
-    except Exception as error:
-
-        print(
-            "ERROR loading",
-            name,
-            ":",
-            error,
-        )
-
-        raise
+def load_text(url):
+    return http_get(url).decode("utf-8", errors="replace")
 
 
 # ============================================================
-# NORMALIZATION
+# Helpers
 # ============================================================
 
-def normalize_url(url):
-
-    if not url:
+def safe_text(value):
+    if value is None:
         return ""
 
-    return str(url).strip()
+    return str(value).strip()
 
 
-def normalize_text(value):
+def m3u_escape(value):
+    value = safe_text(value)
 
     if not value:
         return ""
 
-    return str(value).strip().lower()
+    return value.replace('"', "'")
 
 
-# ============================================================
-# HDR
-# ============================================================
+def normalize_url(url):
+    """
+    Do NOT reorder query parameters.
+    Signed IPTV URLs can depend on exact query ordering.
 
-def detect_hdr(video):
+    Only:
+      - trim whitespace
+      - remove URL fragment
+    """
 
-    values = []
+    url = safe_text(url)
 
-    for key in (
-        "color_transfer",
-        "color_space",
-        "color_primaries",
-        "pix_fmt",
-    ):
-
-        value = video.get(key)
-
-        if value:
-            values.append(
-                str(value).lower()
-            )
-
-    side_data = video.get(
-        "side_data_list"
-    )
-
-    if side_data:
-        values.append(
-            str(side_data).lower()
-        )
-
-    text = " ".join(values)
-
-    # PQ / HDR10
-    if "smpte2084" in text:
-        return True
-
-    # HLG
-    if "arib-std-b67" in text:
-        return True
-
-    # Dolby Vision
-    if "dolby" in text:
-        return True
-
-    if "dovi" in text:
-        return True
-
-    return False
-
-
-# ============================================================
-# RESOLUTION
-# ============================================================
-
-def get_resolution(width, height):
+    if not url:
+        return ""
 
     try:
+        parsed = urlsplit(url)
 
-        width = int(width or 0)
-        height = int(height or 0)
-
+        return urlunsplit(
+            (
+                parsed.scheme,
+                parsed.netloc,
+                parsed.path,
+                parsed.query,
+                "",
+            )
+        )
     except Exception:
-
-        return 0
-
-    if width <= 0 or height <= 0:
-        return 0
-
-    if height >= 2160:
-        return 2160
-
-    if height >= 1440:
-        return 1440
-
-    if height >= 1080:
-        return 1080
-
-    if height >= 720:
-        return 720
-
-    if height >= 576:
-        return 576
-
-    if height >= 480:
-        return 480
-
-    return height
+        return url.split("#", 1)[0].strip()
 
 
-# ============================================================
-# REGION
-# ============================================================
+def normalize_name(value):
+    """
+    Conservative channel-name normalization.
 
-def get_region_info(feed_id):
+    Used only for matching external M3U entries to
+    known iptv-org Russian channel IDs.
+    """
 
-    if not feed_id:
-        return {
-            "code": "",
-            "name": "",
-        }
+    value = safe_text(value).lower()
 
-    feed = feeds_by_id.get(
-        feed_id
+    value = value.replace("ё", "е")
+
+    # Remove common quality labels.
+    value = re.sub(
+        r"\b(?:uhd|4k|fhd|fullhd|hd|sd)\b",
+        " ",
+        value,
+        flags=re.IGNORECASE,
     )
 
-    if not feed:
-        return {
-            "code": "",
-            "name": "",
-        }
+    # Remove time-shift markers.
+    value = re.sub(r"\s*\+\s*\d+\s*$", "", value)
 
-    areas = feed.get(
-        "broadcast_area"
-    ) or []
+    # Remove bracketed technical markers.
+    value = re.sub(r"\[[^\]]*\]", " ", value)
+    value = re.sub(r"\([^)]*\)", " ", value)
 
-    for area in areas:
+    # Punctuation -> spaces.
+    value = re.sub(r"[^a-zа-я0-9]+", " ", value)
 
-        area = str(area)
+    # Collapse whitespace.
+    value = re.sub(r"\s+", " ", value)
 
-        if area.startswith("s/"):
+    return value.strip()
 
-            code = area[2:]
 
-            subdivision = (
-                subdivisions_by_code.get(
-                    code
+def detect_quality_label(text):
+    """
+    Read declared resolution from an M3U title.
+
+    This is informational only.
+    Final filtering is done by ffprobe.
+    """
+
+    text = safe_text(text).lower()
+
+    match = re.search(r"(\d{3,4})\s*[pi]", text)
+
+    if match:
+        return f"{match.group(1)}p"
+
+    if "4k" in text or "uhd" in text:
+        return "2160p"
+
+    if "fhd" in text or "fullhd" in text:
+        return "1080p"
+
+    if re.search(r"\bhd\b", text):
+        return "hd"
+
+    if re.search(r"\bsd\b", text):
+        return "sd"
+
+    return ""
+
+
+# ============================================================
+# M3U parser
+# ============================================================
+
+EXTINF_RE = re.compile(
+    r'^#EXTINF:(?P<duration>-?\d+)\s*(?P<attrs>.*?)'
+    r',(?P<title>.*)$'
+)
+
+
+def parse_m3u_attributes(text):
+    attrs = {}
+
+    pattern = re.compile(
+        r'([A-Za-z0-9_-]+)="([^"]*)"'
+    )
+
+    for key, value in pattern.findall(text):
+        attrs[key.lower()] = value
+
+    return attrs
+
+
+def parse_external_m3u(text):
+    """
+    Parse substanc1/iptv-russia M3U.
+
+    Supports:
+      #EXTINF
+      #EXTVLCOPT:http-referrer
+      #EXTVLCOPT:http-user-agent
+    """
+
+    entries = []
+
+    current = None
+    pending_referrer = ""
+    pending_user_agent = ""
+
+    lines = text.splitlines()
+
+    for raw_line in lines:
+        line = raw_line.strip()
+
+        if not line:
+            continue
+
+        if line.startswith("#EXTINF:"):
+            match = EXTINF_RE.match(line)
+
+            if not match:
+                current = None
+                continue
+
+            attrs = parse_m3u_attributes(match.group("attrs"))
+
+            title = safe_text(match.group("title"))
+
+            current = {
+                "tvg_id": safe_text(attrs.get("tvg-id")),
+                "tvg_name": safe_text(
+                    attrs.get("tvg-name") or title
+                ),
+                "tvg_logo": safe_text(attrs.get("tvg-logo")),
+                "group": safe_text(attrs.get("group-title")),
+                "title": title,
+                "referrer": "",
+                "user_agent": "",
+            }
+
+            pending_referrer = ""
+            pending_user_agent = ""
+
+            continue
+
+        if line.startswith("#EXTVLCOPT:http-referrer="):
+            pending_referrer = line.split(
+                "=", 1
+            )[1].strip()
+
+            continue
+
+        if line.startswith("#EXTVLCOPT:http-user-agent="):
+            pending_user_agent = line.split(
+                "=", 1
+            )[1].strip()
+
+            continue
+
+        if line.startswith("#"):
+            continue
+
+        # URL line
+        if current and (
+            line.startswith("http://")
+            or line.startswith("https://")
+        ):
+            current["url"] = line
+            current["referrer"] = pending_referrer
+            current["user_agent"] = pending_user_agent
+
+            entries.append(current)
+
+            current = None
+            pending_referrer = ""
+            pending_user_agent = ""
+
+    return entries
+
+
+# ============================================================
+# iptv-org channel database
+# ============================================================
+
+def build_channel_indexes(channels):
+    by_id = {}
+    by_name = {}
+
+    for channel in channels:
+        channel_id = safe_text(channel.get("id"))
+
+        if not channel_id:
+            continue
+
+        country = safe_text(channel.get("country"))
+
+        if country.lower() != "ru":
+            continue
+
+        by_id[channel_id] = channel
+
+        names = []
+
+        main_name = safe_text(channel.get("name"))
+
+        if main_name:
+            names.append(main_name)
+
+        alt_names = channel.get("alt_names") or []
+
+        if isinstance(alt_names, list):
+            names.extend(
+                safe_text(x)
+                for x in alt_names
+                if safe_text(x)
+            )
+
+        for name in names:
+            normalized = normalize_name(name)
+
+            if normalized and normalized not in by_name:
+                by_name[normalized] = channel_id
+
+    return by_id, by_name
+
+
+def find_channel_for_external(entry, by_id, by_name):
+    """
+    First choice:
+      exact tvg-id
+
+    Second:
+      exact normalized channel name
+
+    We deliberately do NOT use aggressive fuzzy matching.
+    It can incorrectly merge different Russian channels.
+    """
+
+    tvg_id = safe_text(entry.get("tvg_id"))
+
+    if tvg_id in by_id:
+        return tvg_id
+
+    title_candidates = [
+        entry.get("tvg_name"),
+        entry.get("title"),
+    ]
+
+    for value in title_candidates:
+        normalized = normalize_name(value)
+
+        if not normalized:
+            continue
+
+        channel_id = by_name.get(normalized)
+
+        if channel_id:
+            return channel_id
+
+    return ""
+
+
+# ============================================================
+# iptv-org stream candidates
+# ============================================================
+
+def build_iptv_org_candidates(streams, channels_by_id):
+    candidates = []
+
+    for stream in streams:
+        channel_id = safe_text(stream.get("channel"))
+
+        if not channel_id:
+            continue
+
+        if channel_id not in channels_by_id:
+            continue
+
+        url = normalize_url(stream.get("url"))
+
+        if not url:
+            continue
+
+        candidates.append(
+            {
+                "channel": channel_id,
+                "url": url,
+                "source": "iptv-org",
+                "sources": ["iptv-org"],
+                "title": safe_text(
+                    stream.get("label")
+                    or stream.get("quality")
+                    or ""
+                ),
+                "logo": "",
+                "group": "",
+                "referrer": safe_text(
+                    stream.get("referrer")
+                ),
+                "user_agent": safe_text(
+                    stream.get("user_agent")
+                ),
+                "declared_quality": safe_text(
+                    stream.get("quality")
+                ),
+                "feed": safe_text(
+                    stream.get("feed")
+                ),
+            }
+        )
+
+    return candidates
+
+
+# ============================================================
+# External source candidates
+# ============================================================
+
+def build_external_candidates(
+    external_entries,
+    channels_by_id,
+    channels_by_name,
+):
+    candidates = []
+    unmatched = 0
+
+    for entry in external_entries:
+        url = normalize_url(entry.get("url"))
+
+        if not url:
+            continue
+
+        channel_id = find_channel_for_external(
+            entry,
+            channels_by_id,
+            channels_by_name,
+        )
+
+        if not channel_id:
+            unmatched += 1
+            continue
+
+        title = safe_text(
+            entry.get("title")
+            or entry.get("tvg_name")
+        )
+
+        candidates.append(
+            {
+                "channel": channel_id,
+                "url": url,
+                "source": "iptv-russia",
+                "sources": ["iptv-russia"],
+                "title": title,
+                "logo": safe_text(
+                    entry.get("tvg_logo")
+                ),
+                "group": safe_text(
+                    entry.get("group")
+                ),
+                "referrer": safe_text(
+                    entry.get("referrer")
+                ),
+                "user_agent": safe_text(
+                    entry.get("user_agent")
+                ),
+                "declared_quality": detect_quality_label(
+                    title
+                ),
+                "feed": "",
+            }
+        )
+
+    return candidates, unmatched
+
+
+# ============================================================
+# Deduplication
+# ============================================================
+
+def merge_duplicate_streams(candidates):
+    """
+    Same URL can appear in both sources.
+
+    Keep one stream but remember all sources.
+    """
+
+    result = {}
+    duplicates_removed = 0
+
+    for candidate in candidates:
+        key = normalize_url(candidate["url"])
+
+        if not key:
+            continue
+
+        existing = result.get(key)
+
+        if existing is None:
+            candidate["sources"] = list(
+                dict.fromkeys(
+                    candidate.get("sources", [])
                 )
             )
 
-            if subdivision:
+            result[key] = candidate
+            continue
 
-                return {
-                    "code": code,
-                    "name": subdivision.get(
-                        "name",
-                        code,
-                    ),
-                }
+        duplicates_removed += 1
 
-            return {
-                "code": code,
-                "name": code,
-            }
+        old_sources = existing.get(
+            "sources", []
+        )
 
-    return {
-        "code": "",
-        "name": "",
-    }
+        new_sources = candidate.get(
+            "sources", []
+        )
+
+        existing["sources"] = list(
+            dict.fromkeys(
+                old_sources + new_sources
+            )
+        )
+
+        # Prefer metadata from the entry containing
+        # more useful information.
+        if not existing.get("logo") and candidate.get("logo"):
+            existing["logo"] = candidate["logo"]
+
+        if not existing.get("group") and candidate.get("group"):
+            existing["group"] = candidate["group"]
+
+        if not existing.get("referrer") and candidate.get("referrer"):
+            existing["referrer"] = candidate["referrer"]
+
+        if not existing.get("user_agent") and candidate.get("user_agent"):
+            existing["user_agent"] = candidate["user_agent"]
+
+        if not existing.get("title") and candidate.get("title"):
+            existing["title"] = candidate["title"]
+
+    return list(result.values()), duplicates_removed
 
 
 # ============================================================
-# FFPROBE
+# ffprobe
 # ============================================================
 
-def run_ffprobe(
-    url,
-    referrer=None,
-    user_agent=None,
-):
+def probe_stream(candidate):
+    url = candidate["url"]
 
     command = [
         "ffprobe",
-
         "-v",
         "error",
-
-        "-print_format",
-        "json",
-
-        "-show_streams",
-
-        "-show_format",
-
+        "-hide_banner",
         "-probesize",
         "2M",
-
         "-analyzeduration",
         "3M",
-
         "-rw_timeout",
-        str(
-            TIMEOUT_SECONDS
-            * 1_000_000
-        ),
+        str(TIMEOUT_SECONDS * 1_000_000),
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream="
+        "width,"
+        "height,"
+        "codec_name,"
+        "pix_fmt,"
+        "color_space,"
+        "color_transfer,"
+        "color_primaries,"
+        "profile",
+        "-of",
+        "json",
+        url,
     ]
 
-    headers = []
-
-    headers.append(
-        "User-Agent: "
-        + (
-            user_agent
-            if user_agent
-            else USER_AGENT
-        )
-    )
-
-    if referrer:
-
-        headers.append(
-            "Referer: "
-            + str(referrer)
-        )
-
-    command.extend(
-        [
-            "-headers",
-            "\r\n".join(headers)
-            + "\r\n",
-        ]
-    )
-
-    command.extend(
-        [
-            "-i",
-            url,
-        ]
-    )
-
     try:
-
         result = subprocess.run(
             command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             text=True,
             timeout=TIMEOUT_SECONDS + 3,
         )
@@ -349,289 +594,241 @@ def run_ffprobe(
         if result.returncode != 0:
             return None
 
-        if not result.stdout:
+        data = json.loads(result.stdout)
+
+        streams = data.get("streams") or []
+
+        if not streams:
             return None
 
-        return json.loads(
-            result.stdout
-        )
+        video = streams[0]
 
-    except subprocess.TimeoutExpired:
+        width = int(video.get("width") or 0)
+        height = int(video.get("height") or 0)
 
-        return None
+        if height < MIN_HEIGHT:
+            return None
 
-    except json.JSONDecodeError:
+        codec = safe_text(
+            video.get("codec_name")
+        ).lower()
 
-        return None
+        pix_fmt = safe_text(
+            video.get("pix_fmt")
+        ).lower()
+
+        color_space = safe_text(
+            video.get("color_space")
+        ).lower()
+
+        color_transfer = safe_text(
+            video.get("color_transfer")
+        ).lower()
+
+        color_primaries = safe_text(
+            video.get("color_primaries")
+        ).lower()
+
+        profile = safe_text(
+            video.get("profile")
+        ).lower()
+
+        hdr = False
+
+        # HDR is confirmed only by actual HDR transfer /
+        # Dolby Vision indicators.
+        if color_transfer in {
+            "smpte2084",
+            "arib-std-b67",
+        }:
+            hdr = True
+
+        if "dolby" in profile or "dovi" in profile:
+            hdr = True
+
+        return {
+            "width": width,
+            "height": height,
+            "codec": codec,
+            "pix_fmt": pix_fmt,
+            "color_space": color_space,
+            "color_transfer": color_transfer,
+            "color_primaries": color_primaries,
+            "profile": profile,
+            "hdr": hdr,
+        }
 
     except Exception:
-
         return None
 
 
 # ============================================================
-# CHECK STREAM
+# Quality ranking
 # ============================================================
 
-def check_stream(stream):
+def resolution_score(height):
+    if height >= 2160:
+        return 400
 
-    url = normalize_url(
-        stream.get("url")
-    )
+    if height >= 1440:
+        return 300
 
-    if not url:
-        return None
+    if height >= 1080:
+        return 200
 
-    data = run_ffprobe(
-        url,
-        stream.get("referrer"),
-        stream.get("user_agent"),
-    )
-
-    if not data:
-        return None
-
-    video = None
-    audio = None
-
-    for item in data.get(
-        "streams",
-        [],
-    ):
-
-        codec_type = item.get(
-            "codec_type"
-        )
-
-        if (
-            codec_type == "video"
-            and video is None
-        ):
-
-            video = item
-
-        elif (
-            codec_type == "audio"
-            and audio is None
-        ):
-
-            audio = item
-
-    if not video:
-        return None
-
-    width = video.get(
-        "width",
-        0,
-    )
-
-    height = video.get(
-        "height",
-        0,
-    )
-
-    if not width or not height:
-        return None
-
-    # ========================================================
-    # CRITICAL V5 FILTER
-    #
-    # Only 1080p+
-    # ========================================================
-
-    if int(height) < MIN_HEIGHT:
-        return None
-
-    resolution = get_resolution(
-        width,
-        height,
-    )
-
-    if resolution < MIN_HEIGHT:
-        return None
-
-    video_codec = (
-        video.get(
-            "codec_name"
-        )
-        or ""
-    )
-
-    audio_codec = ""
-
-    if audio:
-
-        audio_codec = (
-            audio.get(
-                "codec_name"
-            )
-            or ""
-        )
-
-    hdr = detect_hdr(
-        video
-    )
-
-    region = get_region_info(
-        stream.get("feed")
-    )
-
-    result = dict(stream)
-
-    result["_online"] = True
-
-    result["_width"] = int(width)
-    result["_height"] = int(height)
-
-    result["_resolution"] = resolution
-
-    result["_video_codec"] = (
-        video_codec
-    )
-
-    result["_audio_codec"] = (
-        audio_codec
-    )
-
-    result["_hdr"] = hdr
-
-    result["_region_code"] = (
-        region["code"]
-    )
-
-    result["_region_name"] = (
-        region["name"]
-    )
-
-    return result
+    return 0
 
 
-# ============================================================
-# SCORE
-# ============================================================
+def codec_score(codec):
+    codec = codec.lower()
 
-def stream_score(stream):
+    if codec in {
+        "av1",
+    }:
+        return 40
+
+    if codec in {
+        "hevc",
+        "h265",
+        "vp9",
+    }:
+        return 30
+
+    if codec in {
+        "h264",
+        "avc1",
+    }:
+        return 20
+
+    if codec in {
+        "mpeg2video",
+    }:
+        return 5
+
+    return 10
+
+
+def audio_hint_score(candidate):
+    """
+    ffprobe here checks video first for speed.
+
+    Audio score is therefore only a small metadata hint.
+    """
+
+    text = (
+        safe_text(candidate.get("title"))
+        + " "
+        + safe_text(candidate.get("declared_quality"))
+    ).lower()
+
+    if "eac3" in text or "dd+" in text:
+        return 8
+
+    if "ac3" in text or "dolby" in text:
+        return 6
+
+    if "aac" in text:
+        return 4
+
+    return 0
+
+
+def stream_score(candidate):
+    probe = candidate["probe"]
 
     score = 0
 
-    resolution = stream.get(
-        "_resolution",
-        0,
+    score += resolution_score(
+        probe["height"]
     )
 
-    # Resolution dominates
-    score += (
-        resolution * 1000
+    if probe.get("hdr"):
+        score += 25
+
+    score += codec_score(
+        probe.get("codec", "")
     )
 
-    # HDR
-    if stream.get("_hdr"):
-
-        score += 500
-
-    codec = normalize_text(
-        stream.get(
-            "_video_codec"
-        )
+    score += audio_hint_score(
+        candidate
     )
 
-    # Modern codecs preferred
-    if codec == "av1":
-
-        score += 100
-
-    elif codec in (
-        "hevc",
-        "h265",
-    ):
-
-        score += 80
-
-    elif codec in (
-        "h264",
-        "avc1",
-    ):
-
-        score += 40
-
-    elif codec == "mpeg2video":
-
-        score -= 100
-
-    audio = normalize_text(
-        stream.get(
-            "_audio_codec"
-        )
-    )
-
-    if audio in (
-        "eac3",
-        "ac3",
-        "aac",
-    ):
-
-        score += 20
-
-    # Prefer source entries with no warning
-    label = normalize_text(
-        stream.get(
-            "label"
-        )
-    )
-
-    if not label:
-
-        score += 30
-
-    # Prefer HTTPS
-    url = normalize_url(
-        stream.get("url")
-    )
-
-    if url.startswith(
+    if candidate["url"].lower().startswith(
         "https://"
     ):
+        score += 5
 
-        score += 10
+    # Small bonus if the stream has playback headers.
+    if candidate.get("referrer"):
+        score += 2
+
+    if candidate.get("user_agent"):
+        score += 2
 
     return score
 
 
 # ============================================================
-# CHANNEL NAME
+# M3U writer
 # ============================================================
 
-def get_channel_name(
-    stream
-):
-
-    channel_id = stream.get(
-        "channel"
-    )
-
-    channel = channels_by_id.get(
-        channel_id,
-        {},
-    )
-
-    return str(
+def channel_name(channel):
+    return safe_text(
         channel.get("name")
-        or stream.get("title")
-        or channel_id
+        or channel.get("id")
         or "Unknown"
     )
 
 
-# ============================================================
-# PLAYLIST
-# ============================================================
+def channel_logo(channel, candidate):
+    return (
+        safe_text(candidate.get("logo"))
+        or safe_text(channel.get("logo"))
+    )
 
-def make_playlist(
-    streams,
-    filename,
-    playlist_name,
-):
 
+def channel_group(channel, candidate):
+    candidate_group = safe_text(
+        candidate.get("group")
+    )
+
+    if candidate_group:
+        return candidate_group
+
+    categories = channel.get("categories") or []
+
+    if categories:
+        return safe_text(categories[0])
+
+    return "Россия"
+
+
+def stream_label(candidate):
+    probe = candidate["probe"]
+
+    resolution = (
+        f'{probe["width"]}x{probe["height"]}'
+        if probe.get("width")
+        else f'{probe["height"]}p'
+    )
+
+    codec = safe_text(
+        probe.get("codec")
+    ).upper()
+
+    hdr = " HDR" if probe.get("hdr") else ""
+
+    source_names = "+".join(
+        candidate.get("sources", [])
+    )
+
+    return (
+        f'[{resolution} {codec}{hdr}]'
+        f' [{source_names}]'
+    )
+
+
+def write_m3u(filename, streams, channels_by_id):
     path = os.path.join(
         OUTPUT_DIR,
         filename,
@@ -641,906 +838,691 @@ def make_playlist(
         path,
         "w",
         encoding="utf-8",
-    ) as file:
+        newline="\n",
+    ) as f:
+        f.write("#EXTM3U\n")
 
-        file.write(
-            "#EXTM3U\n"
-        )
-
-        for stream in streams:
-
-            channel_id = stream.get(
-                "channel"
-            )
-
-            if not channel_id:
-                continue
-
-            if channel_id not in (
-                channels_by_id
-            ):
-                continue
-
-            name = get_channel_name(
-                stream
-            )
-
-            logo = logos_by_channel.get(
-                channel_id,
-                "",
-            )
-
-            width = stream.get(
-                "_width",
-                0,
-            )
-
-            height = stream.get(
-                "_height",
-                0,
-            )
-
-            codec = stream.get(
-                "_video_codec",
-                "",
-            )
-
-            hdr = stream.get(
-                "_hdr",
-                False,
-            )
-
-            region = stream.get(
-                "_region_name",
-                "",
-            )
-
+        for candidate in streams:
             channel = channels_by_id.get(
-                channel_id,
+                candidate["channel"],
                 {},
             )
 
-            categories = (
-                channel.get(
-                    "categories"
-                )
-                or []
-            )
-
-            if categories:
-
-                group = (
-                    "Russia / "
-                    + str(
-                        categories[0]
-                    )
-                )
-
-            else:
-
-                group = "Russia"
-
-            attributes = [
-                f'tvg-id="{channel_id}"',
-                f'tvg-name="{name}"',
-                f'group-title="{group}"',
-            ]
-
-            if logo:
-
-                attributes.append(
-                    f'tvg-logo="{logo}"'
-                )
+            name = channel_name(channel)
 
             label = (
                 f"{name} "
-                f"[{width}x{height}]"
+                f"{stream_label(candidate)}"
             )
 
-            if codec:
+            logo = channel_logo(
+                channel,
+                candidate,
+            )
 
-                label += (
-                    f" [{codec.upper()}]"
+            group = channel_group(
+                channel,
+                candidate,
+            )
+
+            attrs = [
+                'tvg-id="'
+                + m3u_escape(
+                    candidate["channel"]
+                )
+                + '"',
+
+                'tvg-name="'
+                + m3u_escape(name)
+                + '"',
+
+                'group-title="'
+                + m3u_escape(group)
+                + '"',
+            ]
+
+            if logo:
+                attrs.append(
+                    'tvg-logo="'
+                    + m3u_escape(logo)
+                    + '"'
                 )
 
-            if hdr:
-
-                label += " [HDR]"
-
-            if region:
-
-                label += (
-                    f" [{region}]"
+            if candidate.get("referrer"):
+                attrs.append(
+                    'http-referrer="'
+                    + m3u_escape(
+                        candidate["referrer"]
+                    )
+                    + '"'
                 )
 
-            file.write(
+            if candidate.get("user_agent"):
+                attrs.append(
+                    'http-user-agent="'
+                    + m3u_escape(
+                        candidate["user_agent"]
+                    )
+                    + '"'
+                )
+
+            f.write(
                 "#EXTINF:-1 "
-                + " ".join(
-                    attributes
-                )
+                + " ".join(attrs)
                 + ","
-                + label
+                + m3u_escape(label)
                 + "\n"
             )
 
-            file.write(
-                stream["url"]
+            f.write(
+                candidate["url"]
                 + "\n"
             )
+
+    return path
+
+
+# ============================================================
+# Selection
+# ============================================================
+
+def sort_streams(streams):
+    return sorted(
+        streams,
+        key=lambda x: (
+            stream_score(x),
+            x["probe"].get("height", 0),
+            x["probe"].get("width", 0),
+            x["probe"].get("hdr", False),
+            x["url"],
+        ),
+        reverse=True,
+    )
+
+
+def best_per_channel(streams):
+    grouped = {}
+
+    for stream in streams:
+        grouped.setdefault(
+            stream["channel"],
+            [],
+        ).append(stream)
+
+    result = []
+
+    for channel_id, items in grouped.items():
+        items = sort_streams(items)
+
+        if items:
+            result.append(items[0])
+
+    return sort_streams(result)
+
+
+def backups_per_channel(streams):
+    grouped = {}
+
+    for stream in streams:
+        grouped.setdefault(
+            stream["channel"],
+            [],
+        ).append(stream)
+
+    result = []
+
+    for channel_id, items in grouped.items():
+        items = sort_streams(items)
+
+        # 2 backups after the best.
+        result.extend(items[1:3])
+
+    return sort_streams(result)
+
+
+def top_three_per_channel(streams):
+    grouped = {}
+
+    for stream in streams:
+        grouped.setdefault(
+            stream["channel"],
+            [],
+        ).append(stream)
+
+    result = []
+
+    for channel_id, items in grouped.items():
+        items = sort_streams(items)
+
+        result.extend(items[:3])
+
+    return sort_streams(result)
+
+
+# ============================================================
+# Statistics
+# ============================================================
+
+def resolution_distribution(streams):
+    result = {}
+
+    for stream in streams:
+        height = str(
+            stream["probe"].get(
+                "height",
+                0,
+            )
+        )
+
+        result[height] = (
+            result.get(height, 0) + 1
+        )
+
+    return dict(
+        sorted(
+            result.items(),
+            key=lambda x: int(x[0]),
+            reverse=True,
+        )
+    )
+
+
+def codec_distribution(streams):
+    result = {}
+
+    for stream in streams:
+        codec = (
+            stream["probe"].get("codec")
+            or "unknown"
+        )
+
+        result[codec] = (
+            result.get(codec, 0) + 1
+        )
+
+    return dict(
+        sorted(
+            result.items(),
+            key=lambda x: (
+                -x[1],
+                x[0],
+            ),
+        )
+    )
+
+
+def source_distribution(streams):
+    result = {}
+
+    for stream in streams:
+        sources = stream.get(
+            "sources",
+            [],
+        )
+
+        for source in sources:
+            result[source] = (
+                result.get(source, 0) + 1
+            )
+
+    return result
+
+
+# ============================================================
+# Main
+# ============================================================
+
+def main():
+    os.makedirs(
+        OUTPUT_DIR,
+        exist_ok=True,
+    )
+
+    print("======================================")
+    print("Russia IPTV Builder V6")
+    print("Minimum quality: 1080p+")
+    print("======================================")
+
+    # --------------------------------------------------------
+    # Load iptv-org
+    # --------------------------------------------------------
+
+    print("\n[1/8] Loading iptv-org API...")
+
+    channels = load_json(
+        "channels.json"
+    )
+
+    streams = load_json(
+        "streams.json"
+    )
+
+    channels_by_id, channels_by_name = (
+        build_channel_indexes(channels)
+    )
 
     print(
-        "Created:",
-        filename,
-        "streams:",
-        len(streams),
+        f"Russian channels: "
+        f"{len(channels_by_id)}"
     )
 
+    # --------------------------------------------------------
+    # Source 1
+    # --------------------------------------------------------
 
-# ============================================================
-# MAIN
-# ============================================================
+    print("\n[2/8] Building iptv-org candidates...")
 
-print()
-print("=" * 70)
-print("RUSSIA IPTV AGGREGATOR V5")
-print("ONLY 1080p+")
-print("=" * 70)
-print()
-
-
-# ============================================================
-# LOAD API
-# ============================================================
-
-channels = load_json(
-    "channels"
-)
-
-streams = load_json(
-    "streams"
-)
-
-logos = load_json(
-    "logos"
-)
-
-feeds = load_json(
-    "feeds"
-)
-
-subdivisions = load_json(
-    "subdivisions"
-)
-
-
-# ============================================================
-# CHANNELS
-# ============================================================
-
-channels_by_id = {
-    channel["id"]: channel
-    for channel in channels
-    if channel.get(
-        "country"
-    ) == "RU"
-}
-
-print(
-    "Russian channels:",
-    len(channels_by_id),
-)
-
-
-# ============================================================
-# FEEDS
-# ============================================================
-
-feeds_by_id = {
-    feed["id"]: feed
-    for feed in feeds
-    if feed.get("id")
-}
-
-print(
-    "Feeds:",
-    len(feeds_by_id),
-)
-
-
-# ============================================================
-# SUBDIVISIONS
-# ============================================================
-
-subdivisions_by_code = {
-    item["code"]: item
-    for item in subdivisions
-    if item.get("code")
-}
-
-
-# ============================================================
-# LOGOS
-# ============================================================
-
-for logo in logos:
-
-    channel_id = logo.get(
-        "channel"
-    )
-
-    logo_url = logo.get(
-        "url"
-    )
-
-    if not channel_id:
-        continue
-
-    if not logo_url:
-        continue
-
-    if not logo.get(
-        "in_use",
-        True,
-    ):
-        continue
-
-    if (
-        channel_id
-        not in logos_by_channel
-    ):
-
-        logos_by_channel[
-            channel_id
-        ] = logo_url
-
-
-print(
-    "Logos:",
-    len(logos_by_channel),
-)
-
-
-# ============================================================
-# CANDIDATES
-# ============================================================
-
-candidates = []
-
-for stream in streams:
-
-    channel_id = stream.get(
-        "channel"
-    )
-
-    if not channel_id:
-        continue
-
-    if channel_id not in (
-        channels_by_id
-    ):
-        continue
-
-    url = normalize_url(
-        stream.get("url")
-    )
-
-    if not url:
-        continue
-
-    if not (
-        url.startswith(
-            "http://"
+    iptv_org_candidates = (
+        build_iptv_org_candidates(
+            streams,
+            channels_by_id,
         )
-        or url.startswith(
-            "https://"
+    )
+
+    print(
+        f"iptv-org candidates: "
+        f"{len(iptv_org_candidates)}"
+    )
+
+    # --------------------------------------------------------
+    # Source 2
+    # --------------------------------------------------------
+
+    print(
+        "\n[3/8] Downloading iptv-russia..."
+    )
+
+    external_text = load_text(
+        IPTV_RUSSIA_M3U
+    )
+
+    external_entries = parse_external_m3u(
+        external_text
+    )
+
+    print(
+        f"iptv-russia M3U entries: "
+        f"{len(external_entries)}"
+    )
+
+    iptv_russia_candidates, unmatched = (
+        build_external_candidates(
+            external_entries,
+            channels_by_id,
+            channels_by_name,
         )
-    ):
-
-        continue
-
-    label = normalize_text(
-        stream.get("label")
     )
 
-    title = normalize_text(
-        stream.get("title")
+    print(
+        f"iptv-russia matched candidates: "
+        f"{len(iptv_russia_candidates)}"
     )
 
-    quality = normalize_text(
-        stream.get("quality")
+    print(
+        f"iptv-russia unmatched entries: "
+        f"{unmatched}"
     )
 
-    combined = (
-        label
-        + " "
-        + title
-        + " "
-        + quality
+    # --------------------------------------------------------
+    # Merge
+    # --------------------------------------------------------
+
+    print("\n[4/8] Merging sources...")
+
+    all_candidates = (
+        iptv_org_candidates
+        + iptv_russia_candidates
     )
 
-    bad_markers = [
-        "blocked",
-        "dead",
-        "offline",
-        "geo-blocked",
-        "geoblocked",
-    ]
-
-    if any(
-        marker in combined
-        for marker in bad_markers
-    ):
-
-        continue
-
-    candidates.append(
-        stream
+    merged_candidates, duplicates_removed = (
+        merge_duplicate_streams(
+            all_candidates
+        )
     )
 
-
-# ============================================================
-# DEDUPLICATION
-# ============================================================
-
-unique_streams = {}
-
-for stream in candidates:
-
-    url = normalize_url(
-        stream.get("url")
+    print(
+        f"Total candidates: "
+        f"{len(all_candidates)}"
     )
 
-    if not url:
-        continue
+    print(
+        f"Unique URLs: "
+        f"{len(merged_candidates)}"
+    )
 
-    if url not in unique_streams:
+    print(
+        f"Duplicates removed: "
+        f"{duplicates_removed}"
+    )
 
-        unique_streams[
-            url
-        ] = stream
+    # --------------------------------------------------------
+    # ffprobe
+    # --------------------------------------------------------
 
+    print(
+        "\n[5/8] Checking actual video resolution..."
+    )
 
-candidates = list(
-    unique_streams.values()
-)
+    working = []
 
+    completed = 0
+    total = len(merged_candidates)
 
-print(
-    "Candidate streams:",
-    len(candidates),
-)
+    with ThreadPoolExecutor(
+        max_workers=WORKERS
+    ) as executor:
 
+        future_map = {
+            executor.submit(
+                probe_stream,
+                candidate,
+            ): candidate
+            for candidate in merged_candidates
+        }
 
-# ============================================================
-# FFPROBE
-# ============================================================
+        for future in as_completed(
+            future_map
+        ):
+            candidate = future_map[future]
 
-working = []
+            try:
+                probe = future.result()
+            except Exception:
+                probe = None
 
-total = len(
-    candidates
-)
+            completed += 1
 
-checked = 0
+            if probe is None:
+                continue
 
-print()
-print(
-    "Checking streams..."
-)
+            candidate["probe"] = probe
 
-print(
-    "Minimum resolution:",
-    "1080p",
-)
+            working.append(candidate)
 
-print(
-    "Workers:",
-    WORKERS
-)
-
-print(
-    "Timeout:",
-    TIMEOUT_SECONDS,
-    "seconds"
-)
-
-print()
-
-
-with ThreadPoolExecutor(
-    max_workers=WORKERS
-) as executor:
-
-    future_map = {
-        executor.submit(
-            check_stream,
-            stream,
-        ): stream
-        for stream in candidates
-    }
-
-    for future in as_completed(
-        future_map
-    ):
-
-        checked += 1
-
-        try:
-
-            result = future.result()
-
-            if result:
-
-                working.append(
-                    result
+            if completed % 25 == 0 or completed == total:
+                print(
+                    f"  checked "
+                    f"{completed}/{total} "
+                    f"| 1080p+ working: "
+                    f"{len(working)}"
                 )
 
-        except Exception:
+    print(
+        f"\nWorking 1080p+: "
+        f"{len(working)}"
+    )
 
-            pass
+    # --------------------------------------------------------
+    # Sort / select
+    # --------------------------------------------------------
 
-        if (
-            checked == 1
-            or checked % 25 == 0
-            or checked == total
-        ):
+    print(
+        "\n[6/8] Selecting best streams..."
+    )
 
-            print(
-                f"Progress: "
-                f"{checked}/{total} "
-                f"({checked * 100 / max(total, 1):.1f}%) "
-                f"1080p+={
-                    len(working)
-                }",
-                flush=True,
+    working = sort_streams(
+        working
+    )
+
+    best = best_per_channel(
+        working
+    )
+
+    backups = backups_per_channel(
+        working
+    )
+
+    top_three = top_three_per_channel(
+        working
+    )
+
+    fhd = [
+        x
+        for x in working
+        if x["probe"]["height"] >= 1080
+    ]
+
+    four_k = [
+        x
+        for x in working
+        if x["probe"]["height"] >= 2160
+    ]
+
+    hdr = [
+        x
+        for x in working
+        if x["probe"].get("hdr")
+    ]
+
+    # --------------------------------------------------------
+    # Write playlists
+    # --------------------------------------------------------
+
+    print(
+        "\n[7/8] Writing playlists..."
+    )
+
+    write_m3u(
+        "russia.m3u",
+        top_three,
+        channels_by_id,
+    )
+
+    write_m3u(
+        "russia-best.m3u",
+        best,
+        channels_by_id,
+    )
+
+    write_m3u(
+        "russia-fhd.m3u",
+        fhd,
+        channels_by_id,
+    )
+
+    write_m3u(
+        "russia-4k.m3u",
+        four_k,
+        channels_by_id,
+    )
+
+    write_m3u(
+        "russia-hdr.m3u",
+        hdr,
+        channels_by_id,
+    )
+
+    write_m3u(
+        "russia-backup.m3u",
+        backups,
+        channels_by_id,
+    )
+
+    # --------------------------------------------------------
+    # Report
+    # --------------------------------------------------------
+
+    report = {
+        "version": 6,
+
+        "filter": {
+            "minimum_height": MIN_HEIGHT,
+            "minimum_quality": "1080p",
+            "actual_ffprobe_validation": True,
+        },
+
+        "sources": {
+            "iptv-org": {
+                "candidates": len(
+                    iptv_org_candidates
+                ),
+            },
+            "iptv-russia": {
+                "m3u_entries": len(
+                    external_entries
+                ),
+                "matched_candidates": len(
+                    iptv_russia_candidates
+                ),
+                "unmatched_entries": unmatched,
+            },
+        },
+
+        "russian_channels": len(
+            channels_by_id
+        ),
+
+        "candidate_streams_before_dedup": len(
+            all_candidates
+        ),
+
+        "unique_candidate_streams": len(
+            merged_candidates
+        ),
+
+        "duplicates_removed": (
+            duplicates_removed
+        ),
+
+        "working_1080p_plus": len(
+            working
+        ),
+
+        "channels_with_1080p_plus": len(
+            {
+                x["channel"]
+                for x in working
+            }
+        ),
+
+        "selected_streams": len(
+            top_three
+        ),
+
+        "best_streams": len(
+            best
+        ),
+
+        "backup_streams": len(
+            backups
+        ),
+
+        "fhd_streams": len(
+            fhd
+        ),
+
+        "4k_streams": len(
+            four_k
+        ),
+
+        "hdr_streams": len(
+            hdr
+        ),
+
+        "resolution_distribution": (
+            resolution_distribution(
+                working
             )
+        ),
 
+        "video_codecs": (
+            codec_distribution(
+                working
+            )
+        ),
 
-# ============================================================
-# GROUP BY CHANNEL
-# ============================================================
+        "working_streams_by_source": (
+            source_distribution(
+                working
+            )
+        ),
+    }
 
-streams_by_channel = {}
-
-for stream in working:
-
-    channel_id = stream.get(
-        "channel"
-    )
-
-    if not channel_id:
-        continue
-
-    streams_by_channel.setdefault(
-        channel_id,
-        [],
-    ).append(
-        stream
-    )
-
-
-# ============================================================
-# SORT
-# ============================================================
-
-for channel_id, items in (
-    streams_by_channel.items()
-):
-
-    items.sort(
-        key=stream_score,
-        reverse=True,
-    )
-
-
-# ============================================================
-# SELECT
-# ============================================================
-
-selected = []
-
-best = []
-
-backup = []
-
-
-for channel_id, items in (
-    streams_by_channel.items()
-):
-
-    selected.extend(
-        items[
-            :MAX_STREAMS_PER_CHANNEL
-        ]
-    )
-
-    if items:
-
-        best.append(
-            items[0]
+    with open(
+        os.path.join(
+            OUTPUT_DIR,
+            "report.json",
+        ),
+        "w",
+        encoding="utf-8",
+    ) as f:
+        json.dump(
+            report,
+            f,
+            ensure_ascii=False,
+            indent=2,
         )
 
-    if len(items) > 1:
+    # --------------------------------------------------------
+    # Console report
+    # --------------------------------------------------------
 
-        backup.extend(
-            items[
-                1:
-                1 + MAX_BACKUP_PER_CHANNEL
-            ]
-        )
-
-
-# ============================================================
-# QUALITY
-# ============================================================
-
-fhd = [
-    stream
-    for stream in working
-    if stream.get(
-        "_resolution",
-        0,
-    ) >= 1080
-]
-
-
-uhd = [
-    stream
-    for stream in working
-    if stream.get(
-        "_resolution",
-        0,
-    ) >= 2160
-]
-
-
-hdr = [
-    stream
-    for stream in working
-    if stream.get(
-        "_hdr",
-        False,
+    print("\n[8/8] DONE")
+    print("--------------------------------------")
+    print(
+        "Russian channels:",
+        report["russian_channels"],
     )
-]
-
-
-# ============================================================
-# SORT OUTPUT
-# ============================================================
-
-for playlist in (
-    selected,
-    best,
-    backup,
-    fhd,
-    uhd,
-    hdr,
-):
-
-    playlist.sort(
-        key=stream_score,
-        reverse=True,
+    print(
+        "Candidates before dedup:",
+        report[
+            "candidate_streams_before_dedup"
+        ],
     )
-
-
-# ============================================================
-# WRITE PLAYLISTS
-# ============================================================
-
-make_playlist(
-    best,
-    "russia-best.m3u",
-    "Russia BEST 1080p+",
-)
-
-make_playlist(
-    fhd,
-    "russia-fhd.m3u",
-    "Russia FHD+",
-)
-
-make_playlist(
-    uhd,
-    "russia-4k.m3u",
-    "Russia 4K",
-)
-
-make_playlist(
-    hdr,
-    "russia-hdr.m3u",
-    "Russia HDR",
-)
-
-make_playlist(
-    backup,
-    "russia-backup.m3u",
-    "Russia BACKUP 1080p+",
-)
-
-# Основной список теперь тоже только 1080p+
-make_playlist(
-    selected,
-    "russia.m3u",
-    "Russia 1080p+",
-)
-
-
-# ============================================================
-# RESOLUTION STATS
-# ============================================================
-
-resolution_stats = {}
-
-for stream in working:
-
-    resolution = str(
-        stream.get(
-            "_resolution",
-            0,
-        )
+    print(
+        "Unique candidates:",
+        report[
+            "unique_candidate_streams"
+        ],
     )
-
-    resolution_stats[
-        resolution
-    ] = (
-        resolution_stats.get(
-            resolution,
-            0,
-        )
-        + 1
+    print(
+        "Duplicates removed:",
+        report["duplicates_removed"],
     )
-
-
-# ============================================================
-# CODEC STATS
-# ============================================================
-
-codec_stats = {}
-
-for stream in working:
-
-    codec = (
-        stream.get(
-            "_video_codec"
-        )
-        or "unknown"
+    print(
+        "Working 1080p+:",
+        report["working_1080p_plus"],
     )
-
-    codec_stats[
-        codec
-    ] = (
-        codec_stats.get(
-            codec,
-            0,
-        )
-        + 1
+    print(
+        "Channels with 1080p+:",
+        report[
+            "channels_with_1080p_plus"
+        ],
     )
-
-
-codec_stats = dict(
-    sorted(
-        codec_stats.items(),
-        key=lambda item: item[1],
-        reverse=True,
+    print(
+        "Best:",
+        report["best_streams"],
     )
-)
-
-
-# ============================================================
-# REGION STATS
-# ============================================================
-
-region_stats = {}
-
-for stream in working:
-
-    region = (
-        stream.get(
-            "_region_name"
-        )
-        or "Федеральные / неизвестно"
+    print(
+        "Backups:",
+        report["backup_streams"],
     )
-
-    region_stats[
-        region
-    ] = (
-        region_stats.get(
-            region,
-            0,
-        )
-        + 1
+    print(
+        "4K:",
+        report["4k_streams"],
     )
-
-
-region_stats = dict(
-    sorted(
-        region_stats.items(),
-        key=lambda item: item[1],
-        reverse=True,
+    print(
+        "HDR:",
+        report["hdr_streams"],
     )
-)
-
-
-# ============================================================
-# REPORT
-# ============================================================
-
-report = {
-
-    "version": 5,
-
-    "filter": {
-        "minimum_height": MIN_HEIGHT,
-        "minimum_quality": "1080p",
-    },
-
-    "russian_channels":
-        len(channels_by_id),
-
-    "candidate_streams":
-        len(candidates),
-
-    "working_1080p_plus":
-        len(working),
-
-    "channels_with_1080p_plus":
-        len(streams_by_channel),
-
-    "selected_streams":
-        len(selected),
-
-    "best_streams":
-        len(best),
-
-    "backup_streams":
-        len(backup),
-
-    "fhd_streams":
-        len(fhd),
-
-    "4k_streams":
-        len(uhd),
-
-    "hdr_streams":
-        len(hdr),
-
-    "resolution_distribution":
-        resolution_stats,
-
-    "video_codecs":
-        codec_stats,
-
-    "regions":
-        region_stats,
-}
-
-
-report_path = os.path.join(
-    OUTPUT_DIR,
-    "report.json",
-)
-
-
-with open(
-    report_path,
-    "w",
-    encoding="utf-8",
-) as file:
-
-    json.dump(
-        report,
-        file,
-        ensure_ascii=False,
-        indent=2,
+    print(
+        "By source:",
+        report[
+            "working_streams_by_source"
+        ],
     )
-
-
-# ============================================================
-# FINAL REPORT
-# ============================================================
-
-print()
-print("=" * 70)
-print("FINAL V5 REPORT")
-print("=" * 70)
-
-print(
-    "Russian channels:",
-    report[
-        "russian_channels"
-    ],
-)
-
-print(
-    "Candidate streams:",
-    report[
-        "candidate_streams"
-    ],
-)
-
-print(
-    "Working 1080p+:",
-    report[
-        "working_1080p_plus"
-    ],
-)
-
-print(
-    "Channels 1080p+:",
-    report[
-        "channels_with_1080p_plus"
-    ],
-)
-
-print(
-    "Selected:",
-    report[
-        "selected_streams"
-    ],
-)
-
-print(
-    "BEST:",
-    report[
-        "best_streams"
-    ],
-)
-
-print(
-    "BACKUP:",
-    report[
-        "backup_streams"
-    ],
-)
-
-print(
-    "FHD+:",
-    report[
-        "fhd_streams"
-    ],
-)
-
-print(
-    "4K:",
-    report[
-        "4k_streams"
-    ],
-)
-
-print(
-    "HDR:",
-    report[
-        "hdr_streams"
-    ],
-)
-
-print()
-print(
-    "Resolution distribution:"
-)
-
-print(
-    json.dumps(
-        resolution_stats,
-        ensure_ascii=False,
-        indent=2,
+    print(
+        "Resolutions:",
+        report[
+            "resolution_distribution"
+        ],
     )
-)
-
-print()
-print(
-    "Video codecs:"
-)
-
-print(
-    json.dumps(
-        codec_stats,
-        ensure_ascii=False,
-        indent=2,
+    print(
+        "Codecs:",
+        report["video_codecs"],
     )
-)
+    print("--------------------------------------")
 
-print()
-print("=" * 70)
-print("BUILD COMPLETE")
-print("=" * 70)
+
+if __name__ == "__main__":
+    main()
