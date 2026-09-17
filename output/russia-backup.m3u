@@ -67,6 +67,8 @@ http://hls.mirtv.cdnvideo.ru/mirtv-parampublish/mirtv_2500/playlist.m3u8
 http://hls.mirtv.cdnvideo.ru/mirtv-parampublish/mir24_2500/playlist.m3u8
 #EXTINF:-1 tvg-id="OTR.ru" tvg-name="OTR" group-title="general",OTR [1920x1080 H264] [iptv-org+iptv-russia]
 http://flussonic.linkintel.ru/otr/index.m3u8
+#EXTINF:-1 tvg-id="NTV.ru" tvg-name="NTV" group-title="general",NTV [1920x1080 H264] [iptv-org+iptv-russia]
+http://flussonic.linkintel.ru/ntv/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://flussonic.linkintel.ru/kino-tv/index.m3u8
 #EXTINF:-1 tvg-id="AmediaHit.ru" tvg-name="Amedia Hit" group-title="movies",Amedia Hit [1920x1080 H264] [iptv-org+iptv-russia]
@@ -93,6 +95,8 @@ http://185.23.80.23:8080/2x2/index.m3u8
 http://178.134.1.158:8081/red/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/KinoTvHD/playlist.m3u8
+#EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org+iptv-russia]
+http://15.204.246.24:8080/RTHD/index.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
 http://194.143.148.28:8080/Aist/index.m3u8
 #EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Россия",Mir Belogorya [1920x1080 H264] [iptv-org]
