@@ -19,8 +19,6 @@ https://stream.smotrim.ru/hls2/russia_hd/playlist_6.m3u8
 https://stream.smotrim.ru/hls2/russia24nl_smotrim/playlist_5.m3u8
 #EXTINF:-1 tvg-id="SanktPeterburg.ru" tvg-name="Sankt-Peterburg" group-title="Россия",Sankt-Peterburg [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/ext_spbtv/playlist_5.m3u8
-#EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
-https://live.smotrim.ru/vgtrk/0/russia24-hd/index.m3u8
 #EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
 https://live.smotrim.ru/vgtrk/0/russia1-hd/index.m3u8
 #EXTINF:-1 tvg-id="TVCentr.ru" tvg-name="TV Centr" group-title="Россия",TV Centr [1920x1080 H264] [iptv-org+iptv-russia]
@@ -29,8 +27,16 @@ https://fs.uplink.kz/tvc/mono.m3u8?token=onlinetv
 https://fs.uplink.kz/kinopremiera_hd/mono.m3u8?token=onlinetv
 #EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
 https://rumble.com/live-hls-dvr/33aw1a/playlist.m3u8
+#EXTINF:-1 tvg-id="RTDocumentary.ru" tvg-name="RT Documentary" group-title="documentary",RT Documentary [1920x1080 H264] [iptv-org]
+https://rt-rtd.rttv.com/dvr/rtdoc/playlist.m3u8
+#EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
+https://rt-glb.rttv.com/live/rtnews/playlist.m3u8
 #EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org]
 https://rt-esp.rttv.com/live/rtesp/playlist.m3u8
+#EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org]
+https://rt-esp.rttv.com/dvr/rtesp/playlist.m3u8
+#EXTINF:-1 tvg-id="RTArabic.ru" tvg-name="RT Arabic" group-title="news",RT Arabic [1920x1080 H264] [iptv-org]
+https://rt-arb.rttv.com/dvr/rtarab/playlist.m3u8
 #EXTINF:-1 tvg-id="360.ru" tvg-name="360°" group-title="general",360° [1920x1080 H264] [iptv-org]
 https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-04-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
@@ -151,12 +157,6 @@ http://str2.iptvhd.ru:8080/Animal_Family_HD/index.m3u8
 http://str2.iptvhd.ru:8080/1HD/index.m3u8
 #EXTINF:-1 tvg-id="StarFamily.ru" tvg-name="Star Family" group-title="movies",Star Family [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/112Ukraina/index.m3u8
-#EXTINF:-1 tvg-id="Hit.ru" tvg-name="Hit" group-title="movies",Hit [1920x1080 H264] [iptv-org+iptv-russia]
-http://hls127.freeott.top:8080/XitHD/video.m3u8
-#EXTINF:-1 tvg-id="ProLyubov.ru" tvg-name="Pro Lyubov" group-title="Россия",Pro Lyubov [1920x1080 H264] [iptv-org+iptv-russia]
-http://hls127.freeott.top:8080/ProLubovHD/video.m3u8
-#EXTINF:-1 tvg-id="Kinopokaz.ru" tvg-name="Kinopokaz" group-title="movies",Kinopokaz [1920x1080 H264] [iptv-org+iptv-russia]
-http://hls127.freeott.top:8080/Kinopokaz_HD/video.m3u8
 #EXTINF:-1 tvg-id="Mir.ru" tvg-name="Mir" group-title="general",Mir [1920x1080 H264] [iptv-org+iptv-russia]
 http://hls.mirtv.cdnvideo.ru/mirtv-parampublish/mirtv_2500/playlist.m3u8
 #EXTINF:-1 tvg-id="Mir24.ru" tvg-name="Mir 24" group-title="news",Mir 24 [1920x1080 H264] [iptv-org+iptv-russia]
@@ -173,6 +173,8 @@ http://flussonic.linkintel.ru/amedia-hit/index.m3u8
 http://91.226.120.120/chid210/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="TravelPlusAdventure.ru" tvg-name="Travel+Adventure" group-title="travel",Travel+Adventure [1920x1080 H264] [iptv-org+iptv-russia]
 http://77.232.131.211/TravelAdventureHD/index.m3u8
+#EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
+http://77.232.131.211/Rossiya24/index.m3u8
 #EXTINF:-1 tvg-id="Zvezda.ru" tvg-name="Zvezda" group-title="general",Zvezda [1920x1080 H264] [iptv-org+iptv-russia]
 http://51.158.144.33:2021/zvezda/index.m3u8
 #EXTINF:-1 tvg-id="UDAR.ru" tvg-name="UDAR" group-title="sports",UDAR [1920x1080 H264] [iptv-org+iptv-russia]
@@ -197,5 +199,3 @@ http://176.118.197.101/1HD/index.m3u8
 http://194.143.148.28:8080/Aist/index.m3u8
 #EXTINF:-1 tvg-id="Tochkarf.ru" tvg-name="Tochka.rf" group-title="documentary",Tochka.rf [1920x1080 H264] [iptv-russia]
 http://stream.mcquack.net/161/index.m3u8
-#EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Россия",Mir Belogorya [1920x1080 H264] [iptv-org]
-http://mirbelogorya.ru:8080/mirbelogorya/index.m3u8

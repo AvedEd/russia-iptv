@@ -1,3 +1,9 @@
 #EXTM3U
 #EXTINF:-1 tvg-id="S1.ru" tvg-name="S1" group-title="Undefined" tvg-logo="https://i.imgur.com/chNBF5t.png",S1 [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
 https://sitv.ru/hls/stv.m3u8
+#EXTINF:-1 tvg-id="Surgut24.ru" tvg-name="Surgut 24" group-title="Undefined" tvg-logo="https://i.imgur.com/OxvqXMt.png",Surgut 24 [1920x1080 H264] [iptv-org+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
+https://sitv.ru/vgtrk/stv.m3u8
+#EXTINF:-1 tvg-id="86.ru" tvg-name="86" group-title="General" tvg-logo="https://i.imgur.com/0dRS4Cb.png",86 [1920x1080 H264] [iptv-org+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
+https://sitv.ru/hls/s86.m3u8
+#EXTINF:-1 tvg-id="UgraTV.ru" tvg-name="Ugra-TV" group-title="Undefined" tvg-logo="https://i.imgur.com/561FRwI.png",Ugra-TV [1920x1080 H264] [iptv-org+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
+https://live-ugratv.cdnvideo.ru/ugratv/ugratv/playlist.m3u8
