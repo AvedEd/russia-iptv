@@ -7,7 +7,7 @@
   },
   "sources": {
     "iptv-org": {
-      "candidates": 1172
+      "candidates": 1364
     },
     "iptv-russia": {
       "m3u_entries": 643,
@@ -21,34 +21,37 @@
     }
   },
   "russian_channels": 930,
-  "candidate_streams_before_dedup": 1860,
-  "unique_candidate_streams": 1176,
+  "candidate_streams_before_dedup": 2052,
+  "unique_candidate_streams": 1368,
   "duplicates_removed": 684,
-  "working_1080p_plus": 230,
-  "channels_with_1080p_plus": 179,
-  "selected_streams": 229,
-  "best_streams": 179,
-  "backup_streams": 50,
-  "fhd_streams": 230,
+  "working_1080p_plus": 297,
+  "channels_with_1080p_plus": 199,
+  "selected_streams": 292,
+  "best_streams": 199,
+  "backup_streams": 93,
+  "fhd_streams": 297,
   "4k_streams": 1,
   "hdr_streams": 0,
   "resolution_distribution": {
     "2160": 1,
     "1920": 35,
-    "1080": 194
+    "1080": 261
   },
   "video_codecs": {
-    "h264": 230
+    "h264": 297
   },
   "working_streams_by_source": {
-    "iptv-org": 228,
-    "iptv-russia": 166,
-    "iptv-org-region": 11
+    "iptv-org": 295,
+    "iptv-russia": 155,
+    "iptv-org-region": 14
   },
   "regional_working_streams": {
     "Krasnodarskiy kray": 2,
     "Irkutskaya oblast'": 1,
+    "Karachayevo-Cherkesskaya Respublika": 1,
     "Khanty-Mansiyskiy avtonomnyy okrug": 1,
+    "Krasnoyarskiy kray": 1,
+    "Moskovskaya oblast'": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Saha, Respublika": 1,
@@ -82,6 +85,12 @@
       "best_streams": 1,
       "file": "regions/ru-sam.m3u"
     },
+    "ru-kya": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-kya.m3u"
+    },
     "ru-khm": {
       "streams": 1,
       "channels": 1,
@@ -100,11 +109,23 @@
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
     },
+    "ru-kc": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-kc.m3u"
+    },
     "ru-oms": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-oms.m3u"
+    },
+    "ru-mos": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-mos.m3u"
     },
     "ru-irk": {
       "streams": 1,
