@@ -1,0 +1,3 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Undefined" tvg-logo="https://mirbelogorya.ru/images/logo/Logo_Mir_Belogorya_purple_gradient.png",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-org-region] [Belgorodskaya oblast']
+http://mirbelogorya.ru:8080/mirbelogorya/index.m3u8
