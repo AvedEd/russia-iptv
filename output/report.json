@@ -7,7 +7,7 @@
   },
   "sources": {
     "iptv-org": {
-      "candidates": 1364
+      "candidates": 1365
     },
     "iptv-russia": {
       "m3u_entries": 841,
@@ -21,29 +21,29 @@
     }
   },
   "russian_channels": 930,
-  "candidate_streams_before_dedup": 2254,
-  "unique_candidate_streams": 1368,
+  "candidate_streams_before_dedup": 2255,
+  "unique_candidate_streams": 1369,
   "duplicates_removed": 886,
-  "working_1080p_plus": 299,
-  "channels_with_1080p_plus": 193,
-  "selected_streams": 293,
-  "best_streams": 193,
-  "backup_streams": 100,
-  "fhd_streams": 299,
+  "working_1080p_plus": 291,
+  "channels_with_1080p_plus": 190,
+  "selected_streams": 287,
+  "best_streams": 190,
+  "backup_streams": 97,
+  "fhd_streams": 291,
   "4k_streams": 1,
   "hdr_streams": 0,
   "resolution_distribution": {
     "2160": 1,
     "1920": 35,
-    "1080": 263
+    "1080": 255
   },
   "video_codecs": {
-    "h264": 299
+    "h264": 291
   },
   "working_streams_by_source": {
-    "iptv-org": 298,
-    "iptv-russia": 234,
-    "iptv-org-region": 19
+    "iptv-org": 290,
+    "iptv-russia": 231,
+    "iptv-org-region": 17
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -51,8 +51,6 @@
     "Belgorodskaya oblast'": 1,
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
-    "Karachayevo-Cherkesskaya Respublika": 1,
-    "Moskovskaya oblast'": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -105,12 +103,6 @@
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
     },
-    "ru-kc": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kc.m3u"
-    },
     "ru-pri": {
       "streams": 1,
       "channels": 1,
@@ -128,12 +120,6 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-oms.m3u"
-    },
-    "ru-mos": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-mos.m3u"
     },
     "ru-irk": {
       "streams": 1,
