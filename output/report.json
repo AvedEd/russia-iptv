@@ -25,10 +25,10 @@
   "unique_candidate_streams": 1373,
   "duplicates_removed": 890,
   "working_1080p_plus": 295,
-  "channels_with_1080p_plus": 195,
-  "selected_streams": 290,
-  "best_streams": 195,
-  "backup_streams": 95,
+  "channels_with_1080p_plus": 197,
+  "selected_streams": 291,
+  "best_streams": 197,
+  "backup_streams": 94,
   "fhd_streams": 295,
   "4k_streams": 1,
   "hdr_streams": 0,
@@ -42,8 +42,8 @@
   },
   "working_streams_by_source": {
     "iptv-org": 294,
-    "iptv-russia": 232,
-    "iptv-org-region": 19
+    "iptv-russia": 231,
+    "iptv-org-region": 20
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -53,6 +53,7 @@
     "Irkutskaya oblast'": 1,
     "Karachayevo-Cherkesskaya Respublika": 1,
     "Krasnoyarskiy kray": 1,
+    "Moskovskaya oblast'": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -134,6 +135,12 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-oms.m3u"
+    },
+    "ru-mos": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-mos.m3u"
     },
     "ru-irk": {
       "streams": 1,
