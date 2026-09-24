@@ -10,8 +10,8 @@
       "candidates": 1372
     },
     "iptv-russia": {
-      "m3u_entries": 846,
-      "matched_candidates": 811,
+      "m3u_entries": 849,
+      "matched_candidates": 814,
       "unmatched_entries": 35
     },
     "iptv-org-regions": {
@@ -21,29 +21,28 @@
     }
   },
   "russian_channels": 932,
-  "candidate_streams_before_dedup": 2266,
+  "candidate_streams_before_dedup": 2269,
   "unique_candidate_streams": 1376,
-  "duplicates_removed": 890,
-  "working_1080p_plus": 281,
-  "channels_with_1080p_plus": 189,
-  "selected_streams": 277,
-  "best_streams": 189,
-  "backup_streams": 88,
-  "fhd_streams": 281,
-  "4k_streams": 1,
+  "duplicates_removed": 893,
+  "working_1080p_plus": 302,
+  "channels_with_1080p_plus": 203,
+  "selected_streams": 297,
+  "best_streams": 203,
+  "backup_streams": 94,
+  "fhd_streams": 302,
+  "4k_streams": 0,
   "hdr_streams": 0,
   "resolution_distribution": {
-    "2160": 1,
     "1920": 35,
-    "1080": 245
+    "1080": 267
   },
   "video_codecs": {
-    "h264": 281
+    "h264": 302
   },
   "working_streams_by_source": {
-    "iptv-org": 280,
-    "iptv-russia": 225,
-    "iptv-org-region": 17
+    "iptv-org": 301,
+    "iptv-org-region": 21,
+    "iptv-russia": 233
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -51,13 +50,17 @@
     "Belgorodskaya oblast'": 1,
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
+    "Karachayevo-Cherkesskaya Respublika": 1,
     "Krasnoyarskiy kray": 1,
+    "Moskovskaya oblast'": 1,
+    "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
     "Saha, Respublika": 1,
     "Samarskaya oblast'": 1,
     "Stavropol'skiy kray": 1,
+    "Sverdlovskaya oblast'": 1,
     "Yevreyskaya avtonomnaya oblast'": 1
   },
   "regional_playlists": {
@@ -103,11 +106,23 @@
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
     },
+    "ru-nen": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-nen.m3u"
+    },
     "ru-sta": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
+    },
+    "ru-kc": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-kc.m3u"
     },
     "ru-pri": {
       "streams": 1,
@@ -127,6 +142,12 @@
       "best_streams": 1,
       "file": "regions/ru-oms.m3u"
     },
+    "ru-mos": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-mos.m3u"
+    },
     "ru-irk": {
       "streams": 1,
       "channels": 1,
@@ -138,6 +159,12 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-bel.m3u"
+    },
+    "ru-sve": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-sve.m3u"
     }
   },
   "regional_playlist_errors": [

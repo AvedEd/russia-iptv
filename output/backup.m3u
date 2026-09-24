@@ -5,8 +5,6 @@ https://zabava-htlive.cdn.ngenix.net/hls/CH_MIR/variant.m3u8
 #EXTINF:-1 tvg-id="RussiaK.ru" tvg-name="Russia-K" group-title="culture" http-user-agent="WINK/1.40.1 (AndroidTV/9) HlsWinkPlayer",Russia-K [1980x1920 H264] [iptv-org]
 #EXTVLCOPT:http-user-agent=WINK/1.40.1 (AndroidTV/9) HlsWinkPlayer
 http://zabava-htlive.cdn.ngenix.net/hls/CH_RUSSIAK/variant.m3u8
-#EXTINF:-1 tvg-id="InsaytTV.ru" tvg-name="Insayt TV" group-title="Россия",Insayt TV [1920x1080 H264] [iptv-org+iptv-russia]
-https://stream8.cinerama.uz/1416/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="ChannelOne.ru" tvg-name="Channel One" group-title="general",Channel One [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream8.cinerama.uz/1214/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="vijuTV1000russkoe.ru" tvg-name="viju TV1000 russkoe" group-title="movies",viju TV1000 russkoe [1920x1080 H264] [iptv-org+iptv-russia]
@@ -17,18 +15,20 @@ https://stream.smotrim.ru/hls2/russia_k/playlist_5.m3u8
 https://stream.smotrim.ru/hls2/russia_hd/playlist_6.m3u8
 #EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/russia24nl_smotrim/playlist_5.m3u8
-#EXTINF:-1 tvg-id="SanktPeterburg.ru" tvg-name="Sankt-Peterburg" group-title="Россия",Sankt-Peterburg [1920x1080 H264] [iptv-org+iptv-russia]
-https://stream.smotrim.ru/hls2/ext_spbtv/playlist_5.m3u8
 #EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://live.smotrim.ru/vgtrk/0/russia24-hd/index.m3u8
-#EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
-https://live.smotrim.ru/vgtrk/0/russia1-hd/index.m3u8
 #EXTINF:-1 tvg-id="TVCentr.ru" tvg-name="TV Centr" group-title="Россия",TV Centr [1920x1080 H264] [iptv-org+iptv-russia]
 https://fs.uplink.kz/tvc/mono.m3u8?token=onlinetv
 #EXTINF:-1 tvg-id="Kinopremyera.ru" tvg-name="Kinopremyera" group-title="movies",Kinopremyera [1920x1080 H264] [iptv-org+iptv-russia]
 https://fs.uplink.kz/kinopremiera_hd/mono.m3u8?token=onlinetv
 #EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
 https://rumble.com/live-hls-dvr/33aw1a/playlist.m3u8
+#EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
+https://rt-glb.rttv.com/live/rtnews/playlist.m3u8
+#EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org]
+https://rt-esp.rttv.com/live/rtesp/playlist.m3u8
+#EXTINF:-1 tvg-id="RTArabic.ru" tvg-name="RT Arabic" group-title="news",RT Arabic [1920x1080 H264] [iptv-org]
+https://rt-arb.rttv.com/dvr/rtarab/playlist.m3u8
 #EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
 https://12channel.bonus-tv.ru/cdn/12channel_blackout/playlist.m3u8
 #EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Россия",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-russia]
@@ -97,12 +97,16 @@ http://str2.iptvhd.ru:8080/STS_HD/index.m3u8
 http://str2.iptvhd.ru:8080/START_World_HD/index.m3u8
 #EXTINF:-1 tvg-id="red.ru" tvg-name=".red" group-title="entertainment",.red [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/SET/index.m3u8
+#EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
+http://str2.iptvhd.ru:8080/Rossiya_HD/index.m3u8
 #EXTINF:-1 tvg-id="RTGTV.ru" tvg-name="RTG TV" group-title="travel",RTG TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/RTG_TV/index.m3u8
 #EXTINF:-1 tvg-id="RENTV.ru" tvg-name="REN TV" group-title="general",REN TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/REN_TV/index.m3u8
 #EXTINF:-1 tvg-id="Ostrosyuzhetnoye.ru" tvg-name="Ostrosyuzhetnoye" group-title="movies",Ostrosyuzhetnoye [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/Ostrosyuzhetnoe_HD/index.m3u8
+#EXTINF:-1 tvg-id="NationalGeographic.ru" tvg-name="National Geographic" group-title="documentary",National Geographic [1920x1080 H264] [iptv-org+iptv-russia]
+http://str2.iptvhd.ru:8080/National_Geo_HD/index.m3u8
 #EXTINF:-1 tvg-id="Nashe.ru" tvg-name="Nashe" group-title="movies",Nashe [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/Nashe_HD/index.m3u8
 #EXTINF:-1 tvg-id="NTV.ru" tvg-name="NTV" group-title="general",NTV [1920x1080 H264] [iptv-org+iptv-russia]
@@ -155,6 +159,8 @@ http://flussonic.linkintel.ru/ntv/index.m3u8
 http://flussonic.linkintel.ru/kino-tv/index.m3u8
 #EXTINF:-1 tvg-id="AmediaHit.ru" tvg-name="Amedia Hit" group-title="movies",Amedia Hit [1920x1080 H264] [iptv-org+iptv-russia]
 http://flussonic.linkintel.ru/amedia-hit/index.m3u8
+#EXTINF:-1 tvg-id="MoyaPlaneta.ru" tvg-name="Moya Planeta" group-title="outdoor",Moya Planeta [1920x1080 H264] [iptv-org+iptv-russia]
+http://91.226.120.120/chid210/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="TravelPlusAdventure.ru" tvg-name="Travel+Adventure" group-title="travel",Travel+Adventure [1920x1080 H264] [iptv-org+iptv-russia]
 http://77.232.131.211/TravelAdventureHD/index.m3u8
 #EXTINF:-1 tvg-id="Zvezda.ru" tvg-name="Zvezda" group-title="general",Zvezda [1920x1080 H264] [iptv-org+iptv-russia]
@@ -171,6 +177,12 @@ http://185.23.80.23:8080/TVBRICS/index.m3u8
 http://185.23.80.23:8080/NANO_HD/index.m3u8
 #EXTINF:-1 tvg-id="2x2.ru" tvg-name="2x2" group-title="entertainment",2x2 [1920x1080 H264] [iptv-org+iptv-russia]
 http://185.23.80.23:8080/2x2/index.m3u8
+#EXTINF:-1 tvg-id="STARTAir.ru" tvg-name="START Air" group-title="movies",START Air [1920x1080 H264] [iptv-org+iptv-russia]
+http://176.118.197.101/START_AIR/index.m3u8
+#EXTINF:-1 tvg-id="Bollywood.ru" tvg-name="Bollywood" group-title="movies",Bollywood [1920x1080 H264] [iptv-org+iptv-russia]
+http://176.118.197.101/Bollywood_HD/index.m3u8
+#EXTINF:-1 tvg-id="1HDMusicTelevision.ru" tvg-name="1HD Music Television" group-title="music",1HD Music Television [1920x1080 H264] [iptv-org+iptv-russia]
+http://176.118.197.101/1HD/index.m3u8
 #EXTINF:-1 tvg-id="Domashniy.ru" tvg-name="Domashniy" group-title="lifestyle",Domashniy [1320x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/227/index.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
