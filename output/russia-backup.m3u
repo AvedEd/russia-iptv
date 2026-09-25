@@ -11,8 +11,6 @@ https://stream8.cinerama.uz/1416/tracks-v1a1/mono.m3u8
 https://stream8.cinerama.uz/1214/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="vijuTV1000russkoe.ru" tvg-name="viju TV1000 russkoe" group-title="movies",viju TV1000 russkoe [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream8.cinerama.uz/1058/tracks-v1a1/mono.m3u8
-#EXTINF:-1 tvg-id="RussiaK.ru" tvg-name="Russia-K" group-title="culture",Russia-K [1920x1080 H264] [iptv-org+iptv-russia]
-https://stream.smotrim.ru/hls2/russia_k/playlist_5.m3u8
 #EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/russia_hd/playlist_6.m3u8
 #EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
@@ -43,6 +41,8 @@ http://stream.mcquack.net/333/index.m3u8
 http://stream.mcquack.net/269/index.m3u8
 #EXTINF:-1 tvg-id="Mult.ru" tvg-name="Mult" group-title="kids",Mult [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/232/index.m3u8
+#EXTINF:-1 tvg-id="Friday.ru" tvg-name="Friday!" group-title="entertainment",Friday! [1920x1080 H264] [iptv-org+iptv-russia]
+http://stream.mcquack.net/181/index.m3u8
 #EXTINF:-1 tvg-id="KHLPrime.ru" tvg-name="KHL Prime" group-title="sports",KHL Prime [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/178/index.m3u8
 #EXTINF:-1 tvg-id="STS.ru" tvg-name="STS" group-title="family",STS [1920x1080 H264] [iptv-org+iptv-russia]
@@ -115,8 +115,6 @@ http://str2.iptvhd.ru:8080/Match_Igra_HD/index.m3u8
 http://str2.iptvhd.ru:8080/Match_Arena/index.m3u8
 #EXTINF:-1 tvg-id="Shokiruyushchee.ru" tvg-name="Shokiruyushchee" group-title="movies",Shokiruyushchee [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/Kinopokaz_HD1/index.m3u8
-#EXTINF:-1 tvg-id="Kinopokaz.ru" tvg-name="Kinopokaz" group-title="movies",Kinopokaz [1920x1080 H264] [iptv-org+iptv-russia]
-http://str2.iptvhd.ru:8080/Kinopokaz/index.m3u8
 #EXTINF:-1 tvg-id="KinoHit.ru" tvg-name="KinoHit" group-title="movies",KinoHit [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/Kinohit/index.m3u8
 #EXTINF:-1 tvg-id="Premialnoe.ru" tvg-name="Premialnoe" group-title="movies",Premialnoe [1920x1080 H264] [iptv-org+iptv-russia]
@@ -135,8 +133,6 @@ http://str2.iptvhd.ru:8080/Ginger_HD/index.m3u8
 http://str2.iptvhd.ru:8080/Extreme_Sports/index.m3u8
 #EXTINF:-1 tvg-id="FoodTime.ru" tvg-name="FoodTime" group-title="cooking",FoodTime [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/Eda/index.m3u8
-#EXTINF:-1 tvg-id="Avto24.ru" tvg-name="Avto24" group-title="auto",Avto24 [1920x1080 H264] [iptv-org+iptv-russia]
-http://str2.iptvhd.ru:8080/Avto_24/index.m3u8
 #EXTINF:-1 tvg-id="Vmirezhivotnykh.ru" tvg-name="V mire zhivotnykh" group-title="Россия",V mire zhivotnykh [1920x1080 H264] [iptv-org+iptv-russia]
 http://str2.iptvhd.ru:8080/Animal_Family_HD/index.m3u8
 #EXTINF:-1 tvg-id="1HDMusicTelevision.ru" tvg-name="1HD Music Television" group-title="music",1HD Music Television [1920x1080 H264] [iptv-org+iptv-russia]
@@ -181,8 +177,6 @@ http://176.118.197.101/Bollywood_HD/index.m3u8
 http://176.118.197.101/1HD/index.m3u8
 #EXTINF:-1 tvg-id="Domashniy.ru" tvg-name="Domashniy" group-title="lifestyle",Domashniy [1320x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/227/index.m3u8
-#EXTINF:-1 tvg-id="Friday.ru" tvg-name="Friday!" group-title="entertainment",Friday! [1320x1080 H264] [iptv-org+iptv-russia]
-http://stream.mcquack.net/181/index.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
 http://194.143.148.28:8080/Aist/index.m3u8
 #EXTINF:-1 tvg-id="Tochkarf.ru" tvg-name="Tochka.rf" group-title="documentary",Tochka.rf [1920x1080 H264] [iptv-russia]
