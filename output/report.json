@@ -24,25 +24,25 @@
   "candidate_streams_before_dedup": 2269,
   "unique_candidate_streams": 1376,
   "duplicates_removed": 893,
-  "working_1080p_plus": 228,
-  "channels_with_1080p_plus": 173,
-  "selected_streams": 225,
-  "best_streams": 173,
-  "backup_streams": 52,
-  "fhd_streams": 228,
+  "working_1080p_plus": 227,
+  "channels_with_1080p_plus": 177,
+  "selected_streams": 227,
+  "best_streams": 177,
+  "backup_streams": 50,
+  "fhd_streams": 227,
   "4k_streams": 1,
   "hdr_streams": 0,
   "resolution_distribution": {
     "2160": 1,
     "1920": 35,
-    "1080": 192
+    "1080": 191
   },
   "video_codecs": {
-    "h264": 228
+    "h264": 227
   },
   "working_streams_by_source": {
-    "iptv-org": 227,
-    "iptv-russia": 163,
+    "iptv-org": 226,
+    "iptv-russia": 160,
     "iptv-org-region": 19
   },
   "regional_working_streams": {
@@ -52,7 +52,7 @@
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
     "Karachayevo-Cherkesskaya Respublika": 1,
-    "Krasnoyarskiy kray": 1,
+    "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -87,12 +87,6 @@
       "best_streams": 1,
       "file": "regions/ru-sam.m3u"
     },
-    "ru-kya": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kya.m3u"
-    },
     "ru-khm": {
       "streams": 4,
       "channels": 4,
@@ -104,6 +98,12 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
+    },
+    "ru-nen": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-nen.m3u"
     },
     "ru-sta": {
       "streams": 1,
