@@ -42,8 +42,8 @@
   },
   "working_streams_by_source": {
     "iptv-org": 231,
-    "iptv-russia": 169,
-    "iptv-org-region": 18
+    "iptv-russia": 167,
+    "iptv-org-region": 19
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -52,13 +52,14 @@
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
     "Karachayevo-Cherkesskaya Respublika": 1,
-    "Krasnoyarskiy kray": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
+    "Primorskiy kray": 1,
     "Saha, Respublika": 1,
     "Samarskaya oblast'": 1,
     "Stavropol'skiy kray": 1,
     "Sverdlovskaya oblast'": 1,
+    "Yaroslavskaya oblast'": 1,
     "Yevreyskaya avtonomnaya oblast'": 1
   },
   "regional_playlists": {
@@ -86,12 +87,6 @@
       "best_streams": 1,
       "file": "regions/ru-sam.m3u"
     },
-    "ru-kya": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kya.m3u"
-    },
     "ru-khm": {
       "streams": 4,
       "channels": 4,
@@ -104,6 +99,12 @@
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
     },
+    "ru-yar": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-yar.m3u"
+    },
     "ru-sta": {
       "streams": 1,
       "channels": 1,
@@ -115,6 +116,12 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-kc.m3u"
+    },
+    "ru-pri": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-pri.m3u"
     },
     "ru-in": {
       "streams": 1,
