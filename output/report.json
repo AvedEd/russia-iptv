@@ -42,8 +42,8 @@
   },
   "working_streams_by_source": {
     "iptv-org": 234,
-    "iptv-russia": 169,
-    "iptv-org-region": 20
+    "iptv-russia": 171,
+    "iptv-org-region": 21
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -52,6 +52,7 @@
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
     "Karachayevo-Cherkesskaya Respublika": 1,
+    "Krasnoyarskiy kray": 1,
     "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
@@ -87,6 +88,12 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sam.m3u"
+    },
+    "ru-kya": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-kya.m3u"
     },
     "ru-khm": {
       "streams": 4,
