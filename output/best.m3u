@@ -178,8 +178,6 @@ https://hls-eniseytv.cdnvideo.ru/eniseytv/stream1/playlist.m3u8
 https://fs.uplink.kz/setanta_sports_1_hd/mono.m3u8?token=onlinetv
 #EXTINF:-1 tvg-id="KHLPrime.ru" tvg-name="KHL Prime" group-title="sports",KHL Prime [1920x1080 H264] [iptv-org+iptv-russia]
 https://fs.uplink.kz/khl_prime/mono.m3u8?token=onlinetv
-#EXTINF:-1 tvg-id="360News.ru" tvg-name="360° News" group-title="news",360° News [1920x1080 H264] [iptv-org+iptv-russia]
-https://edge-tv-ll.facecast.io/evacoder_hls_hi/UBZfFgtKB1JwTwoDERNQVGGs/index.m3u8
 #EXTINF:-1 tvg-id="360.ru" tvg-name="360°" group-title="general",360° [1920x1080 H264] [iptv-org+iptv-russia]
 https://edge-tv-ll.facecast.io/evacoder_hls_hi/UBZfFgtKB1JwTwoDERNQVGGs/0.m3u8
 #EXTINF:-1 tvg-id="StarFamily.ru" tvg-name="Star Family" group-title="movies",Star Family [1920x1080 H264] [iptv-org+iptv-russia]
@@ -214,10 +212,8 @@ https://public.apsny.camera/tv_abaza_tv_to_site/index.m3u8
 https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-01.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Yuvelirochka.ru" tvg-name="Yuvelirochka" group-title="shop",Yuvelirochka [1920x1080 H264] [iptv-org]
 https://live-uvelirochka.cdnvideo.ru/uvelirochka/uvelirochka_720p3/playlist.m3u8
-#EXTINF:-1 tvg-id="CityEdenBirmaPlay.ru" tvg-name="City Eden Birma Play" group-title="music",City Eden Birma Play [1920x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34364/index.m3u8
-#EXTINF:-1 tvg-id="CityEdenKinoKlassika.ru" tvg-name="City Eden KinoKlassika" group-title="movies",City Eden KinoKlassika [1920x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34185/index.m3u8
+#EXTINF:-1 tvg-id="CityEdenTV.ru" tvg-name="City Eden TV" group-title="general",City Eden TV [1920x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/34246/index.m3u8
 #EXTINF:-1 tvg-id="Dorama.ru" tvg-name="Dorama" group-title="movies" http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",Dorama [1920x1080 H264] [iptv-org+iptv-russia]
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
 http://stream.mcquack.net/412/index.m3u8
@@ -370,8 +366,6 @@ http://stream.mcquack.net/108/index.m3u8
 http://stream.mcquack.net/107/index.m3u8
 #EXTINF:-1 tvg-id="vijuHistory.ru" tvg-name="viju History" group-title="documentary",viju History [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/101/index.m3u8
-#EXTINF:-1 tvg-id="RBKTV.ru" tvg-name="RBK-TV" group-title="business",RBK-TV [1920x1080 H264] [iptv-org+iptv-russia]
-http://online-video.rbc.ru/online2/rbctv.m3u8
 #EXTINF:-1 tvg-id="Tooku.ru" tvg-name="Tooku" group-title="animation",Tooku [1920x1080 H264] [iptv-org+iptv-russia]
 http://live-saha.cdnvideo.ru/saha/tooky/playlist.m3u8
 #EXTINF:-1 tvg-id="Izvestia.ru" tvg-name="Izvestia" group-title="news",Izvestia [1920x1080 H264] [iptv-org+iptv-russia]
@@ -384,6 +378,8 @@ http://46.46.143.222:1935/live/mp4:ldpr.stream/playlist.m3u8
 http://185.23.80.23:8080/NeizvestnayaRossia/index.m3u8
 #EXTINF:-1 tvg-id="STARTAir.ru" tvg-name="START Air" group-title="movies",START Air [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/START_AIR/index.m3u8
+#EXTINF:-1 tvg-id="RBKTV.ru" tvg-name="RBK-TV" group-title="business",RBK-TV [1920x1080 H264] [iptv-org+iptv-russia]
+http://176.118.197.101/RBK/index.m3u8
 #EXTINF:-1 tvg-id="Bollywood.ru" tvg-name="Bollywood" group-title="movies",Bollywood [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/Bollywood_HD/index.m3u8
 #EXTINF:-1 tvg-id="RussianMusicBox.ru" tvg-name="Russian MusicBox" group-title="music",Russian MusicBox [1350x1080 H264] [iptv-org+iptv-russia]
