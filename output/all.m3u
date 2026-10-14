@@ -116,6 +116,8 @@ https://tv.samaragis.ru/new/new/tracks-v1a1/mono.m3u8
 #EXTVLCOPT:http-referrer=https://tshift-1.telecoma.tv/8channel/tracks-v1a1/mono.ts.m3u8
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0
 https://tshift-1.telecoma.tv/8channel/tracks-v1a1/mono.ts.m3u8
+#EXTINF:-1 tvg-id="Afontovo.ru" tvg-name="Afontovo" group-title="General" tvg-logo="https://i.imgur.com/StFfPaI.png",Afontovo [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Krasnoyarskiy kray]
+https://stream.afontovo.ru/hd.m3u8
 #EXTINF:-1 tvg-id="S1.ru" tvg-name="S1" group-title="Undefined" tvg-logo="https://i.imgur.com/chNBF5t.png",S1 [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
 https://sitv.ru/hls/stv.m3u8
 #EXTINF:-1 tvg-id="NVKSakha.ru" tvg-name="NVK Sakha" group-title="General" tvg-logo="https://i.imgur.com/LwXNUhf.png",NVK Sakha [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Saha, Respublika]
@@ -130,8 +132,6 @@ https://sitv.ru/hls/s86.m3u8
 https://live-ugratv.cdnvideo.ru/ugratv/ugratv/playlist.m3u8
 #EXTINF:-1 tvg-id="TelekanalKrasnodar.ru" tvg-name="Telekanal Krasnodar" group-title="General" tvg-logo="https://i.imgur.com/YVtutzp.png",Telekanal Krasnodar [1920x1080 H264] [iptv-org+iptv-org-region] [Krasnodarskiy kray]
 https://live-tvkrasnodar.cdnvideo.ru/tvkrasnodar/tvkrasnodar.sdp/playlist.m3u8
-#EXTINF:-1 tvg-id="OTVPrim.ru" tvg-name="OTV-Prim" group-title="Entertainment" tvg-logo="https://i.imgur.com/2zd8trG.png",OTV-Prim [1920x1080 H264] [iptv-org+iptv-org-region] [Primorskiy kray]
-https://jz2lo90hnpy.a.trbcdn.net/livemaster/yo8gr_live-5gorrrfpouq.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org+iptv-russia]
 https://wisewatchoott.wiseplayout.com/RT/master.m3u8
 #EXTINF:-1 tvg-id="InsaytTV.ru" tvg-name="Insayt TV" group-title="Россия",Insayt TV [1920x1080 H264] [iptv-org+iptv-russia]
@@ -162,22 +162,24 @@ https://stream8.cinerama.uz/1058/tracks-v1a1/mono.m3u8
 https://stream.smotrim.ru/hls2/solovievlive/playlist_6.m3u8
 #EXTINF:-1 tvg-id="RussiaK.ru" tvg-name="Russia-K" group-title="culture",Russia-K [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/russia_k/playlist_5.m3u8
-#EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
-https://stream.smotrim.ru/hls2/russia_hd/playlist_6.m3u8
 #EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/russia24nl_smotrim/playlist_5.m3u8
+#EXTINF:-1 tvg-id="SanktPeterburg.ru" tvg-name="Sankt-Peterburg" group-title="Россия",Sankt-Peterburg [1920x1080 H264] [iptv-org+iptv-russia]
+https://stream.smotrim.ru/hls2/ext_spbtv/playlist_5.m3u8
 #EXTINF:-1 tvg-id="Simferopol24.ru" tvg-name="Simferopol 24" group-title="general",Simferopol 24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://simf.1tvcrimea.ru/simferopol24.m3u8
 #EXTINF:-1 tvg-id="Legendarnyy24.ru" tvg-name="Legendarnyy 24" group-title="news",Legendarnyy 24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://sevas.1tvcrimea.ru/legendarniy24.m3u8
 #EXTINF:-1 tvg-id="NTS.ru" tvg-name="NTS" group-title="general",NTS [1920x1080 H264] [iptv-org+iptv-russia]
 https://peqk71plnjy.a.trbcdn.net/livemaster/w4kz7pki62_nts_tv/playlist.m3u8
+#EXTINF:-1 tvg-id="ShoppingLive.ru" tvg-name="Shopping Live" group-title="shop",Shopping Live [1920x1080 H264] [iptv-org+iptv-russia]
+https://nonmirya7cc.a.trbcdn.net/livemaster/tzrz5_sazlypl5ot.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="Russia24.ru" tvg-name="Russia-24" group-title="news",Russia-24 [1920x1080 H264] [iptv-org+iptv-russia]
+https://live.smotrim.ru/vgtrk/0/russia24-hd/index.m3u8
 #EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
 https://live.smotrim.ru/vgtrk/0/russia1-hd/index.m3u8
 #EXTINF:-1 tvg-id="HorosheeKino.ru" tvg-name="Horoshee Kino" group-title="movies",Horoshee Kino [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-rian.cdnvideo.ru/rian/rus-radio/playlist.m3u8
-#EXTINF:-1 tvg-id="KongressTV.ru" tvg-name="Kongress TV" group-title="general",Kongress TV [1920x1080 H264] [iptv-org+iptv-russia]
-https://live-3.otcnet.ru/congresstv/index.m3u8
 #EXTINF:-1 tvg-id="VitrinaTV.ru" tvg-name="Vitrina TV" group-title="shop",Vitrina TV [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-11cinema.cdnvideo.ru/11cinema/11cinema/playlist.m3u8
 #EXTINF:-1 tvg-id="MuzSoyuz.ru" tvg-name="Muz Soyuz" group-title="music",Muz Soyuz [1920x1080 H264] [iptv-org+iptv-russia]
@@ -202,8 +204,6 @@ https://edge-tv-ll.facecast.io/evacoder_hls_hi/UBZfFgtKB1JwTwoDERNQVGGs/0.m3u8
 https://dash2.antik.sk/live/test_star_family_atktv/playlist.m3u8
 #EXTINF:-1 tvg-id="StarCinema.ru" tvg-name="Star Cinema" group-title="movies",Star Cinema [1920x1080 H264] [iptv-org+iptv-russia]
 https://dash2.antik.sk/live/test_star_cinema_atktv/playlist.m3u8
-#EXTINF:-1 tvg-id="360.ru" tvg-name="360°" group-title="general",360° [1920x1080 H264] [iptv-org+iptv-russia]
-https://cdn-evacoder-tv.facecast.io/evacoder_hls_hi/CkxfR1xNUAJwTgtXTBZTAJli/index.m3u8
 #EXTINF:-1 tvg-id="Mult.ru" tvg-name="Mult" group-title="kids",Mult [1350x1080 H264] [iptv-org+iptv-russia]
 https://stream8.cinerama.uz/1246/tracks-v1a1/mono.m3u8
 #EXTINF:-1 tvg-id="Cinema.ru" tvg-name="Cinema" group-title="movies",Cinema [1350x1080 H264] [iptv-org+iptv-russia]
@@ -232,20 +232,30 @@ https://rt-arb.rttv.com/live/rtarab/playlist.m3u8
 https://qcpdqumitwf.a.trbcdn.net/livemastersrt/pr4mw_lvie-vmesterf-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="AbazaTV.ru" tvg-name="Abaza TV" group-title="general",Abaza TV [1920x1080 H264] [iptv-org]
 https://public.apsny.camera/tv_abaza_tv_to_site/index.m3u8
+#EXTINF:-1 tvg-id="SmotrimChestnyyDetektiv.ru" tvg-name="Smotrim Chestnyy Detektiv" group-title="series",Smotrim Chestnyy Detektiv [1920x1080 H264] [iptv-org]
+https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-01.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Yuvelirochka.ru" tvg-name="Yuvelirochka" group-title="shop",Yuvelirochka [1920x1080 H264] [iptv-org]
 https://live-uvelirochka.cdnvideo.ru/uvelirochka/uvelirochka_720p3/playlist.m3u8
+#EXTINF:-1 tvg-id="CityEdenBirmaPlay.ru" tvg-name="City Eden Birma Play" group-title="music",City Eden Birma Play [1920x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/34364/index.m3u8
+#EXTINF:-1 tvg-id="CityEdenTV.ru" tvg-name="City Eden TV" group-title="general",City Eden TV [1920x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/34246/index.m3u8
 #EXTINF:-1 tvg-id="Dorama.ru" tvg-name="Dorama" group-title="movies" http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",Dorama [1920x1080 H264] [iptv-org+iptv-russia]
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
 http://stream.mcquack.net/412/index.m3u8
 #EXTINF:-1 tvg-id="LawTV.ru" tvg-name="Law TV" group-title="general" http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",Law TV [1920x1080 H264] [iptv-org+iptv-russia]
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
 http://stream.mcquack.net/406/index.m3u8
+#EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Undefined" tvg-logo="https://mirbelogorya.ru/images/logo/Logo_Mir_Belogorya_purple_gradient.png",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-org-region] [Belgorodskaya oblast']
+http://mirbelogorya.ru:8080/mirbelogorya/index.m3u8
 #EXTINF:-1 tvg-id="KrikTV.ru" tvg-name="Krik-TV" group-title="News" tvg-logo="https://i.imgur.com/rtuChZR.png",Krik-TV [1920x1080 H264] [iptv-org+iptv-org-region] [Sverdlovskaya oblast']
 http://cdn-01.bonus-tv.ru/kriktv_edge/playlist.m3u8
 #EXTINF:-1 tvg-id="TvoyeTVYumor.ru" tvg-name="Tvoye TV Yumor" group-title="comedy",Tvoye TV Yumor [1920x1080 H264] [iptv-org+iptv-russia]
 http://tvoetv.space:8080/tvoetv_humor/index.m3u8
 #EXTINF:-1 tvg-id="Channel8.ru" tvg-name="Channel 8" group-title="entertainment",Channel 8 [1920x1080 H264] [iptv-org+iptv-russia]
 http://tshift-1.telecoma.tv/8channel/index.m3u8
+#EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Россия",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-russia]
+http://stream.tvbelgorod.ru:8080/mirbelogorya/index.m3u8
 #EXTINF:-1 tvg-id="Vgostyakhuskazki.ru" tvg-name="V gostyakh u skazki" group-title="kids",V gostyakh u skazki [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/93/index.m3u8
 #EXTINF:-1 tvg-id="BRIDGEDeluxe.ru" tvg-name="BRIDGE Deluxe" group-title="music",BRIDGE Deluxe [1920x1080 H264] [iptv-org+iptv-russia]
@@ -326,8 +336,6 @@ http://stream.mcquack.net/231/index.m3u8
 http://stream.mcquack.net/227/index.m3u8
 #EXTINF:-1 tvg-id="Zhivayapriroda.ru" tvg-name="Zhivaya priroda" group-title="Россия",Zhivaya priroda [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/225/index.m3u8
-#EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
-http://stream.mcquack.net/221/index.m3u8
 #EXTINF:-1 tvg-id="Nashe.ru" tvg-name="Nashe" group-title="movies",Nashe [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/217/index.m3u8
 #EXTINF:-1 tvg-id="FoodTime.ru" tvg-name="FoodTime" group-title="cooking",FoodTime [1920x1080 H264] [iptv-org+iptv-russia]
@@ -356,8 +364,6 @@ http://stream.mcquack.net/194/index.m3u8
 http://stream.mcquack.net/188/index.m3u8
 #EXTINF:-1 tvg-id="Fox.ru" tvg-name="Fox" group-title="entertainment",Fox [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/182/index.m3u8
-#EXTINF:-1 tvg-id="Friday.ru" tvg-name="Friday!" group-title="entertainment",Friday! [1920x1080 H264] [iptv-org+iptv-russia]
-http://stream.mcquack.net/181/index.m3u8
 #EXTINF:-1 tvg-id="scifi.ru" tvg-name=".sci-fi" group-title="science",.sci-fi [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/180/index.m3u8
 #EXTINF:-1 tvg-id="KHLPrime.ru" tvg-name="KHL Prime" group-title="sports",KHL Prime [1920x1080 H264] [iptv-org+iptv-russia]
@@ -420,6 +426,8 @@ http://stream.mcquack.net/106/index.m3u8
 http://stream.mcquack.net/101/index.m3u8
 #EXTINF:-1 tvg-id="vijuTV1000action.ru" tvg-name="viju TV1000 action" group-title="movies",viju TV1000 action [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/100/index.m3u8
+#EXTINF:-1 tvg-id="TVPRO.ru" tvg-name="TV PRO" group-title="Россия",TV PRO [1920x1080 H264] [iptv-org+iptv-russia]
+http://rtmp.tvpro-online.ru/hls/ch1.m3u8
 #EXTINF:-1 tvg-id="Tooku.ru" tvg-name="Tooku" group-title="animation",Tooku [1920x1080 H264] [iptv-org+iptv-russia]
 http://live-saha.cdnvideo.ru/saha/tooky/playlist.m3u8
 #EXTINF:-1 tvg-id="Izvestia.ru" tvg-name="Izvestia" group-title="news",Izvestia [1920x1080 H264] [iptv-org+iptv-russia]
@@ -444,8 +452,6 @@ http://51.158.144.33:2021/zvezda/index.m3u8
 http://5.188.159.128:8070/udar/index.m3u8
 #EXTINF:-1 tvg-id="Mir24.ru" tvg-name="Mir 24" group-title="news",Mir 24 [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/mir_24/index.m3u8
-#EXTINF:-1 tvg-id="red.ru" tvg-name=".red" group-title="entertainment",.red [1920x1080 H264] [iptv-org+iptv-russia]
-http://5.188.159.128:8070/RED/index.m3u8
 #EXTINF:-1 tvg-id="Kinopremyera.ru" tvg-name="Kinopremyera" group-title="movies",Kinopremyera [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/KINOPREMIERA/index.m3u8
 #EXTINF:-1 tvg-id="vijuPlusSport.ru" tvg-name="viju+ Sport" group-title="sports",viju+ Sport [1920x1080 H264] [iptv-org+iptv-russia]
@@ -460,8 +466,6 @@ http://46.53.200.153:7777/play/Viju_Premiere/index.m3u8
 http://46.53.200.153:7777/play/Viju_Megahit_HD/index.m3u8
 #EXTINF:-1 tvg-id="vijuPlusComedy.ru" tvg-name="viju+ Comedy" group-title="comedy",viju+ Comedy [1920x1080 H264] [iptv-org+iptv-russia]
 http://46.53.200.153:7777/play/Viju_Comedy_HD/index.m3u8
-#EXTINF:-1 tvg-id="Saphire.ru" tvg-name="Saphire" group-title="series",Saphire [1920x1080 H264] [iptv-org+iptv-russia]
-http://46.53.200.153:7777/play/Sapfir_HD/index.m3u8
 #EXTINF:-1 tvg-id="NashKinopokaz.ru" tvg-name="Nash Kinopokaz" group-title="movies",Nash Kinopokaz [1920x1080 H264] [iptv-org+iptv-russia]
 http://46.53.200.153:7777/play/SRT_Nash_kinopokaz/index.m3u8
 #EXTINF:-1 tvg-id="LiveMusicChannel.ru" tvg-name="Live Music Channel" group-title="music",Live Music Channel [1920x1080 H264] [iptv-org+iptv-russia]
@@ -484,6 +488,8 @@ http://185.23.80.23:8080/2x2/index.m3u8
 http://178.134.1.158:8081/red/index.m3u8
 #EXTINF:-1 tvg-id="STARTAir.ru" tvg-name="START Air" group-title="movies",START Air [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/START_AIR/index.m3u8
+#EXTINF:-1 tvg-id="Russia1.ru" tvg-name="Russia-1" group-title="general",Russia-1 [1920x1080 H264] [iptv-org+iptv-russia]
+http://176.118.197.101/RossiyaHD/index.m3u8
 #EXTINF:-1 tvg-id="RBKTV.ru" tvg-name="RBK-TV" group-title="business",RBK-TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/RBK/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
@@ -494,6 +500,8 @@ http://176.118.197.101/Bollywood_HD/index.m3u8
 http://176.118.197.101/1HD/index.m3u8
 #EXTINF:-1 tvg-id="RussianMusicBox.ru" tvg-name="Russian MusicBox" group-title="music",Russian MusicBox [1350x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/319/index.m3u8
+#EXTINF:-1 tvg-id="Friday.ru" tvg-name="Friday!" group-title="entertainment",Friday! [1320x1080 H264] [iptv-org+iptv-russia]
+http://stream.mcquack.net/181/index.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
 http://194.143.148.28:8080/Aist/index.m3u8
 #EXTINF:-1 tvg-id="ZvezdaPlus.ru" tvg-name="Zvezda Plus" group-title="Россия",Zvezda Plus [1920x1080 H264] [iptv-org]
@@ -502,5 +510,3 @@ http://tvzvezda.bonus-tv.ru/cdn/zvezdaplus/playlist.m3u8
 http://tvoetv.space:8080/tvoetv/index.m3u8
 #EXTINF:-1 tvg-id="Tochkarf.ru" tvg-name="Tochka.rf" group-title="documentary",Tochka.rf [1920x1080 H264] [iptv-russia]
 http://stream.mcquack.net/161/index.m3u8
-#EXTINF:-1 tvg-id="TNTInternational.ru" tvg-name="TNT International" group-title="entertainment",TNT International [1920x1080 H264] [iptv-org]
-http://05cea6e8.ucomist.net/iptv/VK7YCHHWNDD8XC/15230/index.m3u8
