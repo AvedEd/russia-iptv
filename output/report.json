@@ -24,36 +24,35 @@
   "candidate_streams_before_dedup": 2061,
   "unique_candidate_streams": 1272,
   "duplicates_removed": 789,
-  "working_1080p_plus": 224,
-  "channels_with_1080p_plus": 173,
-  "selected_streams": 224,
-  "best_streams": 173,
-  "backup_streams": 51,
-  "fhd_streams": 224,
-  "4k_streams": 1,
+  "working_1080p_plus": 227,
+  "channels_with_1080p_plus": 175,
+  "selected_streams": 227,
+  "best_streams": 175,
+  "backup_streams": 52,
+  "fhd_streams": 227,
+  "4k_streams": 2,
   "hdr_streams": 0,
   "resolution_distribution": {
-    "2160": 1,
+    "2160": 2,
     "1920": 36,
-    "1080": 187
+    "1080": 189
   },
   "video_codecs": {
-    "h264": 223,
-    "hevc": 1
+    "h264": 225,
+    "hevc": 2
   },
   "working_streams_by_source": {
-    "iptv-org": 223,
-    "iptv-russia": 166,
+    "iptv-org": 226,
+    "iptv-russia": 168,
     "iptv-org-region": 18
   },
   "regional_working_streams": {
-    "Khanty-Mansiyskiy avtonomnyy okrug": 3,
+    "Khanty-Mansiyskiy avtonomnyy okrug": 4,
     "Krasnodarskiy kray": 2,
     "Belgorodskaya oblast'": 1,
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
     "Krasnoyarskiy kray": 1,
-    "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -94,29 +93,23 @@
       "best_streams": 1,
       "file": "regions/ru-kya.m3u"
     },
+    "ru-khm": {
+      "streams": 4,
+      "channels": 4,
+      "best_streams": 4,
+      "file": "regions/ru-khm.m3u"
+    },
     "ru-sa": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
     },
-    "ru-nen": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-nen.m3u"
-    },
     "ru-sta": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
-    },
-    "ru-khm": {
-      "streams": 3,
-      "channels": 3,
-      "best_streams": 3,
-      "file": "regions/ru-khm.m3u"
     },
     "ru-pri": {
       "streams": 1,
