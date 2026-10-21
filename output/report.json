@@ -10,8 +10,8 @@
       "candidates": 1229
     },
     "iptv-russia": {
-      "m3u_entries": 715,
-      "matched_candidates": 680,
+      "m3u_entries": 714,
+      "matched_candidates": 679,
       "unmatched_entries": 35
     },
     "iptv-org-regions": {
@@ -21,36 +21,36 @@
     }
   },
   "russian_channels": 941,
-  "candidate_streams_before_dedup": 1993,
-  "unique_candidate_streams": 1234,
+  "candidate_streams_before_dedup": 1992,
+  "unique_candidate_streams": 1233,
   "duplicates_removed": 759,
-  "working_1080p_plus": 223,
-  "channels_with_1080p_plus": 171,
-  "selected_streams": 222,
-  "best_streams": 171,
+  "working_1080p_plus": 228,
+  "channels_with_1080p_plus": 176,
+  "selected_streams": 227,
+  "best_streams": 176,
   "backup_streams": 51,
-  "fhd_streams": 223,
-  "4k_streams": 0,
+  "fhd_streams": 228,
+  "4k_streams": 2,
   "hdr_streams": 0,
   "resolution_distribution": {
+    "2160": 2,
     "1920": 36,
-    "1080": 187
+    "1080": 190
   },
   "video_codecs": {
-    "h264": 223
+    "h264": 227,
+    "hevc": 1
   },
   "working_streams_by_source": {
-    "iptv-org": 222,
-    "iptv-org-region": 19,
-    "iptv-russia": 160
+    "iptv-org": 227,
+    "iptv-russia": 167,
+    "iptv-org-region": 17
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
     "Krasnodarskiy kray": 2,
-    "Belgorodskaya oblast'": 1,
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
-    "Karachayevo-Cherkesskaya Respublika": 1,
     "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
@@ -110,12 +110,6 @@
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
     },
-    "ru-kc": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kc.m3u"
-    },
     "ru-pri": {
       "streams": 1,
       "channels": 1,
@@ -139,12 +133,6 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-irk.m3u"
-    },
-    "ru-bel": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-bel.m3u"
     },
     "ru-sve": {
       "streams": 1,
