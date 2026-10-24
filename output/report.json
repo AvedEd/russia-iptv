@@ -24,36 +24,34 @@
   "candidate_streams_before_dedup": 1968,
   "unique_candidate_streams": 1219,
   "duplicates_removed": 749,
-  "working_1080p_plus": 240,
-  "channels_with_1080p_plus": 184,
-  "selected_streams": 239,
-  "best_streams": 184,
-  "backup_streams": 55,
-  "fhd_streams": 240,
-  "4k_streams": 1,
+  "working_1080p_plus": 229,
+  "channels_with_1080p_plus": 178,
+  "selected_streams": 229,
+  "best_streams": 178,
+  "backup_streams": 51,
+  "fhd_streams": 229,
+  "4k_streams": 2,
   "hdr_streams": 0,
   "resolution_distribution": {
-    "2160": 1,
+    "2160": 2,
     "1920": 36,
-    "1080": 203
+    "1080": 191
   },
   "video_codecs": {
-    "h264": 240
+    "h264": 228,
+    "hevc": 1
   },
   "working_streams_by_source": {
-    "iptv-org": 239,
-    "iptv-russia": 180,
-    "iptv-org-region": 20
+    "iptv-org": 228,
+    "iptv-russia": 174,
+    "iptv-org-region": 17
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
     "Krasnodarskiy kray": 2,
+    "Belgorodskaya oblast'": 1,
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
-    "Karachayevo-Cherkesskaya Respublika": 1,
-    "Krasnoyarskiy kray": 1,
-    "Moskovskaya oblast'": 1,
-    "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -88,12 +86,6 @@
       "best_streams": 1,
       "file": "regions/ru-sam.m3u"
     },
-    "ru-kya": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kya.m3u"
-    },
     "ru-khm": {
       "streams": 4,
       "channels": 4,
@@ -106,23 +98,11 @@
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
     },
-    "ru-nen": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-nen.m3u"
-    },
     "ru-sta": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
-    },
-    "ru-kc": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kc.m3u"
     },
     "ru-pri": {
       "streams": 1,
@@ -142,17 +122,17 @@
       "best_streams": 1,
       "file": "regions/ru-oms.m3u"
     },
-    "ru-mos": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-mos.m3u"
-    },
     "ru-irk": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-irk.m3u"
+    },
+    "ru-bel": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-bel.m3u"
     },
     "ru-sve": {
       "streams": 1,
