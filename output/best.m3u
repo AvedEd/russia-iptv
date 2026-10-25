@@ -1,4 +1,6 @@
 #EXTM3U
+#EXTINF:-1 tvg-id="RussianExtremeUltra.ru" tvg-name="Russian Extreme Ultra" group-title="sports",Russian Extreme Ultra [3840x2160 HEVC] [iptv-org+iptv-russia]
+http://46.53.200.153:7777/play/test_krask1/index.m3u8
 #EXTINF:-1 tvg-id="InsaytTV.ru" tvg-name="Insayt TV" group-title="Россия",Insayt TV [3840x2160 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/361/index.m3u8
 #EXTINF:-1 tvg-id="NTK21.ru" tvg-name="NTK 21" group-title="General" tvg-logo="https://i.imgur.com/W9s1flH.png" http-user-agent="WINK/1.40.1 (AndroidTV/9) HlsWinkPlayer",NTK 21 [1980x1920 H264] [iptv-org+iptv-org-region] [Yevreyskaya avtonomnaya oblast']
@@ -112,8 +114,6 @@ https://stream.afontovo.ru/hd.m3u8
 https://sitv.ru/hls/stv.m3u8
 #EXTINF:-1 tvg-id="NVKSakha.ru" tvg-name="NVK Sakha" group-title="General" tvg-logo="https://i.imgur.com/LwXNUhf.png",NVK Sakha [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Saha, Respublika]
 https://live-saha.cdnvideo.ru/saha/saha/playlist.m3u8
-#EXTINF:-1 tvg-id="Sever.ru" tvg-name="Sever" group-title="Undefined" tvg-logo="https://i.imgur.com/sTOQLYl.png",Sever [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Nenetskiy avtonomnyy okrug]
-https://2vko9pchwon.a.trbcdn.net/livemaster/8ilgc_cw63ucn03p.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="SvoyoTV.ru" tvg-name="Svoyo TV" group-title="Undefined" tvg-logo="https://i.imgur.com/3cP2fmX.png",Svoyo TV [1920x1080 H264] [iptv-org+iptv-org-region] [Stavropol'skiy kray]
 https://svoetv.mediacdn.ru/cdn/svoetv/playlist.m3u8
 #EXTINF:-1 tvg-id="Surgut24.ru" tvg-name="Surgut 24" group-title="Undefined" tvg-logo="https://i.imgur.com/OxvqXMt.png",Surgut 24 [1920x1080 H264] [iptv-org+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
@@ -182,8 +182,6 @@ https://nonmirya7cc.a.trbcdn.net/livemaster/tzrz5_sazlypl5ot.smil/playlist.m3u8
 https://live20.bozztv.com/akamaissh101/ssh101/vivarussia/playlist.m3u8
 #EXTINF:-1 tvg-id="HorosheeKino.ru" tvg-name="Horoshee Kino" group-title="movies",Horoshee Kino [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-rian.cdnvideo.ru/rian/rus-radio/playlist.m3u8
-#EXTINF:-1 tvg-id="KongressTV.ru" tvg-name="Kongress TV" group-title="general",Kongress TV [1920x1080 H264] [iptv-org+iptv-russia]
-https://live-3.otcnet.ru/congresstv/index.m3u8
 #EXTINF:-1 tvg-id="VitrinaTV.ru" tvg-name="Vitrina TV" group-title="shop",Vitrina TV [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-11cinema.cdnvideo.ru/11cinema/11cinema/playlist.m3u8
 #EXTINF:-1 tvg-id="MuzSoyuz.ru" tvg-name="Muz Soyuz" group-title="music",Muz Soyuz [1920x1080 H264] [iptv-org+iptv-russia]
@@ -200,12 +198,8 @@ https://edge-tv-ll.facecast.io/evacoder_hls_hi/UBZfFgtKB1JwTwoDERNQVGGs/0.m3u8
 https://dash2.antik.sk/live/test_star_family_atktv/playlist.m3u8
 #EXTINF:-1 tvg-id="StarCinema.ru" tvg-name="Star Cinema" group-title="movies",Star Cinema [1920x1080 H264] [iptv-org+iptv-russia]
 https://dash2.antik.sk/live/test_star_cinema_atktv/playlist.m3u8
-#EXTINF:-1 tvg-id="ShchyolkovskoeTV.ru" tvg-name="Shchyolkovskoe TV" group-title="Undefined" tvg-logo="https://i.imgur.com/0us6l04.png",Shchyolkovskoe TV [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Moskovskaya oblast']
-http://stream0.tv41.ru/live.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="General" tvg-logo="https://i.imgur.com/bcw0s4V.png",AIST TV [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Irkutskaya oblast']
 http://live2-aisttv.cdnvideo.ru/aisttv2/aisttv.sdp/playlist.m3u8
-#EXTINF:-1 tvg-id="Leomax24.ru" tvg-name="Leomax 24" group-title="shop",Leomax 24 [1920x1080 H264] [iptv-org]
-https://tvshops.bonus-tv.ru/cdn/shop24/playlist.m3u8
 #EXTINF:-1 tvg-id="Magnat.ru" tvg-name="Magnat" group-title="shop",Magnat [1920x1080 H264] [iptv-org]
 https://s1.tv-nano.com/Magnat_HD_5119705/video.m3u8
 #EXTINF:-1 tvg-id="TVBRICSRussian.ru" tvg-name="TV BRICS Russian" group-title="general",TV BRICS Russian [1920x1080 H264] [iptv-org]
@@ -218,18 +212,12 @@ https://rt-esp.rttv.com/live/rtesp/playlist.m3u8
 https://qcpdqumitwf.a.trbcdn.net/livemastersrt/pr4mw_lvie-vmesterf-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="AbazaTV.ru" tvg-name="Abaza TV" group-title="general",Abaza TV [1920x1080 H264] [iptv-org]
 https://public.apsny.camera/tv_abaza_tv_to_site/index.m3u8
-#EXTINF:-1 tvg-id="360News.ru" tvg-name="360° News" group-title="news",360° News [1920x1080 H264] [iptv-org]
-https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-03-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Yuvelirochka.ru" tvg-name="Yuvelirochka" group-title="shop",Yuvelirochka [1920x1080 H264] [iptv-org]
 https://live-uvelirochka.cdnvideo.ru/uvelirochka/uvelirochka_720p3/playlist.m3u8
-#EXTINF:-1 tvg-id="CityEdenReceptyGurmana.ru" tvg-name="City Eden Recepty Gurmana" group-title="cooking",City Eden Recepty Gurmana [1920x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/47516/index.m3u8
 #EXTINF:-1 tvg-id="CityEdenKinoFantastika.ru" tvg-name="City Eden KinoFantastika" group-title="movies",City Eden KinoFantastika [1920x1080 H264] [iptv-org]
 https://cityeden.catcast.tv/content/45268/index.m3u8
-#EXTINF:-1 tvg-id="CityEdenBirmaPlay.ru" tvg-name="City Eden Birma Play" group-title="music",City Eden Birma Play [1920x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34364/index.m3u8
-#EXTINF:-1 tvg-id="CityEdenKinoKlassika.ru" tvg-name="City Eden KinoKlassika" group-title="movies",City Eden KinoKlassika [1496x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34185/index.m3u8
+#EXTINF:-1 tvg-id="CityEdenKinoMistika.ru" tvg-name="City Eden KinoMistika" group-title="movies",City Eden KinoMistika [1920x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/40783/index.m3u8
 #EXTINF:-1 tvg-id="Dorama.ru" tvg-name="Dorama" group-title="movies" http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",Dorama [1920x1080 H264] [iptv-org+iptv-russia]
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
 http://stream.mcquack.net/412/index.m3u8
