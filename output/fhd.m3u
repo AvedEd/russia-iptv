@@ -1,4 +1,6 @@
 #EXTM3U
+#EXTINF:-1 tvg-id="RussianExtremeUltra.ru" tvg-name="Russian Extreme Ultra" group-title="sports",Russian Extreme Ultra [3840x2160 HEVC] [iptv-org+iptv-russia]
+http://46.53.200.153:7777/play/test_krask1/index.m3u8
 #EXTINF:-1 tvg-id="InsaytTV.ru" tvg-name="Insayt TV" group-title="Россия",Insayt TV [3840x2160 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/361/index.m3u8
 #EXTINF:-1 tvg-id="NTK21.ru" tvg-name="NTK 21" group-title="General" tvg-logo="https://i.imgur.com/W9s1flH.png" http-user-agent="WINK/1.40.1 (AndroidTV/9) HlsWinkPlayer",NTK 21 [1980x1920 H264] [iptv-org+iptv-org-region] [Yevreyskaya avtonomnaya oblast']
@@ -134,6 +136,8 @@ https://live-tvkrasnodar.cdnvideo.ru/tvkrasnodar/tvkrasnodar.sdp/playlist.m3u8
 https://jz2lo90hnpy.a.trbcdn.net/livemaster/yo8gr_live-5gorrrfpouq.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Ingushetia.ru" tvg-name="Ingushetia" group-title="General" tvg-logo="https://i.imgur.com/Fw2Hkk4.png",Ingushetia [1920x1080 H264] [iptv-org+iptv-org-region] [Ingushetiya, Respublika]
 https://ingushetia.mediacdn.ru/cdn/ingushetia/playlist.m3u8
+#EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="General" tvg-logo="https://i.imgur.com/OA9hm6e.png",Channel 12 [1920x1080 H264] [iptv-org+iptv-org-region] [Omskaya oblast']
+https://12channel.bonus-tv.ru/cdn/12channel/playlist.m3u8
 #EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org+iptv-russia]
 https://wisewatchoott.wiseplayout.com/RT/master.m3u8
 #EXTINF:-1 tvg-id="GlazamiTurista.ru" tvg-name="Glazami Turista" group-title="travel",Glazami Turista [1920x1080 H264] [iptv-org+iptv-russia]
@@ -230,16 +234,12 @@ https://rumble.com/live-hls-dvr/33aw1a/playlist.m3u8
 https://qcpdqumitwf.a.trbcdn.net/livemastersrt/pr4mw_lvie-vmesterf-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="AbazaTV.ru" tvg-name="Abaza TV" group-title="general",Abaza TV [1920x1080 H264] [iptv-org]
 https://public.apsny.camera/tv_abaza_tv_to_site/index.m3u8
-#EXTINF:-1 tvg-id="360.ru" tvg-name="360°" group-title="general",360° [1920x1080 H264] [iptv-org]
-https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-04-srt.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="360News.ru" tvg-name="360° News" group-title="news",360° News [1920x1080 H264] [iptv-org]
-https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-03-srt.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="SmotrimChestnyyDetektiv.ru" tvg-name="Smotrim Chestnyy Detektiv" group-title="series",Smotrim Chestnyy Detektiv [1920x1080 H264] [iptv-org]
-https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-01.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Yuvelirochka.ru" tvg-name="Yuvelirochka" group-title="shop",Yuvelirochka [1920x1080 H264] [iptv-org]
 https://live-uvelirochka.cdnvideo.ru/uvelirochka/uvelirochka_720p3/playlist.m3u8
-#EXTINF:-1 tvg-id="CityEdenKinoKlassika.ru" tvg-name="City Eden KinoKlassika" group-title="movies",City Eden KinoKlassika [1496x1080 H264] [iptv-org]
-https://cityeden.catcast.tv/content/34185/index.m3u8
+#EXTINF:-1 tvg-id="CityEdenBirmaPlay.ru" tvg-name="City Eden Birma Play" group-title="music",City Eden Birma Play [1920x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/34364/index.m3u8
+#EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
+https://12channel.bonus-tv.ru/cdn/12channel_blackout/playlist.m3u8
 #EXTINF:-1 tvg-id="Dorama.ru" tvg-name="Dorama" group-title="movies" http-user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",Dorama [1920x1080 H264] [iptv-org+iptv-russia]
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36
 http://stream.mcquack.net/412/index.m3u8
@@ -436,6 +436,8 @@ http://flussonic.linkintel.ru/otr/index.m3u8
 http://flussonic.linkintel.ru/ntv/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://flussonic.linkintel.ru/kino-tv/index.m3u8
+#EXTINF:-1 tvg-id="AmediaHit.ru" tvg-name="Amedia Hit" group-title="movies",Amedia Hit [1920x1080 H264] [iptv-org+iptv-russia]
+http://flussonic.linkintel.ru/amedia-hit/index.m3u8
 #EXTINF:-1 tvg-id="Svoboda.ru" tvg-name="Svoboda" group-title="Россия",Svoboda [1920x1080 H264] [iptv-org+iptv-russia]
 http://88.212.15.50/live/svoboda/index.m3u8
 #EXTINF:-1 tvg-id="UDAR.ru" tvg-name="UDAR" group-title="sports",UDAR [1920x1080 H264] [iptv-org+iptv-russia]
@@ -444,8 +446,6 @@ http://5.188.159.128:8070/udar/index.m3u8
 http://5.188.159.128:8070/mir_24/index.m3u8
 #EXTINF:-1 tvg-id="red.ru" tvg-name=".red" group-title="entertainment",.red [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/RED/index.m3u8
-#EXTINF:-1 tvg-id="Kinopremyera.ru" tvg-name="Kinopremyera" group-title="movies",Kinopremyera [1920x1080 H264] [iptv-org+iptv-russia]
-http://5.188.159.128:8070/KINOPREMIERA/index.m3u8
 #EXTINF:-1 tvg-id="vijuPlusSport.ru" tvg-name="viju+ Sport" group-title="sports",viju+ Sport [1920x1080 H264] [iptv-org+iptv-russia]
 http://46.53.200.153:7777/play/a01l/index.m3u8
 #EXTINF:-1 tvg-id="RTGTV.ru" tvg-name="RTG TV" group-title="travel",RTG TV [1920x1080 H264] [iptv-org+iptv-russia]

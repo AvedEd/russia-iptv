@@ -25,8 +25,8 @@ https://stream.smotrim.ru/hls2/ext_spbtv/playlist_5.m3u8
 https://fs.uplink.kz/tvc/mono.m3u8?token=onlinetv
 #EXTINF:-1 tvg-id="RT.ru" tvg-name="RT" group-title="news",RT [1920x1080 H264] [iptv-org]
 https://rumble.com/live-hls-dvr/33aw1a/playlist.m3u8
-#EXTINF:-1 tvg-id="360.ru" tvg-name="360°" group-title="general",360° [1920x1080 H264] [iptv-org]
-https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-04-srt.smil/playlist.m3u8
+#EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
+https://12channel.bonus-tv.ru/cdn/12channel_blackout/playlist.m3u8
 #EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Россия",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.tvbelgorod.ru:8080/mirbelogorya/index.m3u8
 #EXTINF:-1 tvg-id="Vgostyakhuskazki.ru" tvg-name="V gostyakh u skazki" group-title="kids",V gostyakh u skazki [1920x1080 H264] [iptv-org+iptv-russia]
@@ -63,14 +63,14 @@ http://flussonic.linkintel.ru/otr/index.m3u8
 http://flussonic.linkintel.ru/ntv/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://flussonic.linkintel.ru/kino-tv/index.m3u8
+#EXTINF:-1 tvg-id="AmediaHit.ru" tvg-name="Amedia Hit" group-title="movies",Amedia Hit [1920x1080 H264] [iptv-org+iptv-russia]
+http://flussonic.linkintel.ru/amedia-hit/index.m3u8
 #EXTINF:-1 tvg-id="UDAR.ru" tvg-name="UDAR" group-title="sports",UDAR [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/udar/index.m3u8
 #EXTINF:-1 tvg-id="Mir24.ru" tvg-name="Mir 24" group-title="news",Mir 24 [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/mir_24/index.m3u8
 #EXTINF:-1 tvg-id="red.ru" tvg-name=".red" group-title="entertainment",.red [1920x1080 H264] [iptv-org+iptv-russia]
 http://5.188.159.128:8070/RED/index.m3u8
-#EXTINF:-1 tvg-id="Kinopremyera.ru" tvg-name="Kinopremyera" group-title="movies",Kinopremyera [1920x1080 H264] [iptv-org+iptv-russia]
-http://5.188.159.128:8070/KINOPREMIERA/index.m3u8
 #EXTINF:-1 tvg-id="vijuPlusSport.ru" tvg-name="viju+ Sport" group-title="sports",viju+ Sport [1920x1080 H264] [iptv-org+iptv-russia]
 http://46.53.200.153:7777/play/a01l/index.m3u8
 #EXTINF:-1 tvg-id="RTGTV.ru" tvg-name="RTG TV" group-title="travel",RTG TV [1920x1080 H264] [iptv-org+iptv-russia]
