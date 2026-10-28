@@ -10,9 +10,9 @@
       "candidates": 1202
     },
     "iptv-russia": {
-      "m3u_entries": 704,
-      "matched_candidates": 670,
-      "unmatched_entries": 34
+      "m3u_entries": 686,
+      "matched_candidates": 653,
+      "unmatched_entries": 33
     },
     "iptv-org-regions": {
       "subdivisions": 83,
@@ -21,29 +21,29 @@
     }
   },
   "russian_channels": 953,
-  "candidate_streams_before_dedup": 1956,
-  "unique_candidate_streams": 1223,
-  "duplicates_removed": 733,
-  "working_1080p_plus": 247,
-  "channels_with_1080p_plus": 190,
-  "selected_streams": 246,
-  "best_streams": 190,
-  "backup_streams": 56,
-  "fhd_streams": 247,
+  "candidate_streams_before_dedup": 1939,
+  "unique_candidate_streams": 1204,
+  "duplicates_removed": 735,
+  "working_1080p_plus": 239,
+  "channels_with_1080p_plus": 185,
+  "selected_streams": 238,
+  "best_streams": 185,
+  "backup_streams": 53,
+  "fhd_streams": 239,
   "4k_streams": 1,
   "hdr_streams": 0,
   "resolution_distribution": {
     "2160": 1,
     "1920": 36,
-    "1080": 210
+    "1080": 202
   },
   "video_codecs": {
-    "h264": 247
+    "h264": 239
   },
   "working_streams_by_source": {
-    "iptv-org": 246,
-    "iptv-russia": 184,
-    "iptv-org-region": 20
+    "iptv-org": 238,
+    "iptv-russia": 182,
+    "iptv-org-region": 18
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -51,9 +51,7 @@
     "Belgorodskaya oblast'": 1,
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
-    "Karachayevo-Cherkesskaya Respublika": 1,
     "Krasnoyarskiy kray": 1,
-    "Nenetskiy avtonomnyy okrug": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -106,23 +104,11 @@
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
     },
-    "ru-nen": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-nen.m3u"
-    },
     "ru-sta": {
       "streams": 1,
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sta.m3u"
-    },
-    "ru-kc": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-kc.m3u"
     },
     "ru-pri": {
       "streams": 1,
