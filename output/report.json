@@ -24,26 +24,26 @@
   "candidate_streams_before_dedup": 1943,
   "unique_candidate_streams": 1206,
   "duplicates_removed": 737,
-  "working_1080p_plus": 234,
-  "channels_with_1080p_plus": 182,
-  "selected_streams": 234,
-  "best_streams": 182,
+  "working_1080p_plus": 232,
+  "channels_with_1080p_plus": 180,
+  "selected_streams": 232,
+  "best_streams": 180,
   "backup_streams": 52,
-  "fhd_streams": 234,
+  "fhd_streams": 232,
   "4k_streams": 1,
   "hdr_streams": 0,
   "resolution_distribution": {
     "2160": 1,
     "1920": 36,
-    "1080": 197
+    "1080": 195
   },
   "video_codecs": {
-    "h264": 234
+    "h264": 232
   },
   "working_streams_by_source": {
-    "iptv-org": 233,
-    "iptv-russia": 177,
-    "iptv-org-region": 17
+    "iptv-org": 231,
+    "iptv-russia": 175,
+    "iptv-org-region": 16
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -55,7 +55,6 @@
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
     "Saha, Respublika": 1,
-    "Samarskaya oblast'": 1,
     "Stavropol'skiy kray": 1,
     "Sverdlovskaya oblast'": 1,
     "Yevreyskaya avtonomnaya oblast'": 1
@@ -78,12 +77,6 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-ngr.m3u"
-    },
-    "ru-sam": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-sam.m3u"
     },
     "ru-khm": {
       "streams": 4,
@@ -284,7 +277,7 @@
     {
       "code": "ru-vlg",
       "name": "Vologodskaya oblast'",
-      "error": "HTTP Error 404: Not Found"
+      "error": "HTTP Error 503: Service Unavailable"
     },
     {
       "code": "ru-vor",
