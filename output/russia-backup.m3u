@@ -41,8 +41,6 @@ https://rt-glb.rttv.com/live/rtnews/playlist.m3u8
 https://rt-esp.rttv.com/live/rtesp/playlist.m3u8
 #EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org]
 https://rt-esp.rttv.com/dvr/rtesp/playlist.m3u8
-#EXTINF:-1 tvg-id="RTArabic.ru" tvg-name="RT Arabic" group-title="news",RT Arabic [1920x1080 H264] [iptv-org]
-https://rt-arb.rttv.com/dvr/rtarab/playlist.m3u8
 #EXTINF:-1 tvg-id="360.ru" tvg-name="360°" group-title="general",360° [1920x1080 H264] [iptv-org]
 https://live-vgtrksmotrim.cdnvideo.ru/vgtrksmotrim/smotrim-live-04-srt.smil/playlist.m3u8
 #EXTINF:-1 tvg-id="Channel12.ru" tvg-name="Channel 12" group-title="general",Channel 12 [1920x1080 H264] [iptv-org]
@@ -55,8 +53,6 @@ http://stream.mcquack.net/93/index.m3u8
 http://stream.mcquack.net/333/index.m3u8
 #EXTINF:-1 tvg-id="Subbota.ru" tvg-name="Subbota!" group-title="entertainment",Subbota! [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/269/index.m3u8
-#EXTINF:-1 tvg-id="Domashniy.ru" tvg-name="Domashniy" group-title="lifestyle",Domashniy [1920x1080 H264] [iptv-org+iptv-russia]
-http://stream.mcquack.net/227/index.m3u8
 #EXTINF:-1 tvg-id="Priklyucheniya.ru" tvg-name="Priklyucheniya" group-title="Россия",Priklyucheniya [1920x1080 H264] [iptv-org+iptv-russia]
 http://stream.mcquack.net/198/index.m3u8
 #EXTINF:-1 tvg-id="Ohotnikirybolov.ru" tvg-name="Ohotnik i rybolov" group-title="outdoor",Ohotnik i rybolov [1920x1080 H264] [iptv-org+iptv-russia]
@@ -103,9 +99,9 @@ http://185.23.80.23:8080/TVBRICS/index.m3u8
 http://185.23.80.23:8080/NANO_HD/index.m3u8
 #EXTINF:-1 tvg-id="2x2.ru" tvg-name="2x2" group-title="entertainment",2x2 [1920x1080 H264] [iptv-org+iptv-russia]
 http://185.23.80.23:8080/2x2/index.m3u8
-#EXTINF:-1 tvg-id="RBKTV.ru" tvg-name="RBK-TV" group-title="business",RBK-TV [1920x1080 H264] [iptv-org+iptv-russia]
-http://176.118.197.101/RBK/index.m3u8
 #EXTINF:-1 tvg-id="KinoTV.ru" tvg-name="Kino TV" group-title="movies",Kino TV [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/KinoTvHD/playlist.m3u8
+#EXTINF:-1 tvg-id="Domashniy.ru" tvg-name="Domashniy" group-title="lifestyle",Domashniy [1320x1080 H264] [iptv-org+iptv-russia]
+http://stream.mcquack.net/227/index.m3u8
 #EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
 http://194.143.148.28:8080/Aist/index.m3u8
