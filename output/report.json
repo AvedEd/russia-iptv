@@ -7,7 +7,7 @@
   },
   "sources": {
     "iptv-org": {
-      "candidates": 1239
+      "candidates": 1240
     },
     "iptv-russia": {
       "m3u_entries": 722,
@@ -21,28 +21,28 @@
     }
   },
   "russian_channels": 1001,
-  "candidate_streams_before_dedup": 2001,
-  "unique_candidate_streams": 1241,
+  "candidate_streams_before_dedup": 2002,
+  "unique_candidate_streams": 1242,
   "duplicates_removed": 760,
-  "working_1080p_plus": 171,
-  "channels_with_1080p_plus": 123,
-  "selected_streams": 157,
-  "best_streams": 123,
-  "backup_streams": 34,
-  "fhd_streams": 171,
+  "working_1080p_plus": 161,
+  "channels_with_1080p_plus": 119,
+  "selected_streams": 148,
+  "best_streams": 119,
+  "backup_streams": 29,
+  "fhd_streams": 161,
   "4k_streams": 0,
   "hdr_streams": 0,
   "resolution_distribution": {
     "1920": 36,
-    "1080": 135
+    "1080": 125
   },
   "video_codecs": {
-    "h264": 171
+    "h264": 161
   },
   "working_streams_by_source": {
-    "iptv-org": 171,
+    "iptv-org": 161,
     "iptv-org-region": 19,
-    "iptv-russia": 93
+    "iptv-russia": 89
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
@@ -51,7 +51,7 @@
     "Ingushetiya, Respublika": 1,
     "Irkutskaya oblast'": 1,
     "Karachayevo-Cherkesskaya Respublika": 1,
-    "Nenetskiy avtonomnyy okrug": 1,
+    "Krasnoyarskiy kray": 1,
     "Novgorodskaya oblast'": 1,
     "Omskaya oblast'": 1,
     "Primorskiy kray": 1,
@@ -86,6 +86,12 @@
       "best_streams": 1,
       "file": "regions/ru-sam.m3u"
     },
+    "ru-kya": {
+      "streams": 1,
+      "channels": 1,
+      "best_streams": 1,
+      "file": "regions/ru-kya.m3u"
+    },
     "ru-khm": {
       "streams": 4,
       "channels": 4,
@@ -97,12 +103,6 @@
       "channels": 1,
       "best_streams": 1,
       "file": "regions/ru-sa.m3u"
-    },
-    "ru-nen": {
-      "streams": 1,
-      "channels": 1,
-      "best_streams": 1,
-      "file": "regions/ru-nen.m3u"
     },
     "ru-sta": {
       "streams": 1,
