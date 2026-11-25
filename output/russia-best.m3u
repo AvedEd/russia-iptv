@@ -106,6 +106,8 @@ https://stream.afontovo.ru/hd.m3u8
 https://sitv.ru/hls/stv.m3u8
 #EXTINF:-1 tvg-id="NVKSakha.ru" tvg-name="NVK Sakha" group-title="General" tvg-logo="https://i.imgur.com/LwXNUhf.png",NVK Sakha [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Saha, Respublika]
 https://live-saha.cdnvideo.ru/saha/saha/playlist.m3u8
+#EXTINF:-1 tvg-id="SvoyoTV.ru" tvg-name="Svoyo TV" group-title="Undefined" tvg-logo="https://i.imgur.com/3cP2fmX.png",Svoyo TV [1920x1080 H264] [iptv-org+iptv-org-region] [Stavropol'skiy kray]
+https://svoetv.mediacdn.ru/cdn/svoetv/playlist.m3u8
 #EXTINF:-1 tvg-id="Surgut24.ru" tvg-name="Surgut 24" group-title="Undefined" tvg-logo="https://i.imgur.com/OxvqXMt.png",Surgut 24 [1920x1080 H264] [iptv-org+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
 https://sitv.ru/vgtrk/stv.m3u8
 #EXTINF:-1 tvg-id="86.ru" tvg-name="86" group-title="General" tvg-logo="https://i.imgur.com/0dRS4Cb.png",86 [1920x1080 H264] [iptv-org+iptv-org-region] [Khanty-Mansiyskiy avtonomnyy okrug]
@@ -158,8 +160,6 @@ https://stream8.cinerama.uz/1059/tracks-v1a1/mono.m3u8
 https://stream.smotrim.ru/hls2/fasttv09/playlist_3.m3u8
 #EXTINF:-1 tvg-id="Smotrim100Gorkogo.ru" tvg-name="Smotrim 100% Gorkogo" group-title="movies",Smotrim 100% Gorkogo [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/fasttv07/playlist_3.m3u8
-#EXTINF:-1 tvg-id="Smotrim100Fakty.ru" tvg-name="Smotrim 100% Fakty" group-title="documentary",Smotrim 100% Fakty [1920x1080 H264] [iptv-org+iptv-russia]
-https://stream.smotrim.ru/hls2/fasttv06/playlist_3.m3u8
 #EXTINF:-1 tvg-id="Smotrim100Detskoe.ru" tvg-name="Smotrim 100% Detskoe" group-title="kids",Smotrim 100% Detskoe [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/fasttv05/playlist_3.m3u8
 #EXTINF:-1 tvg-id="Smotrim100Prazdnik.ru" tvg-name="Smotrim 100% Prazdnik" group-title="entertainment",Smotrim 100% Prazdnik [1920x1080 H264] [iptv-org+iptv-russia]
@@ -168,6 +168,8 @@ https://stream.smotrim.ru/hls2/fasttv04/playlist_3.m3u8
 https://stream.smotrim.ru/hls2/fasttv03/playlist_3.m3u8
 #EXTINF:-1 tvg-id="Smotrim100Muzhskoe.ru" tvg-name="Smotrim 100% Muzhskoe" group-title="series",Smotrim 100% Muzhskoe [1920x1080 H264] [iptv-org+iptv-russia]
 https://stream.smotrim.ru/hls2/fasttv02/playlist_3.m3u8
+#EXTINF:-1 tvg-id="Smotrim100Fakty.ru" tvg-name="Smotrim 100% Fakty" group-title="documentary",Smotrim 100% Fakty [1920x1080 H264] [iptv-org+iptv-russia]
+https://stream.smotrim.ru/hls/fasttv06/playlist_3.m3u8
 #EXTINF:-1 tvg-id="Simferopol24.ru" tvg-name="Simferopol 24" group-title="general",Simferopol 24 [1920x1080 H264] [iptv-org+iptv-russia]
 https://simf.1tvcrimea.ru/simferopol24.m3u8
 #EXTINF:-1 tvg-id="Legendarnyy24.ru" tvg-name="Legendarnyy 24" group-title="news",Legendarnyy 24 [1920x1080 H264] [iptv-org+iptv-russia]
@@ -180,6 +182,8 @@ https://nonmirya7cc.a.trbcdn.net/livemaster/tzrz5_sazlypl5ot.smil/playlist.m3u8
 https://live-rian.cdnvideo.ru/rian/rus-radio/playlist.m3u8
 #EXTINF:-1 tvg-id="RTenEspanol.ru" tvg-name="RT en Espanol" group-title="news",RT en Espanol [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-evg10.tv360.bitel.com.pe/bitel/rt/playlist.m3u8
+#EXTINF:-1 tvg-id="KongressTV.ru" tvg-name="Kongress TV" group-title="general",Kongress TV [1920x1080 H264] [iptv-org+iptv-russia]
+https://live-3.otcnet.ru/congresstv/index.m3u8
 #EXTINF:-1 tvg-id="VitrinaTV.ru" tvg-name="Vitrina TV" group-title="shop",Vitrina TV [1920x1080 H264] [iptv-org+iptv-russia]
 https://live-11cinema.cdnvideo.ru/11cinema/11cinema/playlist.m3u8
 #EXTINF:-1 tvg-id="MuzSoyuz.ru" tvg-name="Muz Soyuz" group-title="music",Muz Soyuz [1920x1080 H264] [iptv-org+iptv-russia]
@@ -200,10 +204,8 @@ https://dash2.antik.sk/live/test_star_family_atktv/playlist.m3u8
 https://dash2.antik.sk/live/test_star_cinema_atktv/playlist.m3u8
 #EXTINF:-1 tvg-id="VIVARussia.ru" tvg-name="VIVA Russia" group-title="music",VIVA Russia [1920x1080 H264] [iptv-org+iptv-russia]
 https://183.giatvcdn.com/ssh101/ssh101/vivarussia/playlist.m3u8
-#EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="General" tvg-logo="https://i.imgur.com/bcw0s4V.png",AIST TV [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Irkutskaya oblast']
-http://live2-aisttv.cdnvideo.ru/aisttv2/aisttv.sdp/playlist.m3u8
-#EXTINF:-1 tvg-id="Leomax24.ru" tvg-name="Leomax 24" group-title="shop",Leomax 24 [1920x1080 H264] [iptv-org]
-https://tvshops.bonus-tv.ru/cdn/shop24/playlist.m3u8
+#EXTINF:-1 tvg-id="ShchyolkovskoeTV.ru" tvg-name="Shchyolkovskoe TV" group-title="Undefined" tvg-logo="https://i.imgur.com/0us6l04.png",Shchyolkovskoe TV [1920x1080 H264] [iptv-org+iptv-russia+iptv-org-region] [Moskovskaya oblast']
+http://stream0.tv41.ru/live.m3u8
 #EXTINF:-1 tvg-id="Magnat.ru" tvg-name="Magnat" group-title="shop",Magnat [1920x1080 H264] [iptv-org]
 https://s1.tv-nano.com/Magnat_HD_5119705/video.m3u8
 #EXTINF:-1 tvg-id="TVBRICSRussian.ru" tvg-name="TV BRICS Russian" group-title="general",TV BRICS Russian [1920x1080 H264] [iptv-org]
@@ -218,6 +220,8 @@ https://qcpdqumitwf.a.trbcdn.net/livemastersrt/pr4mw_lvie-vmesterf-srt.smil/play
 https://public.apsny.camera/tv_abaza_tv_to_site/index.m3u8
 #EXTINF:-1 tvg-id="Yuvelirochka.ru" tvg-name="Yuvelirochka" group-title="shop",Yuvelirochka [1920x1080 H264] [iptv-org]
 https://live-uvelirochka.cdnvideo.ru/uvelirochka/uvelirochka_720p3/playlist.m3u8
+#EXTINF:-1 tvg-id="CityEdenKinoKlassika.ru" tvg-name="City Eden KinoKlassika" group-title="movies",City Eden KinoKlassika [1496x1080 H264] [iptv-org]
+https://cityeden.catcast.tv/content/34185/index.m3u8
 #EXTINF:-1 tvg-id="MirBelogorya.ru" tvg-name="Mir Belogorya" group-title="Undefined" tvg-logo="https://mirbelogorya.ru/images/logo/Logo_Mir_Belogorya_purple_gradient.png",Mir Belogorya [1920x1080 H264] [iptv-org+iptv-org-region] [Belgorodskaya oblast']
 http://mirbelogorya.ru:8080/mirbelogorya/index.m3u8
 #EXTINF:-1 tvg-id="KrikTV.ru" tvg-name="Krik-TV" group-title="News" tvg-logo="https://i.imgur.com/rtuChZR.png",Krik-TV [1920x1080 H264] [iptv-org+iptv-org-region] [Sverdlovskaya oblast']
@@ -264,6 +268,8 @@ http://176.118.197.101/KinoTvHD/playlist.m3u8
 http://176.118.197.101/Bollywood_HD/index.m3u8
 #EXTINF:-1 tvg-id="1HDMusicTelevision.ru" tvg-name="1HD Music Television" group-title="music",1HD Music Television [1920x1080 H264] [iptv-org+iptv-russia]
 http://176.118.197.101/1HD/index.m3u8
+#EXTINF:-1 tvg-id="AISTTV.ru" tvg-name="AIST TV" group-title="general",AIST TV [1280x1080 H264] [iptv-org+iptv-russia]
+http://194.143.148.28:8080/Aist/index.m3u8
 #EXTINF:-1 tvg-id="ZvezdaPlus.ru" tvg-name="Zvezda Plus" group-title="Россия",Zvezda Plus [1920x1080 H264] [iptv-org]
 http://tvzvezda.bonus-tv.ru/cdn/zvezdaplus/playlist.m3u8
 #EXTINF:-1 tvg-id="TvoeTV.ru" tvg-name="Tvoe TV" group-title="entertainment",Tvoe TV [1920x1080 H264] [iptv-org]
