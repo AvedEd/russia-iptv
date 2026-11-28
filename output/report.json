@@ -7,7 +7,7 @@
   },
   "sources": {
     "iptv-org": {
-      "candidates": 1315
+      "candidates": 1318
     },
     "iptv-russia": {
       "m3u_entries": 798,
@@ -21,9 +21,9 @@
     }
   },
   "russian_channels": 1005,
-  "candidate_streams_before_dedup": 2151,
-  "unique_candidate_streams": 1317,
-  "duplicates_removed": 834,
+  "candidate_streams_before_dedup": 2154,
+  "unique_candidate_streams": 1328,
+  "duplicates_removed": 826,
   "working_1080p_plus": 165,
   "channels_with_1080p_plus": 119,
   "selected_streams": 151,
@@ -42,7 +42,7 @@
   "working_streams_by_source": {
     "iptv-org": 165,
     "iptv-org-region": 17,
-    "iptv-russia": 91
+    "iptv-russia": 90
   },
   "regional_working_streams": {
     "Khanty-Mansiyskiy avtonomnyy okrug": 4,
